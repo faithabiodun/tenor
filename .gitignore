@@ -1,0 +1,25 @@
+# Foundry
+contracts/out/
+contracts/cache/
+contracts/broadcast/*/dry-run/
+
+# Node
+node_modules/
+.next/
+out/
+dist/
+*.tsbuildinfo
+
+# Env & secrets
+.env
+.env.local
+.env*.local
+!.env.example
+
+# Agent run cache (keyed by document hash, see section 12 of the spec)
+.cache/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.log

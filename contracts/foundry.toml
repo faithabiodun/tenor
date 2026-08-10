@@ -1,0 +1,32 @@
+[profile.default]
+src = "src"
+out = "out"
+libs = ["lib"]
+test = "test"
+solc = "0.8.24"
+optimizer = true
+optimizer_runs = 200
+# X Layer is a Polygon CDK zkEVM. Pinning to Paris keeps PUSH0 out of the
+# bytecode, which is the usual cause of a deploy that succeeds locally and
+# reverts on an L2.
+evm_version = "paris"
+via_ir = false
+
+remappings = [
+    "@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/",
+    "forge-std/=lib/forge-std/src/",
+]
+
+[fmt]
+line_length = 100
+tab_width = 4
+bracket_spacing = false
+int_types = "long"
+
+[rpc_endpoints]
+xlayer_testnet = "${XLAYER_TESTNET_RPC}"
+xlayer_mainnet = "${XLAYER_MAINNET_RPC}"
+
+[etherscan]
+xlayer_testnet = {key = "${OKLINK_API_KEY}", chain = 195, url = "https://www.oklink.com/api/v5/explorer/xlayer_test/contract/"}
+xlayer_mainnet = {key = "${OKLINK_API_KEY}", chain = 196, url = "https://www.oklink.com/api/v5/explorer/xlayer/contract/"}
