@@ -75,11 +75,27 @@ rewritten afterwards. Anyone can re-derive it from the stored reasoning JSON.
 ### Verifying a verdict hash
 
 Canonicalisation is deliberately boring so it is reproducible: the reasoning object is
-serialised as JSON with **keys sorted lexicographically at every level**, **no
-whitespace**, and UTF-8 encoding, then hashed with `keccak256` over the resulting
-bytes.
+serialised as JSON with **keys sorted lexicographically at every level** (by UTF-16 code
+unit, not locale), **array order preserved**, **no whitespace**, and UTF-8 encoding, then
+hashed with `keccak256` over the resulting bytes.
 
-_Canonicalisation helper and a worked example land with the agent pipeline on day 3._
+```
+$ npm run verify
+
+  input      {"b":2,"a":[3,1],"c":{"z":null,"y":"x"}}
+  canonical  {"a":[3,1],"b":2,"c":{"y":"x","z":null}}
+  keccak256  0xfae1d27fb04ddc38b3fceaff82ae580c519ea35b662e979b6f6605a68a77a75a
+```
+
+To check a real verdict, read `verdictHash` off the contract, fetch the stored reasoning
+JSON, and re-derive it:
+
+```bash
+npm run verify -- reasoning.json 0x8f3a...
+```
+
+A mismatch exits non-zero. That is the whole integrity claim, and it does not require
+trusting us.
 
 ## Architecture
 
@@ -102,13 +118,57 @@ Freelancer uploads contract or invoice (PDF / image)
       Mint ERC-721 receivable to the freelancer
 ```
 
+## The agent panel
+
+| Agent | Model | Why |
+| --- | --- | --- |
+| Extraction | `claude-haiku-4-5` | Reads the uploaded PDF or photo, so it needs vision |
+| Bull | `deepseek-v4-pro` | Text in, text out |
+| Bear | `deepseek-v4-pro` | Text in, text out |
+| Arbiter | `deepseek-v4-pro` | Text in, text out |
+
+The debate runs on DeepSeek because that is where the cost actually is: bull, bear and
+arbiter are re-run dozens of times against the same three documents during prompt tuning.
+Extraction is cached to disk by document hash and runs about once per document, so the
+vision leg is a rounding error. DeepSeek does not expose image input on its public API,
+which is the only reason extraction sits elsewhere.
+
+Bull and bear run at temperature 0.7; the arbiter runs cold, so the same debate produces
+the same verdict. Disagreement is supposed to come from the debaters, not from sampling
+noise in the judge.
+
+### Behaviour on the three samples
+
+```
+$ npm run spread -- --all
+
+  pass  clean       bull    95  bear    88  spread   7.0  verdict 93%  conf 85
+  pass  messy       bull    85  bear    15  spread  70.0  verdict 55%  conf 45
+  pass  contentious bull    92  bear    65  spread  27.0  verdict 73%  conf 68
+```
+
+Rate, confidence and disagreement all order the way they should. `npm run spread` fails
+loudly if the two debaters land within 5 points on the contentious sample, because a
+debate where both sides agree destroys the entire premise.
+
+### A gap worth knowing about
+
+The bear's risk checklist asks about "no prior payment history with this payer", but the
+extraction schema has no field to carry payment history or payer identifiers. Left
+unaddressed, every payer looks unverifiable and well-papered invoices get priced like
+risky ones — in testing, the clean and contentious samples both landed on 72%. The samples
+currently fold that context into `payment_terms` as free text, which took the clean sample
+to 93%. A dedicated `payer_history` field is the better fix.
+
 ## Repository
 
 ```
 contracts/    Foundry project: TenorReceivables.sol, tests, deploy script
+agents/       Extraction, bull, bear, arbiter; canonicalisation; sample generation
+samples/      Three synthetic receivables as PDFs. Every name and figure is fictional.
 ```
 
-`agents/`, `web/` and `samples/` land on days 3 to 6.
+`web/` lands with the frontend.
 
 ## Development
 

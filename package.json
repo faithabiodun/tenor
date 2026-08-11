@@ -1,0 +1,16 @@
+{
+  "name": "tenor",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Adversarial underwriting for freelancer receivables",
+  "license": "MIT",
+  "workspaces": [
+    "agents"
+  ],
+  "scripts": {
+    "samples": "npm run samples --workspace agents",
+    "price": "npm run price --workspace agents",
+    "spread": "npm run spread --workspace agents",
+    "verify": "npm run verify --workspace agents"
+  }
+}
