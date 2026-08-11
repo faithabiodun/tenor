@@ -1,0 +1,33 @@
+# Render Blueprint for Tenor (free tier, $0).
+# Render's Blueprint flow reads THIS file from the REPO ROOT on the main branch.
+# In Render: New > Blueprint > pick this repo. Then set DEEPSEEK_API_KEY (marked
+# sync:false, so it is never committed) in the dashboard when prompted.
+#
+# One service. The agent panel runs as Next route handlers rather than a separate
+# API, because a debate is three sequential model calls and needs a long-lived
+# server, which is exactly what a Render web service is.
+services:
+  - type: web
+    name: tenor
+    runtime: node
+    plan: free
+    # Build from the REPO ROOT so the npm workspaces resolve; the agents package is
+    # a workspace dependency of web and ships TypeScript that Next transpiles.
+    rootDir: .
+    # --include=dev is deliberate: typescript and the @types packages are devDependencies
+    # and `next build` needs them. If the platform sets NODE_ENV=production, a plain
+    # `npm ci` would skip them and the build would fail on a missing typescript.
+    buildCommand: npm ci --include=dev && npm run build --workspace web
+    startCommand: npm run start --workspace web
+    # Cheap, always-200, and it exercises the workspace import chain rather than just
+    # proving the process is alive.
+    healthCheckPath: /api/samples
+    envVars:
+      # Next 16 needs 20.9+; pin so a Render default bump cannot break the build.
+      - key: NODE_VERSION
+        value: "22"
+      - key: DEEPSEEK_MODEL
+        value: deepseek-v4-pro
+      # Set in the dashboard. Never commit this.
+      - key: DEEPSEEK_API_KEY
+        sync: false
