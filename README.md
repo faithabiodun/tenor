@@ -7,6 +7,12 @@ reasoning is written to X Layer alongside the tokenised receivable.
 
 Built for the X Layer **AI Season** hackathon, **AI-RWA** track.
 
+**Live: https://tenor-ph5c.onrender.com**
+
+The site is hosted on a free instance that sleeps after about fifteen minutes idle, so the
+first request can take up to a minute to wake. A debate is three sequential model calls and
+takes another forty-five seconds or so on top. Both are real, neither is cached.
+
 > **This is a prototype and a technical demonstration.** It is not a live financial
 > product. It does not accept real money from real users, and every document and
 > company in this repository is fictional.
@@ -166,9 +172,28 @@ to 93%. A dedicated `payer_history` field is the better fix.
 contracts/    Foundry project: TenorReceivables.sol, tests, deploy script
 agents/       Extraction, bull, bear, arbiter; canonicalisation; sample generation
 samples/      Three synthetic receivables as PDFs. Every name and figure is fictional.
+web/          Next.js app. The agent panel runs in its route handlers, so model
+              credentials stay server side and nobody can drive the agents directly.
+render.yaml   Blueprint for the single free-tier web service.
 ```
 
-`web/` lands with the frontend.
+### Verified against the live deployment
+
+The integrity claim is not a local-only property. Ask production to price the contentious
+sample, keep the reasoning it returns, and re-derive the hash yourself:
+
+```bash
+curl -s -X POST -H 'content-type: application/json' \
+  -d '{"sampleId":"contentious"}' \
+  https://tenor-ph5c.onrender.com/api/price > verdict.json
+
+node -e 'require("fs").writeFileSync("reasoning.json",
+  JSON.stringify(JSON.parse(require("fs").readFileSync("verdict.json","utf8")).reasoning))'
+
+npm run verify -- reasoning.json <the verdictHash from verdict.json>
+```
+
+Last run: bull 92%, bear 65%, arbiter 72%, 27 points apart, and the hash matched.
 
 ## Development
 
