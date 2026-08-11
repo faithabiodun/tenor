@@ -5,7 +5,9 @@
   "description": "Adversarial underwriting for freelancer receivables",
   "license": "MIT",
   "workspaces": [
-    "agents"
+    "agents",
+    "api",
+    "web"
   ],
   "scripts": {
     "samples": "npm run samples --workspace agents",

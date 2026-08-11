@@ -1,0 +1,60 @@
+{
+  "reasoning": {
+    "extraction": {
+      "client_name": "Halcyon Systems SA",
+      "freelancer_name": "Dana Whitfield",
+      "amount": 18500,
+      "currency": "USD",
+      "issue_date": "2026-08-05",
+      "due_date": "2026-09-19",
+      "payment_terms": "Net 45 from date of issue, fixed fee agreed in writing before commencement; first engagement between the parties",
+      "deliverables": [
+        "Migration of the Halcyon order pipeline from batch to event-driven, including 31 integration tests passing at handover",
+        "Runbook and on-call escalation procedure, 24 pages",
+        "Two weeks of post-migration support, completed 4 August 2026"
+      ],
+      "termination_clauses": [
+        "Termination for convenience requires 60 days written notice and does not affect fees for work completed and accepted before the notice date"
+      ],
+      "late_penalty": "1.5% per month on overdue balances, per clause 7 of the signed statement of work",
+      "document_quality": 88,
+      "missing_critical_fields": [
+        "client company registration number",
+        "verifiable corporate footprint for the payer",
+        "confirmation of signatory authority"
+      ]
+    },
+    "bull": {
+      "proposed_rate": 90,
+      "arguments": [
+        "All deliverables were completed and handed over by 4 August 2026, prior to the invoice date, eliminating performance risk and any defense of non-performance by the client.",
+        "The contract includes a late penalty of 1.5% per month on overdue balances, creating a strong financial incentive for the client to pay on time and providing clear recourse in case of delay.",
+        "The termination clause explicitly states that termination for convenience does not affect fees for work completed and accepted, and since all work was finished and accepted before the invoice date, the receivable is insulated from termination risk."
+      ],
+      "strongest_counterargument": "The absence of verifiable client identity—specifically missing client company registration number, corporate footprint, and confirmation of signatory authority—makes it impossible to confirm Halcyon Systems SA is a legitimate entity with the capacity to pay, which fundamentally increases the risk of default and fraud, especially as a first engagement."
+    },
+    "bear": {
+      "proposed_rate": 64,
+      "risk_factors": [
+        "Payer identity unverifiable: no corporate registration number or verifiable footprint",
+        "No prior payment history with this payer (first engagement)",
+        "Missing confirmation of signatory authority on the contract"
+      ],
+      "strongest_point_for_freelancer": "All deliverables are clearly defined, completed, and accepted with objective criteria (31 integration tests passing, support completed by 4 August 2026)."
+    },
+    "arbiter": {
+      "advance_rate": 72,
+      "confidence": 68,
+      "rationale": "The work is solid: all deliverables were finished and accepted on time, which removes performance risk and prevents the client from claiming the work wasn't done. However, the client cannot be verified as a real business—no registration number or corporate footprint—and this is the first time working together, so there's no payment history to rely on. The late penalty helps but only if the client exists and has money. Because of the identity gap, we need to be cautious, but the quality of the completed work supports a decent advance.",
+      "decisive_arguments": [
+        "‘Payer identity unverifiable: no corporate registration number or verifiable footprint’ – without this, we cannot confirm Halcyon Systems SA is a legitimate business with the ability to pay, which is a major default risk.",
+        "‘All deliverables are clearly defined, completed, and accepted with objective criteria’ – this means the client has little grounds to dispute the invoice, strengthening the receivable's collectability."
+      ],
+      "which_agent_prevailed": "bear"
+    }
+  },
+  "canonicalJson": "{\"arbiter\":{\"advance_rate\":72,\"confidence\":68,\"decisive_arguments\":[\"‘Payer identity unverifiable: no corporate registration number or verifiable footprint’ – without this, we cannot confirm Halcyon Systems SA is a legitimate business with the ability to pay, which is a major default risk.\",\"‘All deliverables are clearly defined, completed, and accepted with objective criteria’ – this means the client has little grounds to dispute the invoice, strengthening the receivable's collectability.\"],\"rationale\":\"The work is solid: all deliverables were finished and accepted on time, which removes performance risk and prevents the client from claiming the work wasn't done. However, the client cannot be verified as a real business—no registration number or corporate footprint—and this is the first time working together, so there's no payment history to rely on. The late penalty helps but only if the client exists and has money. Because of the identity gap, we need to be cautious, but the quality of the completed work supports a decent advance.\",\"which_agent_prevailed\":\"bear\"},\"bear\":{\"proposed_rate\":64,\"risk_factors\":[\"Payer identity unverifiable: no corporate registration number or verifiable footprint\",\"No prior payment history with this payer (first engagement)\",\"Missing confirmation of signatory authority on the contract\"],\"strongest_point_for_freelancer\":\"All deliverables are clearly defined, completed, and accepted with objective criteria (31 integration tests passing, support completed by 4 August 2026).\"},\"bull\":{\"arguments\":[\"All deliverables were completed and handed over by 4 August 2026, prior to the invoice date, eliminating performance risk and any defense of non-performance by the client.\",\"The contract includes a late penalty of 1.5% per month on overdue balances, creating a strong financial incentive for the client to pay on time and providing clear recourse in case of delay.\",\"The termination clause explicitly states that termination for convenience does not affect fees for work completed and accepted, and since all work was finished and accepted before the invoice date, the receivable is insulated from termination risk.\"],\"proposed_rate\":90,\"strongest_counterargument\":\"The absence of verifiable client identity—specifically missing client company registration number, corporate footprint, and confirmation of signatory authority—makes it impossible to confirm Halcyon Systems SA is a legitimate entity with the capacity to pay, which fundamentally increases the risk of default and fraud, especially as a first engagement.\"},\"extraction\":{\"amount\":18500,\"client_name\":\"Halcyon Systems SA\",\"currency\":\"USD\",\"deliverables\":[\"Migration of the Halcyon order pipeline from batch to event-driven, including 31 integration tests passing at handover\",\"Runbook and on-call escalation procedure, 24 pages\",\"Two weeks of post-migration support, completed 4 August 2026\"],\"document_quality\":88,\"due_date\":\"2026-09-19\",\"freelancer_name\":\"Dana Whitfield\",\"issue_date\":\"2026-08-05\",\"late_penalty\":\"1.5% per month on overdue balances, per clause 7 of the signed statement of work\",\"missing_critical_fields\":[\"client company registration number\",\"verifiable corporate footprint for the payer\",\"confirmation of signatory authority\"],\"payment_terms\":\"Net 45 from date of issue, fixed fee agreed in writing before commencement; first engagement between the parties\",\"termination_clauses\":[\"Termination for convenience requires 60 days written notice and does not affect fees for work completed and accepted before the notice date\"]}}",
+  "verdictHash": "0x7bf4014bdae4a030a6cfad7c0de8b1421da217ef5af7ed1e496fbc69c17de8ad",
+  "advanceValue": 13320,
+  "spread": 26
+}

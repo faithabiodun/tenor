@@ -3,7 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "main": "src/index.ts",
+  "exports": {
+    ".": "./src/pipeline.ts",
+    "./pipeline": "./src/pipeline.ts",
+    "./schemas": "./src/schemas.ts",
+    "./canonical": "./src/canonical.ts",
+    "./samples": "./src/samples/documents.ts"
+  },
   "scripts": {
     "samples": "tsx src/samples/generate.ts",
     "price": "tsx src/cli/price.ts",
