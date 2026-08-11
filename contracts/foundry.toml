@@ -6,9 +6,10 @@ test = "test"
 solc = "0.8.24"
 optimizer = true
 optimizer_runs = 200
-# X Layer is a Polygon CDK zkEVM. Pinning to Paris keeps PUSH0 out of the
-# bytecode, which is the usual cause of a deploy that succeeds locally and
-# reverts on an L2.
+# X Layer moved off the Polygon CDK zkEVM to an enhanced OP Stack in the August
+# 2025 "PP upgrade", so Cancun would in fact be fine. Paris costs us nothing
+# here (we only need ERC721 and Ownable) and produces bytecode that runs on any
+# EVM chain, so it stays as cheap insurance against a fork mismatch on deploy.
 evm_version = "paris"
 via_ir = false
 
@@ -27,6 +28,8 @@ int_types = "long"
 xlayer_testnet = "${XLAYER_TESTNET_RPC}"
 xlayer_mainnet = "${XLAYER_MAINNET_RPC}"
 
+# Chain ids confirmed by eth_chainId against the live RPCs, not from a chain
+# list: testnet is 1952 (the old 195 zkEVM testnet is dead), mainnet is 196.
 [etherscan]
-xlayer_testnet = {key = "${OKLINK_API_KEY}", chain = 195, url = "https://www.oklink.com/api/v5/explorer/xlayer_test/contract/"}
+xlayer_testnet = {key = "${OKLINK_API_KEY}", chain = 1952, url = "https://www.oklink.com/api/v5/explorer/xlayer_test/contract/"}
 xlayer_mainnet = {key = "${OKLINK_API_KEY}", chain = 196, url = "https://www.oklink.com/api/v5/explorer/xlayer/contract/"}
