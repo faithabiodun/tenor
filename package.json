@@ -6,9 +6,11 @@
   "license": "MIT",
   "workspaces": [
     "agents",
-    "api",
     "web"
   ],
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "samples": "npm run samples --workspace agents",
     "price": "npm run price --workspace agents",

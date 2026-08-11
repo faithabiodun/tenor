@@ -1,6 +1,6 @@
 import {readFileSync} from "node:fs";
 import type {Hex} from "viem";
-import {canonicalise, verdictHash, verifyVerdictHash} from "../canonical.js";
+import {canonicalise, verdictHash, verifyVerdictHash} from "../canonical";
 
 /**
  * Verify that a stored reasoning JSON really does hash to the value written on chain.

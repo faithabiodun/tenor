@@ -1,4 +1,4 @@
-import type {Extraction} from "../schemas.js";
+import type {Extraction} from "../schemas";
 
 /**
  * Three synthetic receivables (section 10). Every company, person and figure here is

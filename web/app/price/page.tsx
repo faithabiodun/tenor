@@ -26,12 +26,7 @@ export default function PricePage() {
     fetch(`${API_BASE}/samples`)
       .then((response) => response.json())
       .then((data: {samples: SampleSummary[]}) => setSamples(data.samples))
-      .catch(() =>
-        setProblem(
-          `Could not reach the underwriting service at ${API_BASE}. If you are running ` +
-            `locally, start it with npm run dev --workspace api.`,
-        ),
-      );
+      .catch(() => setProblem("Could not load the sample receivables. Try reloading the page."));
   }, []);
 
   async function price() {

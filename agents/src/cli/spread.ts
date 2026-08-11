@@ -1,9 +1,9 @@
-import "./env.js";
+import "./env";
 
-import {DEBATE_MODEL} from "../llm.js";
-import {priceReceivable} from "../pipeline.js";
-import {MIN_SPREAD_POINTS} from "../schemas.js";
-import {SAMPLES, sampleById} from "../samples/documents.js";
+import {DEBATE_MODEL} from "../llm";
+import {priceReceivable} from "../pipeline";
+import {MIN_SPREAD_POINTS} from "../schemas";
+import {SAMPLES, sampleById} from "../samples/documents";
 
 /**
  * Section 7.5's dev-only assertion. The known failure mode of this whole design is that

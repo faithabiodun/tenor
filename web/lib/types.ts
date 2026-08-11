@@ -41,8 +41,8 @@ export interface Verdict {
   spread: number;
 }
 
-export const API_BASE =
-  process.env.NEXT_PUBLIC_API_BASE?.replace(/\/$/, "") ?? "http://localhost:8080";
+/** Same origin: the agent panel runs in this app's route handlers. */
+export const API_BASE = "/api";
 
 export function money(amount: number, currency: string | null): string {
   const formatted = amount.toLocaleString("en-US", {maximumFractionDigits: 0});

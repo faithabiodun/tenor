@@ -3,7 +3,7 @@ import {createWriteStream, mkdirSync} from "node:fs";
 import {resolve} from "node:path";
 import {fileURLToPath} from "node:url";
 import {dirname} from "node:path";
-import {SAMPLES} from "./documents.js";
+import {SAMPLES} from "./documents";
 
 /**
  * Render the three synthetic receivables to PDFs in /samples.

@@ -13,6 +13,9 @@ const config: NextConfig = {
   reactStrictMode: true,
   turbopack: {root: repoRoot},
   outputFileTracingRoot: repoRoot,
+  // The agents workspace ships TypeScript source rather than a build artefact, so Next has
+  // to compile it the same way it compiles the app.
+  transpilePackages: ["@tenor/agents"],
 };
 
 export default config;

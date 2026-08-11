@@ -1,10 +1,10 @@
-import "./env.js";
+import "./env";
 
 import {writeFileSync} from "node:fs";
 import {resolve} from "node:path";
-import {REPO_ROOT} from "./env.js";
-import {priceReceivable} from "../pipeline.js";
-import {sampleById} from "../samples/documents.js";
+import {REPO_ROOT} from "./env";
+import {priceReceivable} from "../pipeline";
+import {sampleById} from "../samples/documents";
 
 /**
  * Freeze a real debate to a fixture the landing page can render.

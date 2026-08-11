@@ -1,13 +1,13 @@
 import type {Hex} from "viem";
-import {canonicalise, verdictHash} from "./canonical.js";
-import {ask} from "./llm.js";
+import {canonicalise, verdictHash} from "./canonical";
+import {ask} from "./llm";
 import {
   ARBITER_SYSTEM,
   BEAR_SYSTEM,
   BULL_SYSTEM,
   arbiterUser,
   debateUser,
-} from "./prompts.js";
+} from "./prompts";
 import {
   ArbiterSchema,
   BearSchema,
@@ -18,7 +18,7 @@ import {
   type Bull,
   type Extraction,
   type Reasoning,
-} from "./schemas.js";
+} from "./schemas";
 
 /** Thrown when the document is too poor to price. The UI asks for a better scan. */
 export class DocumentQualityError extends Error {

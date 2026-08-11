@@ -1,4 +1,4 @@
-import type {Bear, Bull, Extraction} from "./schemas.js";
+import type {Bear, Bull, Extraction} from "./schemas";
 
 /**
  * The bull and bear are kept apart by asymmetric information, not by instructions telling

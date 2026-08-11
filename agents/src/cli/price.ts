@@ -1,8 +1,8 @@
-import "./env.js";
+import "./env";
 
-import {DEBATE_MODEL} from "../llm.js";
-import {DocumentQualityError, priceReceivable} from "../pipeline.js";
-import {sampleById} from "../samples/documents.js";
+import {DEBATE_MODEL} from "../llm";
+import {DocumentQualityError, priceReceivable} from "../pipeline";
+import {sampleById} from "../samples/documents";
 
 /**
  * Run the full debate against a sample and print it.
