@@ -1,34 +1,5 @@
 import Link from "next/link";
 
-/**
- * A rounded 3x3 matrix with the centre knocked out. Tenor prices the gap between what is
- * owed and what is worth advancing today, and the missing cell is that gap.
- */
-export function Mark({size = 22}: {size?: number}) {
-  const cells = [0, 1, 2, 3, 5, 6, 7, 8];
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 9 9"
-      aria-hidden="true"
-      style={{display: "block", flex: "0 0 auto", color: "var(--green)"}}
-    >
-      {cells.map((cell) => (
-        <rect
-          key={cell}
-          x={(cell % 3) * 3}
-          y={Math.floor(cell / 3) * 3}
-          width="2.4"
-          height="2.4"
-          rx="0.7"
-          fill="currentColor"
-        />
-      ))}
-    </svg>
-  );
-}
-
 export function Header() {
   return (
     <header style={{borderBottom: "1px solid var(--line)"}}>
@@ -45,16 +16,12 @@ export function Header() {
         <Link
           href="/"
           style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 10,
             textDecoration: "none",
-            fontWeight: 700,
-            letterSpacing: "0.02em",
-            fontSize: 17,
+            fontWeight: 600,
+            letterSpacing: "-0.02em",
+            fontSize: 19,
           }}
         >
-          <Mark />
           Tenor
         </Link>
         <nav style={{display: "flex", alignItems: "center", gap: 22, fontSize: 14}}>
@@ -97,10 +64,7 @@ export function Footer() {
   return (
     <footer style={{borderTop: "1px solid var(--line)", marginTop: 96}}>
       <div className="wrap" style={{padding: "36px 0 56px", display: "grid", gap: 20}}>
-        <div style={{display: "flex", alignItems: "center", gap: 10, fontWeight: 700}}>
-          <Mark size={16} />
-          Tenor
-        </div>
+        <div style={{fontWeight: 600, letterSpacing: "-0.02em", fontSize: 17}}>Tenor</div>
         <p style={{maxWidth: "70ch", fontSize: 14, color: "var(--ink-60)"}}>
           Tenor is a prototype and a technical demonstration, built for the X Layer AI Season
           hackathon. It is not a live financial product, it does not accept money from real
