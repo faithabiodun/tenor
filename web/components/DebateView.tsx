@@ -4,16 +4,23 @@ import {daysUntil, money, type Verdict} from "../lib/types";
 /**
  * The hero screen. Two columns that are visibly opposed, then the verdict between them.
  *
- * The opposition is carried by fill against hatch, not by hue: OKX's palette is black on
- * white, and inventing two accent colours to stand in for bull and bear would have been
- * the lazy read of the brief.
+ * Green is the freelancer's case and graphite-with-a-hatch is the capital provider's. The
+ * palette is white and green, so rather than invent a second brand colour for the bear, the
+ * split is carried by colour against texture.
  */
 export function DebateView({verdict}: {verdict: Verdict}) {
   const {extraction, bull, bear, arbiter} = verdict.reasoning;
   const days = daysUntil(extraction.due_date);
 
   return (
-    <article style={{border: "1px solid var(--rule)"}}>
+    <article
+      style={{
+        border: "1px solid var(--line)",
+        borderRadius: "var(--radius-lg)",
+        overflow: "hidden",
+        background: "var(--paper)",
+      }}
+    >
       <header
         className="stage"
         style={{
@@ -21,7 +28,7 @@ export function DebateView({verdict}: {verdict: Verdict}) {
           flexWrap: "wrap",
           gap: "6px 22px",
           padding: "14px 20px",
-          borderBottom: "1px solid var(--rule)",
+          borderBottom: "1px solid var(--line)",
           alignItems: "baseline",
         }}
       >
@@ -44,8 +51,11 @@ export function DebateView({verdict}: {verdict: Verdict}) {
             style={{
               fontSize: 12,
               marginLeft: "auto",
-              border: "1px solid var(--ink)",
-              padding: "1px 8px",
+              border: "1px solid var(--green-line)",
+              background: "var(--green-wash)",
+              color: "var(--green-deep)",
+              borderRadius: 999,
+              padding: "2px 10px",
             }}
           >
             {extraction.missing_critical_fields.length} field
@@ -74,7 +84,7 @@ export function DebateView({verdict}: {verdict: Verdict}) {
       <section
         className="stage"
         style={{
-          borderTop: "1px solid var(--rule)",
+          borderTop: "1px solid var(--line)",
           padding: "28px 20px 24px",
           animationDelay: "840ms",
         }}
@@ -137,7 +147,7 @@ export function DebateView({verdict}: {verdict: Verdict}) {
           style={{
             marginTop: 20,
             paddingTop: 14,
-            borderTop: "1px solid var(--rule-soft)",
+            borderTop: "1px solid var(--line)",
             fontSize: 12,
             color: "var(--ink-60)",
             wordBreak: "break-all",
@@ -180,7 +190,7 @@ function Side({
       className={isBull ? "stage-left" : "stage-right"}
       style={{
         padding: "22px 20px 24px",
-        borderLeft: isBull ? "6px solid var(--ink)" : undefined,
+        borderLeft: isBull ? "4px solid var(--green)" : undefined,
         animationDelay: "420ms",
         position: "relative",
       }}
@@ -189,7 +199,7 @@ function Side({
         <span
           aria-hidden="true"
           className="hatch"
-          style={{position: "absolute", left: 0, top: 0, bottom: 0, width: 6}}
+          style={{position: "absolute", left: 0, top: 0, bottom: 0, width: 4}}
         />
       )}
       <div style={{display: "flex", alignItems: "baseline", gap: 12, marginBottom: 14}}>
@@ -212,8 +222,9 @@ function Side({
                 width: 7,
                 height: 7,
                 marginTop: 8,
-                border: "1px solid var(--ink)",
-                background: isBull ? "var(--ink)" : "var(--paper)",
+                borderRadius: 2,
+                border: `1px solid ${isBull ? "var(--green)" : "var(--ink-60)"}`,
+                background: isBull ? "var(--green)" : "var(--paper)",
               }}
             />
             {point}
@@ -225,7 +236,7 @@ function Side({
         style={{
           marginTop: 16,
           paddingTop: 12,
-          borderTop: "1px solid var(--rule-soft)",
+          borderTop: "1px solid var(--line)",
           fontSize: 14,
           color: "var(--ink-60)",
         }}

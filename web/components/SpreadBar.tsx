@@ -44,7 +44,7 @@ export function SpreadBar({bull, bear, verdict}: Props) {
             insetInline: 0,
             top: 38,
             height: 1,
-            background: "var(--rule)",
+            background: "var(--line)",
           }}
         />
 
@@ -57,9 +57,10 @@ export function SpreadBar({bull, bear, verdict}: Props) {
             width: `${high - low}%`,
             top: 26,
             height: 25,
-            opacity: 0.55,
-            borderLeft: "1px solid var(--ink)",
-            borderRight: "1px solid var(--ink)",
+            opacity: 0.4,
+            borderRadius: 3,
+            borderLeft: "1px solid var(--ink-60)",
+            borderRight: "1px solid var(--ink-60)",
           }}
         />
 
@@ -81,11 +82,18 @@ export function SpreadBar({bull, bear, verdict}: Props) {
         >
           <span
             className="mono"
-            style={{fontSize: 13, fontWeight: 700, whiteSpace: "nowrap"}}
+            style={{
+              fontSize: 13,
+              fontWeight: 600,
+              whiteSpace: "nowrap",
+              color: "var(--green-deep)",
+            }}
           >
             {verdict}%
           </span>
-          <span style={{width: 3, height: 30, background: "var(--ink)"}} />
+          <span
+            style={{width: 3, height: 30, borderRadius: 2, background: "var(--green)"}}
+          />
         </div>
 
         {[0, 25, 50, 75, 100].map((tick) => (
@@ -132,10 +140,11 @@ function Proposal({side, value}: {side: "bull" | "bear"; value: number}) {
         aria-hidden="true"
         className={isBull ? undefined : "hatch"}
         style={{
-          width: 13,
-          height: 13,
-          border: "1px solid var(--ink)",
-          background: isBull ? "var(--ink)" : "var(--paper)",
+          width: 12,
+          height: 12,
+          borderRadius: 3,
+          border: `1px solid ${isBull ? "var(--green)" : "var(--ink-60)"}`,
+          background: isBull ? "var(--green)" : "var(--paper)",
         }}
       />
       <span className="mono" style={{fontSize: 11, color: "var(--ink-60)"}}>

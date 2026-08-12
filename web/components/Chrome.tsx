@@ -1,11 +1,10 @@
 import Link from "next/link";
 
 /**
- * A wordmark built from a 3x3 matrix of squares with one cell knocked out. OKX's identity
- * is letterforms assembled from square modules; this borrows the construction rather than
- * the letterforms.
+ * A rounded 3x3 matrix with the centre knocked out. Tenor prices the gap between what is
+ * owed and what is worth advancing today, and the missing cell is that gap.
  */
-export function Mark({size = 20}: {size?: number}) {
+export function Mark({size = 22}: {size?: number}) {
   const cells = [0, 1, 2, 3, 5, 6, 7, 8];
   return (
     <svg
@@ -13,7 +12,7 @@ export function Mark({size = 20}: {size?: number}) {
       height={size}
       viewBox="0 0 9 9"
       aria-hidden="true"
-      style={{display: "block", flex: "0 0 auto"}}
+      style={{display: "block", flex: "0 0 auto", color: "var(--green)"}}
     >
       {cells.map((cell) => (
         <rect
@@ -22,6 +21,7 @@ export function Mark({size = 20}: {size?: number}) {
           y={Math.floor(cell / 3) * 3}
           width="2.4"
           height="2.4"
+          rx="0.7"
           fill="currentColor"
         />
       ))}
@@ -31,7 +31,7 @@ export function Mark({size = 20}: {size?: number}) {
 
 export function Header() {
   return (
-    <header style={{borderBottom: "1px solid var(--rule)"}}>
+    <header style={{borderBottom: "1px solid var(--line)"}}>
       <div
         className="wrap"
         style={{
@@ -78,13 +78,14 @@ export function Cta({children, compact = false}: {children: React.ReactNode; com
     <span
       style={{
         display: "inline-block",
-        background: "var(--ink)",
-        color: "var(--paper)",
-        padding: compact ? "9px 16px" : "16px 28px",
+        background: "var(--green)",
+        color: "#ffffff",
+        padding: compact ? "9px 16px" : "15px 26px",
         fontSize: compact ? 14 : 17,
         fontWeight: 500,
         letterSpacing: "-0.01em",
-        border: "1px solid var(--ink)",
+        border: "1px solid var(--green)",
+        borderRadius: "var(--radius-md)",
       }}
     >
       {children}
@@ -94,7 +95,7 @@ export function Cta({children, compact = false}: {children: React.ReactNode; com
 
 export function Footer() {
   return (
-    <footer style={{borderTop: "1px solid var(--rule)", marginTop: 96}}>
+    <footer style={{borderTop: "1px solid var(--line)", marginTop: 96}}>
       <div className="wrap" style={{padding: "36px 0 56px", display: "grid", gap: 20}}>
         <div style={{display: "flex", alignItems: "center", gap: 10, fontWeight: 700}}>
           <Mark size={16} />

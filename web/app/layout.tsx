@@ -1,17 +1,16 @@
 import type {Metadata} from "next";
-import {JetBrains_Mono, Space_Grotesk} from "next/font/google";
+import {Geist, Geist_Mono} from "next/font/google";
 import "./globals.css";
 
-const display = Space_Grotesk({
+// The reference site runs Geist Variable; this is the same family from Google Fonts.
+const display = Geist({
   subsets: ["latin"],
-  weight: ["400", "500", "700"],
   variable: "--font-display",
   display: "swap",
 });
 
-const mono = JetBrains_Mono({
+const mono = Geist_Mono({
   subsets: ["latin"],
-  weight: ["400", "500", "700"],
   variable: "--font-mono",
   display: "swap",
 });

@@ -123,7 +123,8 @@ export default function PricePage() {
                   style={{
                     textAlign: "left",
                     background: "var(--paper)",
-                    border: "1px solid var(--rule)",
+                    border: "1px solid var(--line)",
+                    borderRadius: "var(--radius)",
                     padding: "20px 18px 22px",
                     cursor: "pointer",
                     display: "grid",
@@ -157,8 +158,13 @@ export default function PricePage() {
 
             {draft.missing_critical_fields.length > 0 && (
               <div
-                className="checker"
-                style={{marginTop: 24, border: "1px solid var(--rule)", padding: "14px 16px"}}
+                style={{
+                  marginTop: 24,
+                  border: "1px solid var(--green-line)",
+                  background: "var(--green-wash)",
+                  borderRadius: "var(--radius)",
+                  padding: "14px 16px",
+                }}
               >
                 <span className="eyebrow">Flagged as missing</span>
                 <p style={{fontSize: 15}}>{draft.missing_critical_fields.join(" · ")}</p>
@@ -249,7 +255,7 @@ export default function PricePage() {
                 }}
                 style={{
                   background: "none",
-                  border: "1px solid var(--rule)",
+                  border: "1px solid var(--line)",
                   padding: "15px 20px",
                   fontSize: 15,
                   cursor: "pointer",
@@ -272,7 +278,7 @@ export default function PricePage() {
                 onClick={() => setPhase("review")}
                 style={{
                   background: "none",
-                  border: "1px solid var(--rule)",
+                  border: "1px solid var(--line)",
                   padding: "13px 20px",
                   fontSize: 15,
                   cursor: "pointer",
@@ -296,7 +302,7 @@ export default function PricePage() {
                 }}
                 style={{
                   background: "none",
-                  border: "1px solid var(--rule)",
+                  border: "1px solid var(--line)",
                   padding: "9px 16px",
                   fontSize: 14,
                   cursor: "pointer",
@@ -359,7 +365,8 @@ function Row({
         display: "flex",
         alignItems: "center",
         gap: 14,
-        border: "1px solid var(--rule)",
+        border: "1px solid var(--line)",
+        borderRadius: "var(--radius)",
         padding: "14px 16px",
       }}
     >
@@ -403,7 +410,6 @@ function Dropzone({busy, onFile}: {busy: boolean; onFile: (file: File) => void})
         const file = event.dataTransfer.files?.[0];
         if (file && !busy) onFile(file);
       }}
-      className={over ? "checker" : undefined}
       style={{
         display: "flex",
         flexDirection: "column",
@@ -412,10 +418,12 @@ function Dropzone({busy, onFile}: {busy: boolean; onFile: (file: File) => void})
         gap: 8,
         marginTop: 26,
         padding: "46px 20px",
-        border: "1px solid var(--rule)",
-        borderLeft: "6px solid var(--ink)",
+        border: `1px dashed ${over ? "var(--green)" : "var(--green-line)"}`,
+        background: over ? "var(--green-wash)" : "var(--surface)",
+        borderRadius: "var(--radius-lg)",
         cursor: busy ? "progress" : "pointer",
         textAlign: "center",
+        transition: "background 140ms ease, border-color 140ms ease",
       }}
     >
       <input
@@ -458,8 +466,9 @@ function Field({
         onChange={(event) => onChange(event.target.value)}
         className={mono ? "mono" : undefined}
         style={{
-          border: "1px solid var(--rule)",
+          border: "1px solid var(--line)",
           background: "var(--paper)",
+          borderRadius: "var(--radius-md)",
           padding: "11px 12px",
           fontSize: 15,
           width: "100%",
@@ -475,7 +484,8 @@ function Problem({children}: {children: React.ReactNode}) {
       style={{
         marginTop: 20,
         border: "1px solid var(--neg)",
-        borderLeft: "6px solid var(--neg)",
+        borderLeft: "4px solid var(--neg)",
+        borderRadius: "var(--radius-md)",
         padding: "13px 16px",
         fontSize: 15,
         maxWidth: "70ch",

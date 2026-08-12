@@ -1,13 +1,25 @@
 :root {
   --paper: #ffffff;
-  --ink: #000000;
-  --ink-60: #565656;
-  --ink-40: #8c8c8c;
-  --rule: #000000;
-  --rule-soft: #e2e2e0;
-  --surface: #f4f4f2;
-  --pos: #007a4d;
-  --neg: #c02b1d;
+  --surface: #f6f9f7;
+  --ink: #0a1310;
+  --ink-60: #56635c;
+  --ink-40: #8a958f;
+
+  /* Green carries actions and the freelancer's side of the argument. The deep tone is the
+     one to use when green has to be text on white; the mid tone is for fills. */
+  --green: #0b7a47;
+  --green-deep: #075c36;
+  --green-wash: #e9f5ee;
+  --green-line: #c8e3d5;
+
+  --line: #e3e9e5;
+  --neg: #b3261e;
+
+  /* Matches the reference: .625rem, with the shadcn derivative scale. */
+  --radius: 0.625rem;
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: calc(var(--radius) + 4px);
 
   --step--1: 13px;
   --step-0: 16px;
@@ -24,8 +36,6 @@
 *::before,
 *::after {
   box-sizing: border-box;
-  /* OKX's identity is a matrix of hard-edged squares. Nothing in this product is rounded. */
-  border-radius: 0;
 }
 
 html,
@@ -48,21 +58,22 @@ h1,
 h2,
 h3 {
   margin: 0;
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  line-height: 1.04;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1.08;
   text-wrap: balance;
 }
 
 h1 {
-  font-size: clamp(var(--step-3), 7vw, var(--step-5));
+  font-size: clamp(var(--step-3), 6.4vw, var(--step-5));
+  letter-spacing: -0.035em;
 }
 h2 {
-  font-size: clamp(var(--step-2), 4.4vw, var(--step-4));
+  font-size: clamp(var(--step-2), 4vw, var(--step-4));
+  letter-spacing: -0.03em;
 }
 h3 {
   font-size: var(--step-1);
-  letter-spacing: -0.015em;
 }
 
 p {
@@ -79,26 +90,22 @@ a {
 .mono {
   font-family: var(--font-mono), ui-monospace, monospace;
   font-variant-numeric: tabular-nums;
-  font-feature-settings: "tnum" 1, "zero" 1;
+  font-feature-settings: "tnum" 1;
   letter-spacing: -0.02em;
 }
 
 .eyebrow {
   font-size: 11px;
   font-weight: 500;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--ink-60);
+  color: var(--ink-40);
 }
 
 .wrap {
-  max-width: 1180px;
+  max-width: 1140px;
   margin: 0 auto;
   padding-inline: var(--gutter);
-}
-
-.rule-top {
-  border-top: 1px solid var(--rule);
 }
 
 .muted {
@@ -117,49 +124,47 @@ a {
   border: 0;
 }
 
+/* Flat surfaces with a hairline and a soft corner. No shadows anywhere, matching the
+   reference, which uses none in 49KB of stylesheet. */
+.card {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
 button,
 input,
 textarea,
 select {
   font: inherit;
   color: inherit;
-  border-radius: 0;
+  border-radius: var(--radius-md);
 }
 
 :focus-visible {
-  outline: 3px solid var(--ink);
+  outline: 2px solid var(--green);
   outline-offset: 2px;
 }
 
 /*
- * The bear's texture. The debate view has to read as two opposed sides, and the OKX
- * palette is monochrome, so the opposition is carried by fill against hatch rather than
- * by hue. Solid black is the freelancer's case; this is the capital provider's.
+ * The bear's texture. The debate has to read as two opposed sides: green is the
+ * freelancer's case, and the capital provider gets graphite with a hatch, so the split
+ * survives without introducing a third brand colour.
  */
 .hatch {
   background-image: repeating-linear-gradient(
     45deg,
-    var(--ink) 0,
-    var(--ink) 1px,
+    var(--ink-60) 0,
+    var(--ink-60) 1px,
     transparent 1px,
     transparent 7px
   );
 }
 
-.checker {
-  background-image:
-    linear-gradient(45deg, var(--rule-soft) 25%, transparent 25%),
-    linear-gradient(-45deg, var(--rule-soft) 25%, transparent 25%),
-    linear-gradient(45deg, transparent 75%, var(--rule-soft) 75%),
-    linear-gradient(-45deg, transparent 75%, var(--rule-soft) 75%);
-  background-size: 16px 16px;
-  background-position: 0 0, 0 8px, 8px -8px, -8px 0;
-}
-
 @keyframes rise {
   from {
     opacity: 0;
-    transform: translateY(12px);
+    transform: translateY(10px);
   }
   to {
     opacity: 1;
@@ -170,7 +175,7 @@ select {
 @keyframes slide-from-left {
   from {
     opacity: 0;
-    transform: translateX(-18px);
+    transform: translateX(-16px);
   }
   to {
     opacity: 1;
@@ -181,7 +186,7 @@ select {
 @keyframes slide-from-right {
   from {
     opacity: 0;
-    transform: translateX(18px);
+    transform: translateX(16px);
   }
   to {
     opacity: 1;

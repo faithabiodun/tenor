@@ -78,8 +78,8 @@ export default function Landing() {
         <section
           style={{
             marginTop: 96,
-            borderTop: "1px solid var(--rule)",
-            borderBottom: "1px solid var(--rule)",
+            borderTop: "1px solid var(--line)",
+            borderBottom: "1px solid var(--line)",
             background: "var(--surface)",
           }}
         >
@@ -96,12 +96,19 @@ export default function Landing() {
                 key={feature.title}
                 style={{
                   padding: "40px 26px 44px",
-                  borderLeft: index === 0 ? undefined : "1px solid var(--rule-soft)",
+                  borderLeft: index === 0 ? undefined : "1px solid var(--line)",
                 }}
               >
                 <div
                   aria-hidden="true"
-                  style={{width: 22, height: 22, background: "var(--ink)", marginBottom: 18}}
+                  style={{
+                    width: 30,
+                    height: 30,
+                    marginBottom: 18,
+                    borderRadius: "var(--radius-sm)",
+                    background: "var(--green-wash)",
+                    border: "1px solid var(--green-line)",
+                  }}
                 />
                 <h3 style={{marginBottom: 10}}>{feature.title}</h3>
                 <p style={{fontSize: 15, color: "var(--ink-60)"}}>{feature.body}</p>
@@ -123,8 +130,8 @@ export default function Landing() {
             }}
           >
             {STEPS.map((step) => (
-              <li key={step.n} style={{borderTop: "1px solid var(--rule)", paddingTop: 16}}>
-                <span className="mono" style={{fontSize: 13, color: "var(--ink-40)"}}>
+              <li key={step.n} style={{borderTop: "2px solid var(--green)", paddingTop: 16}}>
+                <span className="mono" style={{fontSize: 13, color: "var(--green-deep)"}}>
                   {step.n}
                 </span>
                 <h3 style={{margin: "8px 0 8px"}}>{step.title}</h3>
@@ -140,7 +147,7 @@ export default function Landing() {
             {FAQ.map((item) => (
               <details
                 key={item.q}
-                style={{borderTop: "1px solid var(--rule)", padding: "18px 0"}}
+                style={{borderTop: "1px solid var(--line)", padding: "18px 0"}}
               >
                 <summary
                   style={{
