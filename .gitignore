@@ -1,7 +1,9 @@
 # Foundry
 contracts/out/
 contracts/cache/
-contracts/broadcast/*/dry-run/
+# Foundry nests these as broadcast/<script>/<chainId>/dry-run/, so the glob needs to span
+# more than one level. Real broadcast receipts are worth keeping; simulations are not.
+contracts/broadcast/**/dry-run/
 
 # Node
 node_modules/
