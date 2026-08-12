@@ -6,6 +6,8 @@ export interface Extraction {
   issue_date: string | null;
   due_date: string | null;
   payment_terms: string | null;
+  payer_history: string | null;
+  payer_identifier: string | null;
   deliverables: string[];
   termination_clauses: string[];
   late_penalty: string | null;

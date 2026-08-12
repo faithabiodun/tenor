@@ -62,13 +62,11 @@ export const SAMPLES: Sample[] = [
       currency: "USD",
       issue_date: "2026-08-01",
       due_date: "2026-08-31",
-      // The registration number and the prior-payment record are the two most predictive
-      // facts in this document, and section 7.1's schema has nowhere to put either. Folded
-      // into payment_terms so the bear can actually see them; see the note in the README.
-      payment_terms:
-        "Net 30 from date of issue, under master services agreement BA-MSA-2024-118. " +
+      payment_terms: "Net 30 from date of issue, under master services agreement BA-MSA-2024-118",
+      payer_history:
         "Fourth engagement between the parties; the three prior invoices were settled " +
-        "within terms, in 11, 19 and 14 days. Payer registered as company number 07734512.",
+        "within terms, in 11, 19 and 14 days",
+      payer_identifier: "UK company number 07734512",
       deliverables: [
         "API reference for the Bellweather payments SDK, 42 pages, signed off 24 July 2026",
         "Migration guide v2 to v3, 11 pages, signed off 29 July 2026",
@@ -117,6 +115,8 @@ export const SAMPLES: Sample[] = [
       issue_date: "2026-07-20",
       due_date: "2026-10-18",
       payment_terms: "90 days",
+      payer_history: null,
+      payer_identifier: null,
       deliverables: ["Marketing support and related services as discussed"],
       termination_clauses: [
         "Client may cancel at any time for any reason, with or without notice",
@@ -180,7 +180,9 @@ export const SAMPLES: Sample[] = [
       issue_date: "2026-08-05",
       due_date: "2026-09-19",
       payment_terms:
-        "Net 45 from date of issue, fixed fee agreed in writing before commencement; first engagement between the parties",
+        "Net 45 from date of issue, fixed fee agreed in writing before commencement",
+      payer_history: "First engagement between the parties; no prior invoices",
+      payer_identifier: null,
       deliverables: [
         "Migration of the Halcyon order pipeline from batch to event-driven, including 31 integration tests passing at handover",
         "Runbook and on-call escalation procedure, 24 pages",

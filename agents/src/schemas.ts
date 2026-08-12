@@ -9,6 +9,15 @@ export const ExtractionSchema = z.object({
   issue_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).nullable(),
   due_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).nullable(),
   payment_terms: z.string().nullable(),
+  /**
+   * Added to section 7.1's schema. The bear's checklist asks about prior payment history
+   * and about whether the payer can be identified at all, and the original schema had
+   * nowhere to carry either, so every payer read as unverifiable and well-papered invoices
+   * priced like risky ones. Null means the document does not say, which is itself a signal
+   * the bear is entitled to weigh.
+   */
+  payer_history: z.string().nullable(),
+  payer_identifier: z.string().nullable(),
   deliverables: z.array(z.string()),
   termination_clauses: z.array(z.string()),
   late_penalty: z.string().nullable(),

@@ -1,3 +1,7 @@
+import {existsSync} from "node:fs";
+import {dirname, resolve} from "node:path";
+import {fileURLToPath} from "node:url";
+import {config} from "dotenv";
 import OpenAI from "openai";
 import type {ZodType} from "zod";
 
@@ -16,6 +20,14 @@ let cached: OpenAI | undefined;
 
 function client(): OpenAI {
   if (cached) return cached;
+
+  // The CLIs load the repo-root .env themselves. Next only reads .env from the app
+  // directory, so when this runs inside a route handler the key may not be in the
+  // environment yet. Load it here, at the one place that needs it, rather than in a Next
+  // instrumentation hook: that file also gets compiled for the Edge runtime, where node:path
+  // is not allowed. In production the platform injects real variables and this is a no-op.
+  if (!process.env.DEEPSEEK_API_KEY) loadRepoEnv();
+
   const apiKey = process.env.DEEPSEEK_API_KEY;
   if (!apiKey) {
     throw new Error(
@@ -24,6 +36,25 @@ function client(): OpenAI {
   }
   cached = new OpenAI({apiKey, baseURL: BASE_URL});
   return cached;
+}
+
+/** Walk up from this file to find the repo-root .env, wherever the process was started. */
+function loadRepoEnv(): void {
+  try {
+    let dir = dirname(fileURLToPath(import.meta.url));
+    for (let depth = 0; depth < 6; depth++) {
+      const candidate = resolve(dir, ".env");
+      if (existsSync(candidate)) {
+        config({path: candidate, quiet: true});
+        return;
+      }
+      const parent = dirname(dir);
+      if (parent === dir) return;
+      dir = parent;
+    }
+  } catch {
+    // No .env is normal in production, where the platform supplies the variables.
+  }
 }
 
 export interface AskOptions<T> {

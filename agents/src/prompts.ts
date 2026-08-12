@@ -13,7 +13,10 @@ const RISK_CHECKLIST = [
   "currency volatility or cross-border payment risk",
   "deliverable ambiguity, or acceptance criteria that are subjective",
   "absence of a late payment penalty",
-  "no prior payment history with this payer",
+  "payer_history: whether there is a prior payment record with this payer, and whether it " +
+    "was settled within terms. A null here means the document does not say, which is not " +
+    "the same as a bad record but is not evidence of a good one either",
+  "payer_identifier: whether the payer can be identified as a real registered entity at all",
   "amount unusually large relative to a typical freelance engagement",
   "critical fields the extraction step flagged as missing",
 ];

@@ -21,6 +21,37 @@ export default function PricePage() {
   const [phase, setPhase] = useState<Phase>("choose");
   const [verdict, setVerdict] = useState<Verdict | null>(null);
   const [problem, setProblem] = useState("");
+  const [uploading, setUploading] = useState(false);
+  const [docHash, setDocHash] = useState<string | null>(null);
+
+  async function upload(file: File) {
+    setUploading(true);
+    setProblem("");
+    setDocHash(null);
+    try {
+      const form = new FormData();
+      form.append("document", file);
+      const response = await fetch(`${API_BASE}/extract`, {method: "POST", body: form});
+      const data = await response.json();
+      if (!response.ok) {
+        setProblem(data.detail ?? "That document could not be read.");
+        return;
+      }
+      setChosen({
+        id: "upload",
+        file: data.filename,
+        expectation: "Your document.",
+        extraction: data.extraction,
+      });
+      setDraft(data.extraction);
+      setDocHash(data.docHash);
+      setPhase("review");
+    } catch {
+      setProblem("The document could not be uploaded. Check your connection and try again.");
+    } finally {
+      setUploading(false);
+    }
+  }
 
   useEffect(() => {
     fetch(`${API_BASE}/samples`)
@@ -59,17 +90,23 @@ export default function PricePage() {
       <main className="wrap" style={{paddingTop: 48, paddingBottom: 40}}>
         {phase === "choose" && (
           <>
-            <h2 style={{maxWidth: "20ch"}}>Choose a receivable to price.</h2>
+            <h2 style={{maxWidth: "20ch"}}>Upload a receivable.</h2>
             <p style={{maxWidth: "62ch", marginTop: 14, color: "var(--ink-60)"}}>
-              Three synthetic documents, all fictional. Uploading your own arrives with the
-              extraction agent; today the debate runs on reviewed fields.
+              A signed contract or an unpaid invoice, as a PDF. Nothing you upload is stored
+              or published; it is read, hashed, and the fields are shown to you for review.
             </p>
+
+            <Dropzone busy={uploading} onFile={upload} />
 
             {problem && <Problem>{problem}</Problem>}
 
+            <p className="eyebrow" style={{marginTop: 44}}>
+              Or price one of the synthetic samples
+            </p>
+
             <div
               style={{
-                marginTop: 32,
+                marginTop: 16,
                 display: "grid",
                 gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
                 gap: 18,
@@ -172,7 +209,31 @@ export default function PricePage() {
                 mono
                 onChange={(value) => setDraft({...draft, due_date: value || null})}
               />
+              <Field
+                label="Payer registration"
+                value={draft.payer_identifier ?? ""}
+                onChange={(value) => setDraft({...draft, payer_identifier: value || null})}
+              />
+              <Field
+                label="Prior payment history"
+                value={draft.payer_history ?? ""}
+                onChange={(value) => setDraft({...draft, payer_history: value || null})}
+              />
             </div>
+
+            {docHash && (
+              <p
+                className="mono"
+                style={{
+                  marginTop: 20,
+                  fontSize: 12,
+                  color: "var(--ink-60)",
+                  wordBreak: "break-all",
+                }}
+              >
+                document hash {docHash}
+              </p>
+            )}
 
             <div style={{marginTop: 30, display: "flex", gap: 14, alignItems: "center"}}>
               <button
@@ -318,6 +379,63 @@ function Row({
         {done ? "done" : active ? "thinking" : "queued"}
       </span>
     </div>
+  );
+}
+
+/**
+ * A square, hard-edged drop target rather than the usual dashed rounded rectangle. Keyboard
+ * reachable: the whole thing is a label wrapping a real file input, so tab and space work
+ * without any handler of ours.
+ */
+function Dropzone({busy, onFile}: {busy: boolean; onFile: (file: File) => void}) {
+  const [over, setOver] = useState(false);
+
+  return (
+    <label
+      onDragOver={(event) => {
+        event.preventDefault();
+        setOver(true);
+      }}
+      onDragLeave={() => setOver(false)}
+      onDrop={(event) => {
+        event.preventDefault();
+        setOver(false);
+        const file = event.dataTransfer.files?.[0];
+        if (file && !busy) onFile(file);
+      }}
+      className={over ? "checker" : undefined}
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        gap: 8,
+        marginTop: 26,
+        padding: "46px 20px",
+        border: "1px solid var(--rule)",
+        borderLeft: "6px solid var(--ink)",
+        cursor: busy ? "progress" : "pointer",
+        textAlign: "center",
+      }}
+    >
+      <input
+        type="file"
+        accept="application/pdf,.pdf"
+        disabled={busy}
+        className="sr-only"
+        onChange={(event) => {
+          const file = event.target.files?.[0];
+          if (file) onFile(file);
+          event.target.value = "";
+        }}
+      />
+      <strong style={{fontSize: 18, letterSpacing: "-0.01em"}}>
+        {busy ? "Reading the document..." : "Drop a PDF here, or choose a file"}
+      </strong>
+      <span className="mono" style={{fontSize: 13, color: "var(--ink-60)"}}>
+        {busy ? "extracting fields" : "PDF up to 8 MB"}
+      </span>
+    </label>
   );
 }
 
