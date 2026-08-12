@@ -44,8 +44,14 @@ export interface Verdict {
    * whole currency units. The contract stores minor units; convert at the mint boundary.
    */
   advanceValue: number;
-  /** How far apart the two debaters landed, in percentage points. */
+  /** How far apart the two debaters landed, in percentage points. Always positive. */
   spread: number;
+  /**
+   * True when the bull came in below the bear, which means the freelancer's advocate
+   * argued against its own client. That is a broken debate, not a wide one, and an absolute
+   * spread hides it: a 15 point inversion looks exactly like a healthy 15 point gap.
+   */
+  inverted: boolean;
 }
 
 /**
@@ -111,5 +117,6 @@ export async function priceReceivable(
     verdictHash: verdictHash(reasoning),
     advanceValue: Math.round(((extraction.amount ?? 0) * arbiter.advance_rate) / 100),
     spread: Math.abs(bull.proposed_rate - bear.proposed_rate),
+    inverted: bull.proposed_rate < bear.proposed_rate,
   };
 }

@@ -24,8 +24,11 @@ for (const sample of targets) {
   const verdict = await priceReceivable(sample.extraction);
   const {bull, bear, arbiter} = verdict.reasoning;
 
-  const asserted = sample.id === "contentious";
-  const ok = !asserted || verdict.spread >= MIN_SPREAD_POINTS;
+  // Inversion is checked on every sample, not just the contentious one: the bull coming in
+  // under the bear means the advocate argued against its own client, and that is broken
+  // wherever it happens.
+  const wideEnough = sample.id !== "contentious" || verdict.spread >= MIN_SPREAD_POINTS;
+  const ok = wideEnough && !verdict.inverted;
   if (!ok) failed = true;
 
   console.log(
@@ -36,7 +39,16 @@ for (const sample of targets) {
       `verdict ${arbiter.advance_rate}%  conf ${arbiter.confidence}`,
   );
 
-  if (!ok) {
+  if (verdict.inverted) {
+    console.log(
+      `\n  The bull proposed ${bull.proposed_rate}% and the bear proposed ${bear.proposed_rate}%.\n` +
+        `  The freelancer's advocate came in BELOW the capital provider, which means it\n` +
+        `  argued against its own client. Check the bull's arguments: if they talk about\n` +
+        `  reducing losses or easing collection, it has adopted the lender's persona and the\n` +
+        `  role framing in prompts.ts needs tightening. An absolute spread will not catch\n` +
+        `  this on its own.\n`,
+    );
+  } else if (!ok) {
     console.log(
       `\n  The bull and bear landed ${verdict.spread.toFixed(1)} points apart on the sample\n` +
         `  that is supposed to divide them, under the ${MIN_SPREAD_POINTS} point floor.\n` +
