@@ -29,7 +29,11 @@ services:
       - key: DEEPSEEK_MODEL
         value: deepseek-v4-pro
       - key: SUPABASE_URL
-        value: https://kzacptowrsdsuatjvtxm.supabase.co
+        value: https://svbqoplujdigkbmwxvib.supabase.co
+      # Publishable by design: it can only read the rows RLS already makes public, which is
+      # the verdict reasoning anyone is invited to re-hash. Safe to commit.
+      - key: SUPABASE_PUBLISHABLE_KEY
+        value: sb_publishable_dOstlitdBB0idA3B9sr43g_jsnbsCaQ
       # Set these in the dashboard. Never commit them.
       - key: DEEPSEEK_API_KEY
         sync: false
