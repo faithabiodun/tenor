@@ -191,26 +191,31 @@ export default function PricePage() {
               />
               <Field
                 label="Amount"
+                type="number"
+                min={0}
+                step="0.01"
                 value={String(draft.amount ?? "")}
                 mono
                 onChange={(value) =>
                   setDraft({...draft, amount: value === "" ? null : Number(value)})
                 }
               />
-              <Field
+              <Select
                 label="Currency"
                 value={draft.currency ?? ""}
-                mono
+                options={CURRENCIES}
                 onChange={(value) => setDraft({...draft, currency: value || null})}
               />
               <Field
                 label="Issue date"
+                type="date"
                 value={draft.issue_date ?? ""}
                 mono
                 onChange={(value) => setDraft({...draft, issue_date: value || null})}
               />
               <Field
                 label="Due date"
+                type="date"
                 value={draft.due_date ?? ""}
                 mono
                 onChange={(value) => setDraft({...draft, due_date: value || null})}
@@ -220,10 +225,17 @@ export default function PricePage() {
                 value={draft.payer_identifier ?? ""}
                 onChange={(value) => setDraft({...draft, payer_identifier: value || null})}
               />
-              <Field
+              <LongField
                 label="Prior payment history"
                 value={draft.payer_history ?? ""}
+                placeholder="Not stated in the document"
                 onChange={(value) => setDraft({...draft, payer_history: value || null})}
+              />
+              <LongField
+                label="Payment terms"
+                value={draft.payment_terms ?? ""}
+                placeholder="Not stated in the document"
+                onChange={(value) => setDraft({...draft, payment_terms: value || null})}
               />
             </div>
 
@@ -446,32 +458,105 @@ function Dropzone({busy, onFile}: {busy: boolean; onFile: (file: File) => void})
   );
 }
 
+const CONTROL: React.CSSProperties = {
+  border: "1px solid var(--line)",
+  background: "var(--paper)",
+  borderRadius: "var(--radius-md)",
+  padding: "11px 12px",
+  fontSize: 15,
+  width: "100%",
+};
+
+/** Currencies a freelance invoice actually turns up in, plus room for anything else. */
+const CURRENCIES = ["USD", "EUR", "GBP", "CAD", "AUD", "CHF", "JPY", "NGN", "INR", "ZAR"];
+
 function Field({
   label,
   value,
   onChange,
   mono = false,
+  type = "text",
+  min,
+  step,
 }: {
   label: string;
   value: string;
   onChange: (value: string) => void;
   mono?: boolean;
+  type?: "text" | "number" | "date";
+  min?: string | number;
+  step?: string | number;
 }) {
   return (
     <label style={{display: "grid", gap: 6}}>
       <span className="eyebrow">{label}</span>
       <input
+        type={type}
         value={value}
+        min={min}
+        step={step}
         onChange={(event) => onChange(event.target.value)}
         className={mono ? "mono" : undefined}
-        style={{
-          border: "1px solid var(--line)",
-          background: "var(--paper)",
-          borderRadius: "var(--radius-md)",
-          padding: "11px 12px",
-          fontSize: 15,
-          width: "100%",
-        }}
+        style={CONTROL}
+      />
+    </label>
+  );
+}
+
+function Select({
+  label,
+  value,
+  options,
+  onChange,
+}: {
+  label: string;
+  value: string;
+  options: string[];
+  onChange: (value: string) => void;
+}) {
+  // A value the extractor read off a document may not be in our list. Keep it as an option
+  // rather than silently snapping it to something the document never said.
+  const all = value && !options.includes(value) ? [value, ...options] : options;
+  return (
+    <label style={{display: "grid", gap: 6}}>
+      <span className="eyebrow">{label}</span>
+      <select
+        value={value}
+        onChange={(event) => onChange(event.target.value)}
+        className="mono"
+        style={CONTROL}
+      >
+        <option value="">Not stated</option>
+        {all.map((option) => (
+          <option key={option} value={option}>
+            {option}
+          </option>
+        ))}
+      </select>
+    </label>
+  );
+}
+
+function LongField({
+  label,
+  value,
+  placeholder,
+  onChange,
+}: {
+  label: string;
+  value: string;
+  placeholder?: string;
+  onChange: (value: string) => void;
+}) {
+  return (
+    <label style={{display: "grid", gap: 6, gridColumn: "1 / -1"}}>
+      <span className="eyebrow">{label}</span>
+      <textarea
+        value={value}
+        rows={2}
+        placeholder={placeholder}
+        onChange={(event) => onChange(event.target.value)}
+        style={{...CONTROL, resize: "vertical", lineHeight: 1.5}}
       />
     </label>
   );

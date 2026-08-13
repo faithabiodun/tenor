@@ -175,8 +175,7 @@ npm run verify -- reasoning.json <the verdictHash from verdict.json>`}</Code>
 
         <Section id="limits" title="What this is not">
           <Callout>
-            Tenor is a prototype and a technical demonstration built for the X Layer AI Season
-            hackathon. It is not a live financial product, it does not accept money from real
+            Tenor is built for the X Layer AI Season hackathon. It does not accept money from real
             users, and every document, company and figure in the demo is invented. Nothing here
             is financial advice or an offer of credit.
           </Callout>

@@ -44,7 +44,7 @@ const FAQ = [
   },
   {
     q: "Is this real money?",
-    a: "No. Tenor is a prototype built for a hackathon. It does not accept funds from real users and every document in the demo is invented.",
+    a: "No. Tenor is built for the X Layer AI Season hackathon. It does not accept funds from real users, and every document in the demo is invented.",
   },
 ];
 
@@ -143,23 +143,24 @@ export default function Landing() {
               <div
                 key={feature.title}
                 style={{
-                  padding: "40px 26px 44px",
+                  padding: "42px 30px 46px",
                   borderLeft: index === 0 ? undefined : "1px solid var(--line)",
                 }}
               >
-                <div
-                  aria-hidden="true"
+                <h3
                   style={{
-                    width: 30,
-                    height: 30,
-                    marginBottom: 18,
-                    borderRadius: "var(--radius-sm)",
-                    background: "var(--green-wash)",
-                    border: "1px solid var(--green-line)",
+                    marginBottom: 12,
+                    paddingTop: 16,
+                    borderTop: "2px solid var(--green)",
+                    fontSize: 20,
+                    letterSpacing: "-0.02em",
                   }}
-                />
-                <h3 style={{marginBottom: 10}}>{feature.title}</h3>
-                <p style={{fontSize: 15, color: "var(--ink-60)"}}>{feature.body}</p>
+                >
+                  {feature.title}
+                </h3>
+                <p style={{fontSize: 15, lineHeight: 1.6, color: "var(--ink-60)"}}>
+                  {feature.body}
+                </p>
               </div>
             ))}
           </div>

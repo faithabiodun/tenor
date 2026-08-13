@@ -61,28 +61,95 @@ export function Cta({children, compact = false}: {children: React.ReactNode; com
   );
 }
 
+const FOOTER_LINKS: {heading: string; links: {label: string; href: string}[]}[] = [
+  {
+    heading: "Product",
+    links: [
+      {label: "Price a receivable", href: "/price"},
+      {label: "How it works", href: "/#how"},
+      {label: "Docs", href: "/docs"},
+    ],
+  },
+  {
+    heading: "Technical",
+    links: [
+      {label: "What goes on chain", href: "/docs#chain"},
+      {label: "Verifying a verdict", href: "/docs#verify"},
+      {label: "Source on GitHub", href: "https://github.com/faithabiodun/tenor"},
+    ],
+  },
+  {
+    heading: "X Layer",
+    links: [
+      {label: "X Layer", href: "https://web3.okx.com/xlayer"},
+      {label: "Developer docs", href: "https://web3.okx.com/xlayer/docs"},
+      {label: "Explorer", href: "https://www.oklink.com/x-layer"},
+    ],
+  },
+];
+
 export function Footer() {
   return (
     <footer style={{borderTop: "1px solid var(--line)", marginTop: 96}}>
-      <div className="wrap" style={{padding: "36px 0 56px", display: "grid", gap: 20}}>
+      <div className="wrap" style={{padding: "44px 0 56px"}}>
         <div
           style={{
-            fontWeight: 700,
-            letterSpacing: "-0.03em",
-            fontSize: 18,
-            color: "var(--green)",
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
+            gap: 32,
+            alignItems: "start",
           }}
         >
-          Tenor
+          <div>
+            <div
+              style={{
+                fontWeight: 700,
+                letterSpacing: "-0.03em",
+                fontSize: 20,
+                color: "var(--green)",
+              }}
+            >
+              Tenor
+            </div>
+            <p style={{marginTop: 8, fontSize: 14, color: "var(--ink-60)", maxWidth: "26ch"}}>
+              Adversarial underwriting for freelancer receivables.
+            </p>
+          </div>
+
+          {FOOTER_LINKS.map((group) => (
+            <nav key={group.heading} aria-label={group.heading}>
+              <p className="eyebrow" style={{marginBottom: 12}}>
+                {group.heading}
+              </p>
+              <ul style={{listStyle: "none", margin: 0, padding: 0, display: "grid", gap: 9}}>
+                {group.links.map((link) => (
+                  <li key={link.label}>
+                    <Link
+                      href={link.href}
+                      style={{fontSize: 14, color: "var(--ink-60)", textDecoration: "none"}}
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          ))}
         </div>
-        <p style={{maxWidth: "70ch", fontSize: 14, color: "var(--ink-60)"}}>
-          Tenor is a prototype and a technical demonstration, built for the X Layer AI Season
-          hackathon. It is not a live financial product, it does not accept money from real
-          users, and every document, company and figure shown here is fictional. Nothing on
-          this site is financial advice or an offer of credit.
-        </p>
-        <p className="mono" style={{fontSize: 12, color: "var(--ink-40)"}}>
-          Deployed on X Layer · AI-RWA
+
+        <p
+          style={{
+            marginTop: 40,
+            paddingTop: 22,
+            borderTop: "1px solid var(--line)",
+            maxWidth: "78ch",
+            fontSize: 13,
+            color: "var(--ink-40)",
+          }}
+        >
+          Tenor is built for the X Layer AI Season hackathon. It does not accept money from
+          real users, and every document, company and figure shown here is fictional. Nothing
+          on this site is financial advice or an offer of credit.
         </p>
       </div>
     </footer>

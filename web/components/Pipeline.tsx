@@ -65,20 +65,17 @@ export function Pipeline({bull, bear, verdict, confidence, client, amount, advan
         aria-label="How Tenor prices a receivable"
         style={{
           position: "relative",
-          height: "clamp(320px, 42vw, 420px)",
-          perspective: 1200,
+          height: "clamp(300px, 38vw, 380px)",
+          // The stage exists only to establish the perspective origin. It has no surface of
+          // its own: the cards fill it, so a frame around them would just be a box round a box.
+          perspective: 1400,
           perspectiveOrigin: "50% 45%",
-          borderRadius: "var(--radius-lg)",
-          border: "1px solid var(--line)",
-          background: "var(--surface)",
-          overflow: "hidden",
         }}
       >
         <Scene show={step === 0}>
           <Card
             depth={step === 0 ? 0 : -260}
             rotate={step === 0 ? -9 : -26}
-            width={266}
             label="Invoice"
           >
             <Line width="72%" strong />
@@ -93,7 +90,7 @@ export function Pipeline({bull, bear, verdict, confidence, client, amount, advan
         </Scene>
 
         <Scene show={step === 1}>
-          <Card depth={-70} rotate={-14} width={266} label="Extracted">
+          <Card depth={-40} rotate={-11} label="Extracted">
             {[
               ["Client", client],
               ["Amount", amount],
@@ -106,9 +103,9 @@ export function Pipeline({bull, bear, verdict, confidence, client, amount, advan
                   display: "flex",
                   justifyContent: "space-between",
                   gap: 10,
-                  fontSize: 11,
-                  padding: "5px 8px",
-                  marginBottom: 4,
+                  fontSize: 13,
+                  padding: "9px 12px",
+                  marginBottom: 7,
                   borderRadius: 5,
                   background: "var(--paper)",
                   border: "1px solid var(--line)",
@@ -142,8 +139,8 @@ export function Pipeline({bull, bear, verdict, confidence, client, amount, advan
           >
             <div
               style={{
-                width: "min(300px, 74%)",
-                padding: "18px 20px",
+                width: "min(380px, 84%)",
+                padding: "24px 26px",
                 borderRadius: "var(--radius)",
                 background: "var(--paper)",
                 border: "1px solid var(--green-line)",
@@ -154,7 +151,7 @@ export function Pipeline({bull, bear, verdict, confidence, client, amount, advan
               <div
                 className="mono"
                 style={{
-                  fontSize: 44,
+                  fontSize: 56,
                   fontWeight: 700,
                   lineHeight: 1.1,
                   color: "var(--green-deep)",
@@ -232,13 +229,11 @@ function Scene({show, children}: {show: boolean; children: React.ReactNode}) {
 function Card({
   depth,
   rotate,
-  width,
   label,
   children,
 }: {
   depth: number;
   rotate: number;
-  width: number;
   label: string;
   children: React.ReactNode;
 }) {
@@ -254,9 +249,8 @@ function Card({
     >
       <div
         style={{
-          width,
-          maxWidth: "78%",
-          padding: "16px 18px 18px",
+          width: "min(520px, 92%)",
+          padding: "24px 28px 26px",
           borderRadius: "var(--radius)",
           background: "var(--paper)",
           border: "1px solid var(--line)",
@@ -315,8 +309,8 @@ function Agent({
     >
       <div
         style={{
-          width: "min(220px, 42%)",
-          padding: "16px 16px 18px",
+          width: "min(300px, 46%)",
+          padding: "20px 20px 22px",
           borderRadius: "var(--radius)",
           background: "var(--paper)",
           border: "1px solid var(--line)",
@@ -334,7 +328,7 @@ function Agent({
         <div
           className="mono"
           style={{
-            fontSize: 32,
+            fontSize: 40,
             fontWeight: 700,
             lineHeight: 1.15,
             color: tone === "green" ? "var(--green-deep)" : "var(--ink)",

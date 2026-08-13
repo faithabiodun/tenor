@@ -13,9 +13,9 @@ The site is hosted on a free instance that sleeps after about fifteen minutes id
 first request can take up to a minute to wake. A debate is three sequential model calls and
 takes another forty-five seconds or so on top. Both are real, neither is cached.
 
-> **This is a prototype and a technical demonstration.** It is not a live financial
-> product. It does not accept real money from real users, and every document and
-> company in this repository is fictional.
+> **Built for the X Layer AI Season hackathon.** It does not accept real money from real
+> users, and every document and company in this repository is fictional. Nothing here is
+> financial advice or an offer of credit.
 
 ## Contracts
 
@@ -218,7 +218,7 @@ Tenor underwriting service that runs the agent panel. A freelancer holding a rec
 must not be able to price their own paper, so pricing is deliberately not a holder
 action. `mintReceivable` and `fund` are open to anyone.
 
-### Known prototype simplifications
+### Known simplifications
 
 - `advanceValue` is denominated in minor units of the invoice currency but `fund` pays
   in wei of the native gas token. There is no price oracle. A demo funding therefore
