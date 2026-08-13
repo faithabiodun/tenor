@@ -7,7 +7,7 @@ Facts you will need throughout:
 | Thing | Value |
 | --- | --- |
 | Repo | https://github.com/faithabiodun/tenor |
-| Live site | https://tenor-production-a11b.up.railway.app (Railway) |
+| Live site | https://tenor-ph5c.onrender.com (Railway) |
 | Deployer wallet | `0xDB6450b96ed49c640bAf8acA782C5ffaE99cA7e8` |
 | Foundry keystore | `tenor-deployer` (already imported) |
 | X Layer testnet | chain **1952**, RPC `https://testrpc.xlayer.tech` |
@@ -140,7 +140,7 @@ optimizer runs and EVM version first.
 
 Five minutes, and worth doing carefully because this is what the demo video shows.
 
-1. Open https://tenor-production-a11b.up.railway.app/price
+1. Open https://tenor-ph5c.onrender.com/price
 2. Pick the **contentious** sample, or upload a PDF invoice
 3. Check the extracted fields, press **Price this receivable**
 4. Wait about 45 seconds for the debate

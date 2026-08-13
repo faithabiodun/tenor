@@ -143,7 +143,7 @@ export default function Docs() {
           </P>
           <Code>{`curl -s -X POST -H 'content-type: application/json' \\
   -d '{"sampleId":"contentious"}' \\
-  https://tenor-production-a11b.up.railway.app/api/price > verdict.json
+  https://tenor-ph5c.onrender.com/api/price > verdict.json
 
 npm run verify -- reasoning.json <the verdictHash from verdict.json>`}</Code>
           <P>

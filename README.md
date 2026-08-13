@@ -7,10 +7,11 @@ reasoning is written to X Layer alongside the tokenised receivable.
 
 Built for the X Layer **AI Season** hackathon, **AI-RWA** track.
 
-**Live: https://tenor-production-a11b.up.railway.app**
+**Live: https://tenor-ph5c.onrender.com**
 
-A debate is three sequential model calls and takes about forty-five seconds. It is real
-every time, and nothing is cached.
+Hosted on a free instance that sleeps after about fifteen minutes idle, so a cold first
+request takes up to a minute to wake. A debate is three sequential model calls on top of
+that. Both are real, neither is cached.
 
 > **Built for the X Layer AI Season hackathon.** It does not accept real money from real
 > users, and every document and company in this repository is fictional. Nothing here is
@@ -183,7 +184,8 @@ agents/       Extraction, bull, bear, arbiter; canonicalisation; sample generati
 samples/      Three synthetic receivables as PDFs. Every name and figure is fictional.
 web/          Next.js app. The agent panel runs in its route handlers, so model
               credentials stay server side and nobody can drive the agents directly.
-railway.json  Build and deploy config for the single web service.
+render.yaml   Blueprint for the single free-tier web service.
+railway.json  Equivalent config for Railway, if the deployment moves there.
 ```
 
 ### Verified against the live deployment
@@ -194,7 +196,7 @@ sample, keep the reasoning it returns, and re-derive the hash yourself:
 ```bash
 curl -s -X POST -H 'content-type: application/json' \
   -d '{"sampleId":"contentious"}' \
-  https://tenor-production-a11b.up.railway.app/api/price > verdict.json
+  https://tenor-ph5c.onrender.com/api/price > verdict.json
 
 node -e 'require("fs").writeFileSync("reasoning.json",
   JSON.stringify(JSON.parse(require("fs").readFileSync("verdict.json","utf8")).reasoning))'
