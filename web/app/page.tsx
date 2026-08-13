@@ -1,10 +1,11 @@
 import Link from "next/link";
 import {Cta, Footer, Header} from "../components/Chrome";
-import {DebateView} from "../components/DebateView";
-import type {Verdict} from "../lib/types";
+import {Pipeline} from "../components/Pipeline";
+import {money, type Verdict} from "../lib/types";
 import fixture from "../lib/sample-verdict.json";
 
 const sample = fixture as unknown as Verdict;
+const {extraction, bull, bear, arbiter} = sample.reasoning;
 
 const FEATURES = [
   {
@@ -100,7 +101,26 @@ export default function Landing() {
         </section>
 
         <section className="wrap" style={{paddingTop: 72}}>
-          <DebateView verdict={sample} />
+          <Pipeline
+            bull={bull.proposed_rate}
+            bear={bear.proposed_rate}
+            verdict={arbiter.advance_rate}
+            confidence={arbiter.confidence}
+            client={extraction.client_name ?? "Unnamed payer"}
+            amount={
+              extraction.amount === null
+                ? "unknown"
+                : money(extraction.amount, extraction.currency)
+            }
+            advanced={money(sample.advanceValue, extraction.currency)}
+          />
+          <p style={{marginTop: 16, fontSize: 15, color: "var(--ink-60)", maxWidth: "60ch"}}>
+            The figures above are a real run against a sample invoice, not an illustration.{" "}
+            <Link href="/price" style={{color: "var(--green-deep)"}}>
+              Price one yourself
+            </Link>{" "}
+            to see the full argument each side made.
+          </p>
         </section>
 
         <section
