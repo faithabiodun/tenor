@@ -50,7 +50,7 @@ export function DebateView({verdict}: {verdict: Verdict}) {
             className="mono"
             style={{
               fontSize: 12,
-              marginLeft: "auto",
+              marginInlineStart: "auto",
               border: "1px solid var(--green-line)",
               background: "var(--green-wash)",
               color: "var(--green-deep)",
@@ -101,12 +101,12 @@ export function DebateView({verdict}: {verdict: Verdict}) {
           <span className="eyebrow">Verdict</span>
           <span
             className="mono"
-            style={{fontSize: "clamp(40px, 8vw, 64px)", fontWeight: 700, lineHeight: 1}}
+            style={{fontSize: "clamp(36px, 9vw, 64px)", fontWeight: 700, lineHeight: 1}}
           >
             {arbiter.advance_rate}%
           </span>
           {extraction.amount !== null && (
-            <span className="mono" style={{fontSize: 20}}>
+            <span className="mono" style={{fontSize: "clamp(15px, 4vw, 20px)"}}>
               {money(verdict.advanceValue, extraction.currency)} advanced today
             </span>
           )}
@@ -198,7 +198,7 @@ function Side({
         <h3 className="eyebrow" style={{fontSize: 11}}>
           {title}
         </h3>
-        <span className="mono" style={{fontSize: 34, fontWeight: 700, lineHeight: 1}}>
+        <span className="mono" style={{fontSize: "clamp(26px, 7vw, 34px)", fontWeight: 700, lineHeight: 1}}>
           {rate}%
         </span>
       </div>

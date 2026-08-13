@@ -65,7 +65,7 @@ export function Pipeline({bull, bear, verdict, confidence, client, amount, advan
         aria-label="How Tenor prices a receivable"
         style={{
           position: "relative",
-          height: "clamp(300px, 38vw, 380px)",
+          height: "clamp(290px, 44vw, 380px)",
           // The stage exists only to establish the perspective origin. It has no surface of
           // its own: the cards fill it, so a frame around them would just be a box round a box.
           perspective: 1400,
@@ -103,8 +103,8 @@ export function Pipeline({bull, bear, verdict, confidence, client, amount, advan
                   display: "flex",
                   justifyContent: "space-between",
                   gap: 10,
-                  fontSize: 13,
-                  padding: "9px 12px",
+                  fontSize: "clamp(11px, 3vw, 13px)",
+                  padding: "clamp(6px, 2vw, 9px) clamp(9px, 3vw, 12px)",
                   marginBottom: 7,
                   borderRadius: 5,
                   background: "var(--paper)",
@@ -139,8 +139,8 @@ export function Pipeline({bull, bear, verdict, confidence, client, amount, advan
           >
             <div
               style={{
-                width: "min(380px, 84%)",
-                padding: "24px 26px",
+                width: "min(380px, 88%)",
+                padding: "clamp(16px, 4.5vw, 24px)",
                 borderRadius: "var(--radius)",
                 background: "var(--paper)",
                 border: "1px solid var(--green-line)",
@@ -151,7 +151,7 @@ export function Pipeline({bull, bear, verdict, confidence, client, amount, advan
               <div
                 className="mono"
                 style={{
-                  fontSize: 56,
+                  fontSize: "clamp(38px, 12vw, 56px)",
                   fontWeight: 700,
                   lineHeight: 1.1,
                   color: "var(--green-deep)",
@@ -249,8 +249,8 @@ function Card({
     >
       <div
         style={{
-          width: "min(520px, 92%)",
-          padding: "24px 28px 26px",
+          width: "min(520px, 94%)",
+          padding: "clamp(16px, 4vw, 24px) clamp(18px, 5vw, 28px)",
           borderRadius: "var(--radius)",
           background: "var(--paper)",
           border: "1px solid var(--line)",
@@ -309,8 +309,8 @@ function Agent({
     >
       <div
         style={{
-          width: "min(300px, 46%)",
-          padding: "20px 20px 22px",
+          width: "min(300px, 47%)",
+          padding: "clamp(13px, 3.4vw, 20px)",
           borderRadius: "var(--radius)",
           background: "var(--paper)",
           border: "1px solid var(--line)",
@@ -322,13 +322,13 @@ function Agent({
           transformStyle: "preserve-3d",
         }}
       >
-        <span className="eyebrow" style={{fontSize: 10}}>
+        <span className="eyebrow" style={{fontSize: 10, letterSpacing: "0.1em"}}>
           {title}
         </span>
         <div
           className="mono"
           style={{
-            fontSize: 40,
+            fontSize: "clamp(26px, 7.4vw, 40px)",
             fontWeight: 700,
             lineHeight: 1.15,
             color: tone === "green" ? "var(--green-deep)" : "var(--ink)",

@@ -38,12 +38,26 @@
   box-sizing: border-box;
 }
 
+html {
+  /* Stops iOS Safari inflating type when a phone is turned to landscape. */
+  -webkit-text-size-adjust: 100%;
+}
+
 html,
 body {
   margin: 0;
   padding: 0;
   background: var(--paper);
   color: var(--ink);
+  /* Nothing should scroll sideways. Belt and braces behind the layout fixes, and safe
+     because the page has no sticky or fixed positioning to break. */
+  overflow-x: hidden;
+}
+
+img,
+svg,
+video {
+  max-width: 100%;
 }
 
 body {
@@ -128,7 +142,9 @@ a {
 .wrap {
   max-width: 1140px;
   margin: 0 auto;
-  padding-inline: var(--gutter);
+  /* env() keeps content clear of a notch or rounded corner in landscape on iOS. */
+  padding-left: max(var(--gutter), env(safe-area-inset-left));
+  padding-right: max(var(--gutter), env(safe-area-inset-right));
 }
 
 .muted {
@@ -162,11 +178,77 @@ select {
   font: inherit;
   color: inherit;
   border-radius: var(--radius-md);
+  /* iOS otherwise rounds and shades native controls to its own taste. */
+  -webkit-appearance: none;
+  appearance: none;
+  max-width: 100%;
+}
+
+select {
+  /* appearance:none removes the native chevron, so draw one back. */
+  background-image: linear-gradient(45deg, transparent 50%, var(--ink-60) 50%),
+    linear-gradient(135deg, var(--ink-60) 50%, transparent 50%);
+  background-position: calc(100% - 17px) center, calc(100% - 12px) center;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+  padding-right: 34px;
 }
 
 :focus-visible {
   outline: 2px solid var(--green);
   outline-offset: 2px;
+}
+
+/*
+ * Touch and small-screen behaviour.
+ *
+ * The 16px floor is not cosmetic: iOS Safari zooms the whole viewport when a focused input
+ * has type smaller than 16px, and the page never zooms back out. The 44px target is the
+ * minimum comfortable tap area.
+ */
+@media (max-width: 640px) {
+  input,
+  select,
+  textarea {
+    font-size: 16px;
+  }
+}
+
+@media (pointer: coarse) {
+  button,
+  select,
+  input:not([type="date"]),
+  a[role="button"] {
+    min-height: 44px;
+  }
+}
+
+/* Long hashes and addresses must never widen the page on a phone. */
+.mono {
+  overflow-wrap: anywhere;
+}
+
+/* Secondary nav gives way to the action on narrow screens; both live in the footer. */
+@media (max-width: 620px) {
+  .nav-secondary {
+    display: none;
+  }
+}
+
+/* Field name beside its meaning, stacking rather than scrolling sideways when tight. */
+.kv {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 4px;
+  padding: 12px 16px;
+}
+
+@media (min-width: 620px) {
+  .kv {
+    grid-template-columns: 160px minmax(0, 1fr);
+    gap: 16px;
+    align-items: baseline;
+  }
 }
 
 @keyframes rise {

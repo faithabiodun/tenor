@@ -22,7 +22,7 @@ export default function Docs() {
     <>
       <Header />
       <main className="wrap" style={{paddingTop: 56, paddingBottom: 24}}>
-        <h1 style={{fontSize: "clamp(34px, 5.4vw, 54px)", maxWidth: "16ch"}}>
+        <h1 style={{fontSize: "clamp(30px, 6vw, 54px)", maxWidth: "16ch"}}>
           How Tenor works.
         </h1>
         <p style={{maxWidth: "62ch", marginTop: 20, fontSize: 19, color: "var(--ink-60)"}}>
@@ -253,13 +253,8 @@ function Table({rows}: {rows: readonly (readonly [string, string])[]}) {
       {rows.map(([field, meaning], index) => (
         <div
           key={field}
-          style={{
-            display: "grid",
-            gridTemplateColumns: "minmax(120px, 160px) 1fr",
-            gap: 16,
-            padding: "12px 16px",
-            borderTop: index === 0 ? undefined : "1px solid var(--line)",
-          }}
+          className="kv"
+          style={{borderTop: index === 0 ? undefined : "1px solid var(--line)"}}
         >
           <code className="mono" style={{fontSize: 13, color: "var(--green-deep)"}}>
             {field}

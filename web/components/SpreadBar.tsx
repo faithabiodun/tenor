@@ -102,7 +102,9 @@ export function SpreadBar({bull, bear, verdict}: Props) {
               position: "absolute",
               left: `${tick}%`,
               top: 46,
-              transform: "translateX(-50%)",
+              // The end labels would sit half outside the track and clip on a narrow
+              // screen, so they hang inwards instead of centring on their tick.
+              transform: `translateX(${tick === 0 ? "0" : tick === 100 ? "-100%" : "-50%"})`,
               fontSize: 11,
               color: "var(--ink-40)",
             }}

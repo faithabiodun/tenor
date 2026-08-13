@@ -9,8 +9,8 @@ export function Header() {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          height: 62,
-          gap: 20,
+          minHeight: 62,
+          gap: 16,
         }}
       >
         <Link
@@ -25,11 +25,11 @@ export function Header() {
         >
           Tenor
         </Link>
-        <nav style={{display: "flex", alignItems: "center", gap: 22, fontSize: 14}}>
-          <Link href="/#how" style={{textDecoration: "none"}}>
+        <nav style={{display: "flex", alignItems: "center", gap: 20, fontSize: 14}}>
+          <Link href="/#how" className="nav-secondary" style={{textDecoration: "none"}}>
             How it works
           </Link>
-          <Link href="/docs" style={{textDecoration: "none"}}>
+          <Link href="/docs" className="nav-secondary" style={{textDecoration: "none"}}>
             Docs
           </Link>
           <Link href="/price" style={{textDecoration: "none"}}>
