@@ -142,19 +142,76 @@ export function DebateView({verdict}: {verdict: Verdict}) {
 
         <p style={{maxWidth: "62ch", fontSize: 18}}>{arbiter.rationale}</p>
 
-        <p
-          className="mono"
+        <div
           style={{
             marginTop: 20,
             paddingTop: 14,
             borderTop: "1px solid var(--line)",
-            fontSize: 12,
-            color: "var(--ink-60)",
-            wordBreak: "break-all",
+            display: "flex",
+            flexWrap: "wrap",
+            alignItems: "baseline",
+            gap: "6px 16px",
           }}
         >
-          verdict hash {verdict.verdictHash}
-        </p>
+          <p
+            className="mono"
+            style={{
+              margin: 0,
+              fontSize: 12,
+              color: "var(--ink-60)",
+              wordBreak: "break-all",
+              flex: "1 1 100%",
+            }}
+          >
+            verdict hash {verdict.verdictHash}
+          </p>
+          {verdict.stored === true ? (
+            <a
+              href={`/api/verdict/${verdict.verdictHash}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mono"
+              style={{
+                fontSize: 12,
+                color: "var(--green-deep)",
+                border: "1px solid var(--green-line)",
+                background: "var(--green-wash)",
+                borderRadius: 999,
+                padding: "2px 10px",
+                textDecoration: "none",
+              }}
+            >
+              reasoning stored · verify
+            </a>
+          ) : verdict.stored === false ? (
+            <span
+              className="mono"
+              style={{
+                fontSize: 12,
+                color: "var(--ink-60)",
+                border: "1px solid var(--line)",
+                borderRadius: 999,
+                padding: "2px 10px",
+              }}
+            >
+              reasoning not stored
+            </span>
+          ) : null}
+          {verdict.inverted && (
+            <span
+              className="mono"
+              style={{
+                fontSize: 12,
+                color: "var(--neg)",
+                border: "1px solid var(--neg)",
+                borderRadius: 999,
+                padding: "2px 10px",
+              }}
+            >
+              debate inverted
+            </span>
+          )}
+        </div>
       </section>
     </article>
   );

@@ -68,7 +68,7 @@ export default function PricePage() {
       const response = await fetch(`${API_BASE}/price`, {
         method: "POST",
         headers: {"content-type": "application/json"},
-        body: JSON.stringify({extraction: draft}),
+        body: JSON.stringify({extraction: draft, docHash: docHash ?? undefined}),
       });
       const data = await response.json();
       if (!response.ok) {
