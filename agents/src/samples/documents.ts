@@ -202,6 +202,79 @@ export const SAMPLES: Sample[] = [
   },
 ];
 
+/**
+ * A fourth document, added for hands-on testing rather than for the tuned test set. It sits
+ * between the clean and contentious cases: a real trading company with a registration
+ * number, but long terms, a chunky amount and a milestone the client has not signed off.
+ * Not covered by the spread assertion, which stays on the three tuned samples.
+ */
+export const EXTRA_SAMPLE: Sample = {
+  id: "photographer",
+  file: "04-photographer.pdf",
+  expectation: "Mid risk. Verifiable payer, but 60 day terms and an unaccepted milestone.",
+  lines: [
+    "INVOICE  RS-2026-114",
+    "",
+    "From:    Ravi Sundaram, commercial photographer",
+    "         ravi@sundaram-studio.example  ·  VAT GB 418 7729 03",
+    "To:      Meridian Foods Ltd",
+    "         Unit 6, Callow Trading Estate, Leeds LS12 6AB",
+    "         Company number 09218447",
+    "",
+    "Issued:  14 July 2026",
+    "Due:     12 September 2026  (net 60)",
+    "Amount:  GBP 7,450.00",
+    "",
+    "DELIVERABLES",
+    "  1. Product photography, autumn range, 84 finished images.",
+    "     Delivered 9 July 2026, accepted in writing 11 July 2026.",
+    "  2. Two studio days including lighting hire and one assistant.",
+    "     Delivered 2 and 3 July 2026.",
+    "  3. Retouching, 84 images to the client's house specification.",
+    "     Delivered 12 July 2026. ACCEPTANCE PENDING at date of invoice.",
+    "",
+    "PAYMENT TERMS",
+    "  Net 60 from date of issue, per the framework agreement dated 4 March 2026.",
+    "  Second engagement between the parties. The first invoice, MF-2025-088 for",
+    "  GBP 2,100, was settled 41 days after issue against 30 day terms.",
+    "",
+    "LATE PAYMENT",
+    "  Statutory interest under the Late Payment of Commercial Debts (Interest)",
+    "  Act 1998 applies to overdue sums.",
+    "",
+    "TERMINATION",
+    "  Either party may terminate on 14 days notice. Fees for delivered and",
+    "  accepted work remain payable; work delivered but not yet accepted is",
+    "  payable only once accepted.",
+  ],
+  extraction: {
+    client_name: "Meridian Foods Ltd",
+    freelancer_name: "Ravi Sundaram",
+    amount: 7450,
+    currency: "GBP",
+    issue_date: "2026-07-14",
+    due_date: "2026-09-12",
+    payment_terms:
+      "Net 60 from date of issue, per the framework agreement dated 4 March 2026",
+    payer_history:
+      "Second engagement; the first invoice, GBP 2,100, was settled 41 days after issue against 30 day terms, so late but paid",
+    payer_identifier: "UK company number 09218447",
+    deliverables: [
+      "Product photography, autumn range, 84 finished images, accepted in writing 11 July 2026",
+      "Two studio days including lighting hire and one assistant",
+      "Retouching of 84 images to the client's house specification, delivered but acceptance pending",
+    ],
+    termination_clauses: [
+      "Either party may terminate on 14 days notice",
+      "Work delivered but not yet accepted is payable only once accepted",
+    ],
+    late_penalty:
+      "Statutory interest under the Late Payment of Commercial Debts (Interest) Act 1998",
+    document_quality: 91,
+    missing_critical_fields: ["acceptance of the retouching milestone"],
+  },
+};
+
 export function sampleById(id: string): Sample {
   const found = SAMPLES.find((sample) => sample.id === id);
   if (!found) {
