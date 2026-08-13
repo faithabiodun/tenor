@@ -10,7 +10,7 @@ interface Props {
 
 /**
  * The signature element. A single track from 0 to 100 with the two proposals marked and a
- * hatched band spanning the distance between them, so the disagreement is a physical width
+ * tinted band spanning the distance between them, so the disagreement is a physical width
  * on the page rather than two numbers a reader has to subtract in their head.
  *
  * The verdict marker starts at the bear's number and slides to where it landed, once. It
@@ -49,18 +49,16 @@ export function SpreadBar({bull, bear, verdict}: Props) {
         />
 
         <div
-          className="hatch"
           aria-hidden="true"
           style={{
             position: "absolute",
             left: `${low}%`,
             width: `${high - low}%`,
-            top: 26,
-            height: 25,
-            opacity: 0.4,
-            borderRadius: 3,
-            borderLeft: "1px solid var(--ink-60)",
-            borderRight: "1px solid var(--ink-60)",
+            top: 33,
+            height: 11,
+            borderRadius: 6,
+            background: "var(--green-wash)",
+            border: "1px solid var(--green-line)",
           }}
         />
 
@@ -138,7 +136,6 @@ function Proposal({side, value}: {side: "bull" | "bear"; value: number}) {
     >
       <span
         aria-hidden="true"
-        className={isBull ? undefined : "hatch"}
         style={{
           width: 12,
           height: 12,

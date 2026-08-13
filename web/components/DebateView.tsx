@@ -4,9 +4,9 @@ import {daysUntil, money, type Verdict} from "../lib/types";
 /**
  * The hero screen. Two columns that are visibly opposed, then the verdict between them.
  *
- * Green is the freelancer's case and graphite-with-a-hatch is the capital provider's. The
- * palette is white and green, so rather than invent a second brand colour for the bear, the
- * split is carried by colour against texture.
+ * Green is the freelancer's case and graphite is the capital provider's. The palette is
+ * white and green, so rather than invent a second brand colour for the bear, the split is
+ * carried by green against a neutral.
  */
 export function DebateView({verdict}: {verdict: Verdict}) {
   const {extraction, bull, bear, arbiter} = verdict.reasoning;
@@ -190,18 +190,10 @@ function Side({
       className={isBull ? "stage-left" : "stage-right"}
       style={{
         padding: "22px 20px 24px",
-        borderLeft: isBull ? "4px solid var(--green)" : undefined,
+        borderLeft: `4px solid ${isBull ? "var(--green)" : "var(--ink-40)"}`,
         animationDelay: "420ms",
-        position: "relative",
       }}
     >
-      {!isBull && (
-        <span
-          aria-hidden="true"
-          className="hatch"
-          style={{position: "absolute", left: 0, top: 0, bottom: 0, width: 4}}
-        />
-      )}
       <div style={{display: "flex", alignItems: "baseline", gap: 12, marginBottom: 14}}>
         <h3 className="eyebrow" style={{fontSize: 11}}>
           {title}
@@ -216,7 +208,6 @@ function Side({
           <li key={point} style={{display: "flex", gap: 10, fontSize: 15, lineHeight: 1.5}}>
             <span
               aria-hidden="true"
-              className={isBull ? undefined : "hatch"}
               style={{
                 flex: "0 0 auto",
                 width: 7,

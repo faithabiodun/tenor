@@ -17,20 +17,21 @@ export function Header() {
           href="/"
           style={{
             textDecoration: "none",
-            fontWeight: 600,
-            letterSpacing: "-0.02em",
-            fontSize: 19,
+            fontWeight: 700,
+            letterSpacing: "-0.03em",
+            fontSize: 20,
+            color: "var(--green)",
           }}
         >
           Tenor
         </Link>
         <nav style={{display: "flex", alignItems: "center", gap: 22, fontSize: 14}}>
-          <a href="#how" style={{textDecoration: "none"}}>
+          <Link href="/#how" style={{textDecoration: "none"}}>
             How it works
-          </a>
-          <a href="#faq" style={{textDecoration: "none"}}>
-            FAQ
-          </a>
+          </Link>
+          <Link href="/docs" style={{textDecoration: "none"}}>
+            Docs
+          </Link>
           <Link href="/price" style={{textDecoration: "none"}}>
             <Cta compact>Price a receivable</Cta>
           </Link>
@@ -64,7 +65,16 @@ export function Footer() {
   return (
     <footer style={{borderTop: "1px solid var(--line)", marginTop: 96}}>
       <div className="wrap" style={{padding: "36px 0 56px", display: "grid", gap: 20}}>
-        <div style={{fontWeight: 600, letterSpacing: "-0.02em", fontSize: 17}}>Tenor</div>
+        <div
+          style={{
+            fontWeight: 700,
+            letterSpacing: "-0.03em",
+            fontSize: 18,
+            color: "var(--green)",
+          }}
+        >
+          Tenor
+        </div>
         <p style={{maxWidth: "70ch", fontSize: 14, color: "var(--ink-60)"}}>
           Tenor is a prototype and a technical demonstration, built for the X Layer AI Season
           hackathon. It is not a live financial product, it does not accept money from real

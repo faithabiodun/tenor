@@ -372,12 +372,11 @@ function Row({
     >
       <span
         aria-hidden="true"
-        className={filled ? undefined : "hatch"}
         style={{
           width: 12,
           height: 12,
-          border: "1px solid var(--ink)",
-          background: filled ? "var(--ink)" : "var(--paper)",
+          border: `1px solid ${filled ? "var(--green)" : "var(--ink-40)"}`,
+          background: filled ? "var(--green)" : "var(--paper)",
           opacity: active || done ? 1 : 0.25,
         }}
       />
