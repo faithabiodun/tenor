@@ -21,8 +21,11 @@ takes another forty-five seconds or so on top. Both are real, neither is cached.
 
 | Network | Chain ID | Address | Explorer |
 | --- | --- | --- | --- |
-| X Layer Testnet | 1952 | _pending day 2_ | — |
-| X Layer Mainnet | 196 | _pending day 7_ | — |
+| X Layer Testnet | 1952 | `0xE0a24398Ba9A70a3B930B2dd2A69E4F8eda44b00` | [OKLink](https://www.oklink.com/x-layer-testnet/address/0xE0a24398Ba9A70a3B930B2dd2A69E4F8eda44b00) |
+| X Layer Mainnet | 196 | _pending_ | — |
+
+Verified on chain: `name()` returns `Tenor Receivable`, `symbol()` returns `TENOR`, and
+`owner()` is the deploying wallet, which is the underwriting service that records verdicts.
 
 Chain IDs were confirmed with `eth_chainId` against the live RPCs, not taken from a
 chain list. Most chain lists still show X Layer testnet as **195**; that is the retired
@@ -146,25 +149,32 @@ noise in the judge.
 ### Behaviour on the three samples
 
 ```
-$ npm run spread -- --all
-
-  pass  clean       bull    95  bear    88  spread   7.0  verdict 93%  conf 85
-  pass  messy       bull    85  bear    15  spread  70.0  verdict 55%  conf 45
-  pass  contentious bull    92  bear    65  spread  27.0  verdict 73%  conf 68
+  sample        bull  bear  spread  verdict  conf
+  clean           96    80      16      88%    72
+  messy           70    40      30      55%    45
+  contentious     90    60      30      70%    50
 ```
 
 Rate, confidence and disagreement all order the way they should. `npm run spread` fails
-loudly if the two debaters land within 5 points on the contentious sample, because a
-debate where both sides agree destroys the entire premise.
+loudly on two conditions: if the debaters land within 5 points on the contentious sample,
+because a debate where both sides agree destroys the premise, and if the bull ever comes in
+*below* the bear on any sample, because that means the freelancer's own advocate argued
+against them.
 
-### A gap worth knowing about
+### Two findings worth knowing about
 
-The bear's risk checklist asks about "no prior payment history with this payer", but the
-extraction schema has no field to carry payment history or payer identifiers. Left
-unaddressed, every payer looks unverifiable and well-papered invoices get priced like
-risky ones — in testing, the clean and contentious samples both landed on 72%. The samples
-currently fold that context into `payment_terms` as free text, which took the clean sample
-to 93%. A dedicated `payer_history` field is the better fix.
+**The schema could not carry what the bear was asked to weigh.** The risk checklist asks
+about prior payment history and whether the payer is a real registered entity, and section
+7.1's extraction schema had a field for neither. Every payer therefore read as unverifiable
+and the clean and contentious samples both priced at 72%. Adding `payer_history` and
+`payer_identifier` moved the clean sample from 72% to 93%.
+
+**The bull once argued against its own client.** On the messy sample it proposed 35% against
+the bear's 50%, reasoning in the lender's voice: "reduces the potential loss", "may make
+collection efforts more straightforward". An absolute spread could not tell that 15 point
+inversion from a healthy 15 point gap, so the check that exists to catch a broken debate
+waved through the most broken one. The pipeline now reports `inverted` and the assertion
+covers every sample.
 
 ## Repository
 
