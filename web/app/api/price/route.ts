@@ -1,6 +1,7 @@
 import {DocumentQualityError, priceReceivable} from "@tenor/agents/pipeline";
 import {ExtractionSchema} from "@tenor/agents/schemas";
 import {sampleById} from "@tenor/agents/samples";
+import {saveVerdict} from "../../../lib/db";
 
 /**
  * The underwriting endpoint. Runs server side so the model credentials stay on the server
@@ -15,7 +16,7 @@ export const dynamic = "force-dynamic";
 export const maxDuration = 300;
 
 export async function POST(request: Request) {
-  let body: {sampleId?: string; extraction?: unknown};
+  let body: {sampleId?: string; extraction?: unknown; docHash?: string; wallet?: string};
   try {
     body = await request.json();
   } catch {
@@ -44,7 +45,14 @@ export async function POST(request: Request) {
   }
 
   try {
-    return Response.json(await priceReceivable(extraction));
+    const verdict = await priceReceivable(extraction);
+
+    // Persisting is what lets the on-chain hash be checked later. It is not allowed to
+    // fail the request: the debate already cost the user a minute of waiting, so record
+    // whether it landed and let the response say so honestly.
+    const stored = await saveVerdict(verdict, {docHash: body?.docHash, wallet: body?.wallet});
+
+    return Response.json({...verdict, stored});
   } catch (error) {
     if (error instanceof DocumentQualityError) {
       return Response.json({error: "document_quality", detail: error.message}, {status: 422});

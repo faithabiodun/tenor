@@ -41,6 +41,10 @@ export interface Verdict {
   verdictHash: string;
   advanceValue: number;
   spread: number;
+  /** True when the bull came in under the bear, which means the debate broke. */
+  inverted?: boolean;
+  /** Whether the reasoning was persisted and can therefore be verified later. */
+  stored?: boolean;
 }
 
 /** Same origin: the agent panel runs in this app's route handlers. */

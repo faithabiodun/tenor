@@ -28,6 +28,10 @@ services:
         value: "22"
       - key: DEEPSEEK_MODEL
         value: deepseek-v4-pro
-      # Set in the dashboard. Never commit this.
+      - key: SUPABASE_URL
+        value: https://kzacptowrsdsuatjvtxm.supabase.co
+      # Set these in the dashboard. Never commit them.
       - key: DEEPSEEK_API_KEY
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
         sync: false
