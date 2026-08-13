@@ -46,10 +46,30 @@ If you are happy reusing `0xDB64…`, skip to 1.2.
 
 ### 1.2 Deploy
 
-From the `tenor` directory:
+From the `tenor` directory. **PowerShell** (the default Windows terminal):
+
+```powershell
+.\scripts\deploy-testnet.ps1
+```
+
+Git Bash or WSL:
 
 ```bash
 bash scripts/deploy-testnet.sh
+```
+
+If PowerShell refuses to run the script at all, its execution policy is blocking local
+scripts. Either unblock it for this session:
+
+```powershell
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+```
+
+or skip the script and run the two commands it wraps:
+
+```powershell
+cd contracts
+forge script script/Deploy.s.sol:Deploy --rpc-url https://testrpc.xlayer.tech --account tenor-deployer --broadcast
 ```
 
 It prompts for the **keystore password**, not the private key. Expect:
