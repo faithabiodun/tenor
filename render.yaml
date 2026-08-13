@@ -34,8 +34,20 @@ services:
       # the verdict reasoning anyone is invited to re-hash. Safe to commit.
       - key: SUPABASE_PUBLISHABLE_KEY
         value: sb_publishable_dOstlitdBB0idA3B9sr43g_jsnbsCaQ
+      # Which X Layer network this deployment targets. 1952 is testnet, 196 is mainnet.
+      - key: NEXT_PUBLIC_CHAIN_ID
+        value: "1952"
+      # Set once the contract is deployed. Until then the mint panel says so rather than
+      # failing at signing time, and the mint code is stripped from the bundle entirely
+      # because Next inlines NEXT_PUBLIC_* at build time.
+      - key: NEXT_PUBLIC_CONTRACT_ADDRESS
+        sync: false
       # Set these in the dashboard. Never commit them.
       - key: DEEPSEEK_API_KEY
         sync: false
       - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      # The underwriting service's signer. recordVerdict is onlyOwner, so this must be the
+      # key that deployed the contract. Use a dedicated wallet holding only gas.
+      - key: DEPLOYER_PRIVATE_KEY
         sync: false

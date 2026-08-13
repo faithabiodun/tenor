@@ -3,6 +3,7 @@
 import {useEffect, useState} from "react";
 import {Cta, Footer, Header} from "../../components/Chrome";
 import {DebateView} from "../../components/DebateView";
+import {Mint} from "../../components/Mint";
 import {API_BASE, type Extraction, type Verdict} from "../../lib/types";
 
 interface SampleSummary {
@@ -324,6 +325,7 @@ export default function PricePage() {
               </button>
             </div>
             <DebateView verdict={verdict} />
+            <Mint verdict={verdict} docHash={docHash} />
           </>
         )}
       </main>

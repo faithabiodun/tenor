@@ -148,6 +148,36 @@ export async function findVerdict(hash: string): Promise<StoredVerdict | null> {
   return (data as StoredVerdict) ?? null;
 }
 
+/** Record a mint against the verdict it priced. */
+export async function saveMint(input: {
+  verdictHash: string;
+  tokenId: string;
+  txHash: string;
+  network: string;
+}): Promise<boolean> {
+  const supabase = db();
+  if (!supabase) return false;
+
+  const {data} = await supabase
+    .from("tenor_verdicts")
+    .select("id")
+    .eq("verdict_hash", input.verdictHash.toLowerCase())
+    .maybeSingle();
+
+  const {error} = await supabase.from("tenor_mints").insert({
+    verdict_id: data?.id ?? null,
+    token_id: input.tokenId,
+    tx_hash: input.txHash,
+    network: input.network,
+  });
+
+  if (error) {
+    console.error("saveMint failed", error.message);
+    return false;
+  }
+  return true;
+}
+
 /** Most recent verdicts, for a public ledger view. */
 export async function recentVerdicts(limit = 20): Promise<StoredVerdict[]> {
   const supabase = dbRead();
