@@ -25,3 +25,8 @@ dist/
 .DS_Store
 Thumbs.db
 *.log
+
+# Scratch dumps from poking the deployed API
+prod-*.json
+verdict.json
+reasoning.json
