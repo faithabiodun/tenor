@@ -8,16 +8,16 @@ const sample = fixture as unknown as Verdict;
 
 const FEATURES = [
   {
-    title: "Two agents, opposing incentives",
-    body: "One argues for the freelancer, one holds the downside. They are kept apart by asymmetric information, not by being told to disagree.",
+    title: "Two agents, opposite incentives",
+    body: "One argues for the freelancer, one holds the downside. They disagree because they are given different information, not because they were told to.",
   },
   {
-    title: "The reasoning is the product",
-    body: "A hash of the full rationale is written on chain at pricing time, so the argument behind a number cannot be quietly rewritten afterwards.",
+    title: "The argument is on the record",
+    body: "A hash of the full rationale is written on chain when the price is set, so the reasoning behind a number cannot be quietly rewritten afterwards.",
   },
   {
-    title: "Small receivables, finally priced",
-    body: "Manual underwriting costs more than the fee on a three thousand dollar invoice. Automated assessment changes that arithmetic.",
+    title: "Too small to underwrite by hand",
+    body: "Assessing a three thousand dollar invoice costs a lender more than the fee it earns. That is why these go unfinanced.",
   },
 ];
 
@@ -53,25 +53,53 @@ export default function Landing() {
       <Header />
 
       <main>
-        <section className="wrap" style={{padding: "clamp(56px, 11vw, 120px) 0 0"}}>
-          <div style={{maxWidth: "18ch"}}>
-            <h1>Get paid for work you have already done.</h1>
-          </div>
-          <p style={{maxWidth: "56ch", marginTop: 22, fontSize: 19, color: "var(--ink-60)"}}>
-            Upload an unpaid invoice. Two AI agents with opposing interests argue about what it
-            is worth today, and a third decides.
+        <section
+          className="wrap"
+          style={{
+            padding: "clamp(64px, 12vw, 132px) 0 0",
+            textAlign: "center",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <h1 style={{maxWidth: "15ch"}}>
+            Get paid for work you have{" "}
+            <span className="stroke">
+              already done.
+              <svg viewBox="0 0 200 12" preserveAspectRatio="none" aria-hidden="true">
+                <path
+                  d="M2 8.5C34 3.6 78 1.6 116 2.2c26 .4 54 2.2 82 6.1"
+                  fill="none"
+                  stroke="var(--green)"
+                  strokeWidth="5"
+                  strokeLinecap="round"
+                />
+              </svg>
+            </span>
+          </h1>
+
+          <p
+            style={{
+              maxWidth: "46ch",
+              marginTop: 26,
+              fontSize: 19,
+              lineHeight: 1.55,
+              color: "var(--ink-60)",
+            }}
+          >
+            Upload an unpaid invoice. Two agents argue about what it is worth today. A third
+            decides, and shows its working.
           </p>
-          <div style={{marginTop: 30}}>
+
+          <div style={{marginTop: 34}}>
             <Link href="/price" style={{textDecoration: "none"}}>
               <Cta>Price a receivable</Cta>
             </Link>
           </div>
         </section>
 
-        <section className="wrap" style={{paddingTop: 56}}>
-          <p className="eyebrow" style={{marginBottom: 12}}>
-            An actual run, not a mockup
-          </p>
+        <section className="wrap" style={{paddingTop: 72}}>
           <DebateView verdict={sample} />
         </section>
 

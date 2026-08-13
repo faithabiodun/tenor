@@ -47,12 +47,12 @@ export function Cta({children, compact = false}: {children: React.ReactNode; com
         display: "inline-block",
         background: "var(--green)",
         color: "#ffffff",
-        padding: compact ? "9px 16px" : "15px 26px",
+        padding: compact ? "10px 18px" : "17px 34px",
         fontSize: compact ? 14 : 17,
         fontWeight: 500,
         letterSpacing: "-0.01em",
         border: "1px solid var(--green)",
-        borderRadius: "var(--radius-md)",
+        borderRadius: 999,
       }}
     >
       {children}
