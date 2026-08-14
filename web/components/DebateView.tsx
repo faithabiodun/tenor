@@ -142,6 +142,46 @@ export function DebateView({verdict}: {verdict: Verdict}) {
 
         <p style={{maxWidth: "62ch", fontSize: 18}}>{arbiter.rationale}</p>
 
+        {arbiter.rate_levers && arbiter.rate_levers.length > 0 && (
+          <div
+            style={{
+              marginTop: 20,
+              padding: "16px 18px",
+              border: "1px solid var(--green-line)",
+              background: "var(--green-wash)",
+              borderRadius: "var(--radius)",
+              maxWidth: "62ch",
+            }}
+          >
+            <span className="eyebrow">What would raise this</span>
+            <ul style={{margin: "10px 0 0", padding: 0, listStyle: "none", display: "grid", gap: 9}}>
+              {arbiter.rate_levers.map((lever) => (
+                <li
+                  key={lever.change}
+                  style={{display: "flex", gap: 12, alignItems: "baseline", fontSize: 15}}
+                >
+                  <span
+                    className="mono"
+                    style={{
+                      flex: "0 0 auto",
+                      fontWeight: 600,
+                      color: "var(--green-deep)",
+                      minWidth: 46,
+                    }}
+                  >
+                    +{lever.worth}
+                  </span>
+                  <span>{lever.change}</span>
+                </li>
+              ))}
+            </ul>
+            <p style={{marginTop: 10, fontSize: 12, color: "var(--ink-60)"}}>
+              Estimates from the arbiter, not a promise. Re-price after making a change to
+              see the real effect.
+            </p>
+          </div>
+        )}
+
         <div
           style={{
             marginTop: 20,

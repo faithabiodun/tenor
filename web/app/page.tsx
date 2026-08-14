@@ -9,16 +9,16 @@ const {extraction, bull, bear, arbiter} = sample.reasoning;
 
 const FEATURES = [
   {
-    title: "Two agents, opposite incentives",
-    body: "One argues for the freelancer, one holds the downside. They disagree because they are given different information, not because they were told to.",
+    title: "Stop waiting sixty days to be paid",
+    body: "You delivered the work weeks ago. Tenor prices the invoice you are already owed so you can take most of it today instead of at the end of the payment term.",
   },
   {
-    title: "The argument is on the record",
-    body: "A hash of the full rationale is written on chain when the price is set, so the reasoning behind a number cannot be quietly rewritten afterwards.",
+    title: "Know if the client is real",
+    body: "One agent's whole job is finding reasons not to pay you: an unregistered payer, a termination clause that voids delivered work, acceptance left to the client's discretion. You see them before you chase the money.",
   },
   {
-    title: "Too small to underwrite by hand",
-    body: "Assessing a three thousand dollar invoice costs a lender more than the fee it earns. That is why these go unfinanced.",
+    title: "An assessment you can hand to anyone",
+    body: "Every verdict gets a permanent link and a hash of the reasoning behind it. Send it to a client or a lender as proof the number was not made up after the fact.",
   },
 ];
 

@@ -27,12 +27,19 @@ export interface Bear {
   strongest_point_for_freelancer: string;
 }
 
+export interface RateLever {
+  change: string;
+  worth: number;
+}
+
 export interface Arbiter {
   advance_rate: number;
   confidence: number;
   rationale: string;
   decisive_arguments: string[];
   which_agent_prevailed: "bull" | "bear" | "split";
+  /** Optional: verdicts priced before this field existed do not carry it. */
+  rate_levers?: RateLever[];
 }
 
 export interface Verdict {

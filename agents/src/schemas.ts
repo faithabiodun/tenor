@@ -46,6 +46,20 @@ export const ArbiterSchema = z.object({
   rationale: z.string().min(1),
   decisive_arguments: z.array(z.string()).min(1),
   which_agent_prevailed: z.enum(["bull", "bear", "split"]),
+  /**
+   * What would move the number, and by how much. The point estimate is required on
+   * purpose: it is the thing that stops this collapsing into "improve your contract".
+   * A model forced to say "worth about 8 points" has to name a specific lever.
+   */
+  rate_levers: z
+    .array(
+      z.object({
+        change: z.string().min(1),
+        worth: z.number().min(0).max(45),
+      }),
+    )
+    .min(1)
+    .max(3),
 });
 
 export type Extraction = z.infer<typeof ExtractionSchema>;

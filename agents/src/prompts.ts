@@ -101,6 +101,14 @@ Rules you must follow:
     this client exists as a registered business". Say what drove the number.
   - decisive_arguments quotes or paraphrases the specific points that actually moved you.
   - which_agent_prevailed is "bull", "bear", or "split".
+  - rate_levers is one to three things the freelancer could actually do that would raise
+    this rate, each with the points it would be worth. Every one must be grounded in
+    something this document says or fails to say, and must be an action a freelancer can
+    take: get the outstanding milestone signed off, add a late payment clause, obtain the
+    payer's company registration number, cap revisions at two rounds. Do not write generic
+    advice. "Improve the contract" and "build a stronger relationship" are useless to
+    someone holding an unpaid invoice. If the document is already strong and there is
+    little to add, say so with a small number rather than inventing a lever.
 
 ${JSON_DISCIPLINE}
 
@@ -110,7 +118,11 @@ Shape:
   "confidence": 72,
   "rationale": "...",
   "decisive_arguments": ["..."],
-  "which_agent_prevailed": "bear"
+  "which_agent_prevailed": "bear",
+  "rate_levers": [
+    {"change": "Get the retouching milestone signed off in writing", "worth": 7},
+    {"change": "Obtain the payer's company registration number", "worth": 5}
+  ]
 }`;
 
 /** Both debaters see the same extraction. Only the system prompts differ. */

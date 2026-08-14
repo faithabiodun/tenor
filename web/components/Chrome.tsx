@@ -29,6 +29,9 @@ export function Header() {
           <Link href="/#how" className="nav-secondary" style={{textDecoration: "none"}}>
             How it works
           </Link>
+          <Link href="/ledger" className="nav-secondary" style={{textDecoration: "none"}}>
+            Ledger
+          </Link>
           <Link href="/docs" className="nav-secondary" style={{textDecoration: "none"}}>
             Docs
           </Link>
@@ -67,6 +70,7 @@ const FOOTER_LINKS: {heading: string; links: {label: string; href: string}[]}[] 
     links: [
       {label: "Price a receivable", href: "/price"},
       {label: "How it works", href: "/#how"},
+      {label: "Ledger", href: "/ledger"},
       {label: "Docs", href: "/docs"},
     ],
   },
