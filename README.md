@@ -21,8 +21,12 @@ that. Both are real, neither is cached.
 
 | Network | Chain ID | Address | Explorer |
 | --- | --- | --- | --- |
-| X Layer Testnet | 1952 | `0xE0a24398Ba9A70a3B930B2dd2A69E4F8eda44b00` | [OKLink](https://www.oklink.com/x-layer-testnet/address/0xE0a24398Ba9A70a3B930B2dd2A69E4F8eda44b00) |
+| X Layer Testnet | 1952 | `0xE0a24398Ba9A70a3B930B2dd2A69E4F8eda44b00` | [OKLink, verified](https://www.oklink.com/x-layer-testnet/address/0xE0a24398Ba9A70a3B930B2dd2A69E4F8eda44b00) |
 | X Layer Mainnet | 196 | _pending_ | — |
+
+Source is verified on the explorer, compiled with solc `0.8.24+commit.e11b9ed9`, optimizer
+on at 200 runs, EVM version `paris`. Both the flattened source and the standard-json input
+used are committed under `contracts/flattened/`, so the build is reproducible.
 
 Verified on chain: `name()` returns `Tenor Receivable`, `symbol()` returns `TENOR`, and
 `owner()` is the deploying wallet, which is the underwriting service that records verdicts.

@@ -20,7 +20,7 @@ difference produces a different hash and a failed verification.
 
 ---
 
-## Phase 1 — Deploy to testnet
+## Phase 1 — Deploy to testnet  ✅ DONE
 
 Roughly ten minutes. This is a **pass/fail hackathon requirement**.
 
@@ -115,7 +115,7 @@ browser bundle. Wait for the deploy to finish before testing.
 
 ---
 
-## Phase 3 — Verify the contract on OKLink
+## Phase 3 — Verify the contract on OKLink  ✅ DONE (testnet)
 
 Ten minutes. Unverified contracts read as unfinished work to judges.
 
