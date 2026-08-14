@@ -359,8 +359,88 @@ export const CREATOR_SAMPLE: Sample = {
   },
 };
 
+/**
+ * A platform payout statement rather than an invoice.
+ *
+ * Earnings for a closed month, payable on a published schedule, are a receivable: the money
+ * is owed and the date is known. What differs is where the risk sits. The payer is
+ * unimpeachable, so counterparty risk nearly vanishes — but there is no contract to enforce,
+ * the platform can revise the figure downward for invalid traffic, and a policy action can
+ * withhold the lot. Whether the capital provider finds that on its own is the test.
+ */
+export const PLATFORM_SAMPLE: Sample = {
+  id: "platform",
+  file: "06-platform-payout.pdf",
+  expectation:
+    "Platform payout. Payer is beyond doubt and paid monthly for two years, but there is no " +
+    "contract, the figure is revisable and a policy action can withhold it.",
+  lines: [
+    "PAYMENT STATEMENT",
+    "",
+    "Publisher:   Tobi Adeyemi  ·  channel @tobibuilds",
+    "             Publisher ID pub-4417002391556280",
+    "Platform:    Google AdSense for YouTube",
+    "",
+    "Period:      1 July 2026 to 31 July 2026  (closed)",
+    "Issued:      3 August 2026",
+    "Payable:     21 August 2026, per the published monthly payment schedule",
+    "",
+    "EARNINGS FOR THE PERIOD",
+    "  Watch page advertising                              USD  3,980.42",
+    "  YouTube Premium revenue share                       USD    511.08",
+    "  Shorts feed advertising                             USD    338.67",
+    "  Invalid traffic adjustment, prior period            USD   -142.19",
+    "  ----------------------------------------------------------------",
+    "  Balance payable                                     USD  4,687.98",
+    "",
+    "PAYMENT HISTORY",
+    "  Paid on schedule every month since September 2024, 23 consecutive",
+    "  payments. Twelve month average USD 4,110.",
+    "",
+    "TERMS",
+    "  Payment is governed by the AdSense Online Terms of Service, not by a",
+    "  negotiated contract. There is no late payment provision and no agreed",
+    "  remedy for delay.",
+    "",
+    "  Earnings shown remain subject to revision. Google may adjust or reverse",
+    "  amounts attributed to invalid traffic at any time before or after payment.",
+    "",
+    "  Payment may be withheld or the account terminated for breach of the",
+    "  YouTube monetisation policies, at Google's determination. The channel",
+    "  currently holds no active strikes.",
+  ],
+  extraction: {
+    client_name: "Google AdSense for YouTube",
+    freelancer_name: "Tobi Adeyemi",
+    amount: 4687.98,
+    currency: "USD",
+    issue_date: "2026-08-03",
+    due_date: "2026-08-21",
+    payment_terms:
+      "Payable 21 August 2026 under the published monthly AdSense payment schedule, governed " +
+      "by the AdSense Online Terms of Service rather than a negotiated contract",
+    payer_history:
+      "Paid on schedule every month since September 2024, 23 consecutive payments, twelve " +
+      "month average USD 4,110",
+    payer_identifier: "Publisher ID pub-4417002391556280 with Google AdSense",
+    deliverables: [
+      "Watch page advertising revenue for the closed period, USD 3,980.42",
+      "YouTube Premium revenue share, USD 511.08",
+      "Shorts feed advertising, USD 338.67",
+      "Invalid traffic adjustment carried from the prior period, USD -142.19",
+    ],
+    termination_clauses: [
+      "Earnings remain subject to revision; Google may adjust or reverse amounts attributed to invalid traffic at any time, before or after payment",
+      "Payment may be withheld or the account terminated for breach of the YouTube monetisation policies, at Google's determination",
+    ],
+    late_penalty: null,
+    document_quality: 93,
+    missing_critical_fields: ["negotiated contract", "late payment remedy"],
+  },
+};
+
 /** Offered in the app alongside the tuned three, but not part of the assertion set. */
-export const EXTRA_SAMPLES: Sample[] = [EXTRA_SAMPLE, CREATOR_SAMPLE];
+export const EXTRA_SAMPLES: Sample[] = [EXTRA_SAMPLE, CREATOR_SAMPLE, PLATFORM_SAMPLE];
 
 export function sampleById(id: string): Sample {
   const found = [...SAMPLES, ...EXTRA_SAMPLES].find((sample) => sample.id === id);
