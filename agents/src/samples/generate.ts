@@ -3,7 +3,7 @@ import {createWriteStream, mkdirSync} from "node:fs";
 import {resolve} from "node:path";
 import {fileURLToPath} from "node:url";
 import {dirname} from "node:path";
-import {EXTRA_SAMPLE, SAMPLES} from "./documents";
+import {EXTRA_SAMPLES, SAMPLES} from "./documents";
 
 /**
  * Render the three synthetic receivables to PDFs in /samples.
@@ -18,7 +18,7 @@ const OUT_DIR = resolve(dirname(fileURLToPath(import.meta.url)), "../../../sampl
 
 mkdirSync(OUT_DIR, {recursive: true});
 
-for (const sample of [...SAMPLES, EXTRA_SAMPLE]) {
+for (const sample of [...SAMPLES, ...EXTRA_SAMPLES]) {
   const path = resolve(OUT_DIR, sample.file);
   const doc = new PDFDocument({size: "A4", margin: 56});
   const done = new Promise<void>((resolveWrite, rejectWrite) => {
@@ -46,4 +46,4 @@ for (const sample of [...SAMPLES, EXTRA_SAMPLE]) {
   console.log(`  ${sample.file}`);
 }
 
-console.log(`\n  ${SAMPLES.length + 1} samples written to /samples\n`);
+console.log(`\n  ${SAMPLES.length + EXTRA_SAMPLES.length} samples written to /samples\n`);

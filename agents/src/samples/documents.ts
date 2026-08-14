@@ -275,10 +275,99 @@ export const EXTRA_SAMPLE: Sample = {
   },
 };
 
+/**
+ * A creator's brand deal. Included because a sponsorship invoice is the same object as a
+ * freelance one — terms, deliverables, an acceptance clause, a payer of unknown quality —
+ * and because the risks that are specific to creator work turn out to be covered by the
+ * checklist already: approval rights are subjective acceptance criteria, and a takedown
+ * clause is a termination clause by another name.
+ */
+export const CREATOR_SAMPLE: Sample = {
+  id: "creator",
+  file: "05-creator-sponsorship.pdf",
+  expectation:
+    "Creator brand deal. Named payer and a signed IO, but payment is gated on brand approval " +
+    "and a 12 month takedown right.",
+  lines: [
+    "INVOICE  NL-2026-0042",
+    "",
+    "From:    Nadia Leclerc  ·  YouTube: @nadiabuilds (214,000 subscribers)",
+    "         nadia@nadiabuilds.example",
+    "To:      Kestrel Audio GmbH",
+    "         Oranienstrasse 185, 10999 Berlin",
+    "         HRB 214877 B  ·  VAT DE317442901",
+    "",
+    "Issued:  28 July 2026",
+    "Due:     26 October 2026  (net 90)",
+    "Amount:  EUR 11,200.00",
+    "",
+    "PER INSERTION ORDER KA-IO-2026-31, SIGNED 2 JULY 2026",
+    "",
+    "DELIVERABLES",
+    "  1. One dedicated long-form video, 8 minutes minimum, featuring the",
+    "     Kestrel K7 headphones. Published 21 July 2026.",
+    "  2. Two short-form vertical cutdowns, published 22 and 24 July 2026.",
+    "  3. One pinned comment with tracking link, live since publication.",
+    "  4. Usage rights for Kestrel to reuse all footage in paid media for 12",
+    "     months from publication.",
+    "",
+    "PAYMENT TERMS",
+    "  Net 90 from date of issue. First engagement between the parties.",
+    "  Clause 4.2: payment becomes due only once Brand has confirmed the",
+    "  deliverables meet brand guidelines. Confirmation has been requested",
+    "  and is outstanding at the date of this invoice.",
+    "",
+    "LATE PAYMENT",
+    "  None stated in the insertion order.",
+    "",
+    "TERMINATION AND TAKEDOWN",
+    "  Clause 9: Brand may require removal of any deliverable within 12 months",
+    "  at its sole discretion. Where removal is required for reasons other than",
+    "  Creator breach, fees already invoiced remain payable. Where Brand deems",
+    "  the deliverable off-brand, Brand may withhold up to 50% of the fee.",
+  ],
+  extraction: {
+    client_name: "Kestrel Audio GmbH",
+    freelancer_name: "Nadia Leclerc",
+    amount: 11200,
+    currency: "EUR",
+    issue_date: "2026-07-28",
+    due_date: "2026-10-26",
+    payment_terms:
+      "Net 90 from date of issue, per insertion order KA-IO-2026-31 signed 2 July 2026. " +
+      "Payment falls due only once the brand confirms the deliverables meet brand guidelines, " +
+      "and that confirmation is outstanding",
+    payer_history: "First engagement between the parties; no prior invoices",
+    payer_identifier: "German commercial register HRB 214877 B, VAT DE317442901",
+    deliverables: [
+      "One dedicated long-form video of at least 8 minutes featuring the Kestrel K7, published 21 July 2026",
+      "Two short-form vertical cutdowns, published 22 and 24 July 2026",
+      "One pinned comment with tracking link, live since publication",
+      "Usage rights for the brand to reuse all footage in paid media for 12 months",
+    ],
+    termination_clauses: [
+      "Brand may require removal of any deliverable within 12 months at its sole discretion",
+      "Where the brand deems a deliverable off-brand it may withhold up to 50% of the fee",
+      "Fees already invoiced remain payable where removal is not for creator breach",
+    ],
+    late_penalty: null,
+    document_quality: 89,
+    missing_critical_fields: [
+      "brand confirmation that deliverables meet guidelines",
+      "late payment penalty",
+    ],
+  },
+};
+
+/** Offered in the app alongside the tuned three, but not part of the assertion set. */
+export const EXTRA_SAMPLES: Sample[] = [EXTRA_SAMPLE, CREATOR_SAMPLE];
+
 export function sampleById(id: string): Sample {
-  const found = SAMPLES.find((sample) => sample.id === id);
+  const found = [...SAMPLES, ...EXTRA_SAMPLES].find((sample) => sample.id === id);
   if (!found) {
-    throw new Error(`unknown sample "${id}". Known: ${SAMPLES.map((s) => s.id).join(", ")}`);
+    throw new Error(
+      `unknown sample "${id}". Known: ${[...SAMPLES, ...EXTRA_SAMPLES].map((s) => s.id).join(", ")}`,
+    );
   }
   return found;
 }
