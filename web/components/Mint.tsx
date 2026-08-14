@@ -1,7 +1,13 @@
 "use client";
 
 import {useState} from "react";
-import {createPublicClient, decodeEventLog, http} from "viem";
+import {
+  BaseError,
+  ContractFunctionRevertedError,
+  createPublicClient,
+  decodeEventLog,
+  http,
+} from "viem";
 import {TENOR_ABI} from "../lib/abi";
 import {
   ACTIVE_CHAIN_ID,
@@ -34,8 +40,19 @@ export function Mint({verdict, docHash}: {verdict: Verdict; docHash: string | nu
   const [problem, setProblem] = useState("");
 
   const {extraction, arbiter} = verdict.reasoning;
+
+  // The contract requires dueDate > block.timestamp. Catch that here rather than letting
+  // someone sign a transaction that cannot succeed.
+  const dueInFuture =
+    extraction.due_date !== null &&
+    new Date(`${extraction.due_date}T00:00:00Z`).getTime() > Date.now();
+
   const canMint =
-    contractDeployed && docHash && extraction.amount !== null && extraction.due_date !== null;
+    contractDeployed &&
+    Boolean(docHash) &&
+    extraction.amount !== null &&
+    extraction.amount > 0 &&
+    dueInFuture;
 
   async function mint() {
     if (!canMint || !CONTRACT_ADDRESS || !docHash) return;
@@ -46,21 +63,34 @@ export function Mint({verdict, docHash}: {verdict: Verdict; docHash: string | nu
     setProblem("");
 
     try {
+      const publicClient = createPublicClient({chain: activeChain, transport: http()});
+
+      const args = [
+        docHash as `0x${string}`,
+        toMinorUnits(extraction.amount!),
+        toUnixSeconds(extraction.due_date!),
+      ] as const;
+
+      // Simulate first. A revert here costs nothing and can be explained in English; the
+      // same revert after signing costs gas and surfaces as a hex blob in the wallet.
+      await publicClient.simulateContract({
+        address: CONTRACT_ADDRESS,
+        abi: TENOR_ABI,
+        functionName: "mintReceivable",
+        args,
+        account: client.account!.address,
+      });
+
       const hash = await client.writeContract({
         address: CONTRACT_ADDRESS,
         abi: TENOR_ABI,
         functionName: "mintReceivable",
-        args: [
-          docHash as `0x${string}`,
-          toMinorUnits(extraction.amount!),
-          toUnixSeconds(extraction.due_date!),
-        ],
+        args,
         chain: activeChain,
         account: client.account!,
       });
       setMintTx(hash);
 
-      const publicClient = createPublicClient({chain: activeChain, transport: http()});
       const receipt = await publicClient.waitForTransactionReceipt({hash});
 
       // The token id is only in the event, not the return value, because a transaction
@@ -93,9 +123,7 @@ export function Mint({verdict, docHash}: {verdict: Verdict; docHash: string | nu
       setRecordTx(data.txHash);
       setStage("done");
     } catch (error) {
-      const message = error instanceof Error ? error.message : "Something went wrong.";
-      // Wallet rejections are a decision, not a failure.
-      setProblem(/user rejected|denied/i.test(message) ? "" : message);
+      setProblem(explain(error));
       setStage(mintTx ? "failed" : "idle");
     }
   }
@@ -158,6 +186,14 @@ export function Mint({verdict, docHash}: {verdict: Verdict; docHash: string | nu
         </Note>
       )}
 
+      {docHash && extraction.due_date !== null && !dueInFuture && (
+        <Note>
+          This invoice fell due on {extraction.due_date}. Tenor advances against money you are
+          still waiting for, so there is nothing left to price against and the contract will
+          not accept it.
+        </Note>
+      )}
+
       {problem && <Note tone="bad">{problem}</Note>}
 
       {!wallet.available ? (
@@ -193,6 +229,49 @@ export function Mint({verdict, docHash}: {verdict: Verdict; docHash: string | nu
       )}
     </Panel>
   );
+}
+
+/**
+ * The contract reverts with custom errors, which reach the browser as four bytes of
+ * selector. Every one of these is a condition a person can act on, so say which.
+ */
+const REVERTS: Record<string, string> = {
+  DueDateInPast:
+    "This invoice is already due, or falls due today. Tenor prices money you are still " +
+    "waiting for, so there is nothing left to advance against.",
+  EmptyDocHash: "The document hash is missing, so there is nothing to commit to on chain.",
+  ZeroAmount: "The face value is zero. Correct the amount and price it again.",
+  AdvanceExceedsFace: "The advance came out above the face value, which the contract rejects.",
+  InvalidConfidence: "The confidence score is out of range.",
+  VerdictAlreadyRecorded: "A verdict has already been recorded against this receivable.",
+  VerdictNotRecorded: "No verdict has been recorded against this receivable yet.",
+  IllegalStatusTransition: "This receivable has already moved past the point where that is allowed.",
+  IncorrectFundingAmount: "The amount sent does not match the advance that was priced.",
+  TransferFailed: "The transfer to the freelancer failed.",
+  OwnableUnauthorizedAccount:
+    "That call is restricted to the underwriting service, which is deliberate: a holder " +
+    "must not be able to price their own paper.",
+};
+
+function explain(error: unknown): string {
+  // A wallet rejection is a decision, not a failure, so it gets no error banner.
+  const raw = error instanceof Error ? error.message : String(error);
+  if (/user rejected|user denied|rejected the request/i.test(raw)) return "";
+
+  if (error instanceof BaseError) {
+    const revert = error.walk((e) => e instanceof ContractFunctionRevertedError);
+    if (revert instanceof ContractFunctionRevertedError) {
+      const name = revert.data?.errorName;
+      if (name && REVERTS[name]) return REVERTS[name];
+      if (name) return `The contract rejected this: ${name}.`;
+    }
+    if (/insufficient funds/i.test(raw)) {
+      return "That wallet has no OKB for gas. Claim some at the X Layer faucet and retry.";
+    }
+    return error.shortMessage || raw;
+  }
+
+  return raw;
 }
 
 function Panel({children}: {children: React.ReactNode}) {

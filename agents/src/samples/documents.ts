@@ -32,8 +32,8 @@ export const SAMPLES: Sample[] = [
       "To:      Bellweather Analytics Ltd, 14 Harbour Row, Bristol BS1 4TT",
       "         Company number 07734512  ·  accounts@bellweather-analytics.example",
       "",
-      "Issued:  1 August 2026",
-      "Due:     31 August 2026  (net 30)",
+      "Issued:  1 December 2026",
+      "Due:     31 December 2026  (net 30)",
       "Amount:  USD 4,200.00",
       "",
       "DELIVERABLES  (all delivered and accepted 29 July 2026)",
@@ -60,8 +60,8 @@ export const SAMPLES: Sample[] = [
       freelancer_name: "Mara Ellison",
       amount: 4200,
       currency: "USD",
-      issue_date: "2026-08-01",
-      due_date: "2026-08-31",
+      issue_date: "2026-12-01",
+      due_date: "2026-12-31",
       payment_terms: "Net 30 from date of issue, under master services agreement BA-MSA-2024-118",
       payer_history:
         "Fourth engagement between the parties; the three prior invoices were settled " +
@@ -381,9 +381,9 @@ export const PLATFORM_SAMPLE: Sample = {
     "             Publisher ID pub-4417002391556280",
     "Platform:    Google AdSense for YouTube",
     "",
-    "Period:      1 July 2026 to 31 July 2026  (closed)",
-    "Issued:      3 August 2026",
-    "Payable:     21 August 2026, per the published monthly payment schedule",
+    "Period:      1 November 2026 to 30 November 2026  (closed)",
+    "Issued:      3 December 2026",
+    "Payable:     21 December 2026, per the published monthly payment schedule",
     "",
     "EARNINGS FOR THE PERIOD",
     "  Watch page advertising                              USD  3,980.42",
@@ -414,10 +414,10 @@ export const PLATFORM_SAMPLE: Sample = {
     freelancer_name: "Tobi Adeyemi",
     amount: 4687.98,
     currency: "USD",
-    issue_date: "2026-08-03",
-    due_date: "2026-08-21",
+    issue_date: "2026-12-03",
+    due_date: "2026-12-21",
     payment_terms:
-      "Payable 21 August 2026 under the published monthly AdSense payment schedule, governed " +
+      "Payable 21 December 2026 under the published monthly AdSense payment schedule, governed " +
       "by the AdSense Online Terms of Service rather than a negotiated contract",
     payer_history:
       "Paid on schedule every month since September 2024, 23 consecutive payments, twelve " +
