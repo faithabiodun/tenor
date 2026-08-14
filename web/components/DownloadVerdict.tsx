@@ -46,16 +46,21 @@ export function DownloadVerdict({verdict}: {verdict: Verdict}) {
       .replace(/[^a-z0-9]+/g, "-")
       .replace(/^-|-$/g, "");
 
-    const blob = new Blob([JSON.stringify(payload, null, 2)], {type: "application/json"});
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = `tenor-${name}-${verdict.verdictHash.slice(2, 10)}.json`;
-    link.click();
-    URL.revokeObjectURL(url);
-
-    setSaved(true);
-    window.setTimeout(() => setSaved(false), 2600);
+    try {
+      const blob = new Blob([JSON.stringify(payload, null, 2)], {type: "application/json"});
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `tenor-${name}-${verdict.verdictHash.slice(2, 10)}.json`;
+      link.click();
+      URL.revokeObjectURL(url);
+      setSaved(true);
+      window.setTimeout(() => setSaved(false), 2600);
+    } catch {
+      // Wallet in-app browsers frequently block blob downloads. The same reasoning is
+      // served publicly by hash, so open that rather than failing silently.
+      window.open(`/api/verdict/${verdict.verdictHash}`, "_blank");
+    }
   }
 
   return (

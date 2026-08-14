@@ -225,6 +225,9 @@ select {
 
 /* Long hashes and addresses must never widen the page on a phone. */
 .mono {
+  /* anywhere is the correct value; break-word is what older WebViews understand, and a
+     long hash widening the page is worse on a phone than a slightly worse break point. */
+  word-break: break-word;
   overflow-wrap: anywhere;
 }
 

@@ -41,7 +41,8 @@ export function SpreadBar({bull, bear, verdict}: Props) {
         <div
           style={{
             position: "absolute",
-            insetInline: 0,
+            left: 0,
+            right: 0,
             top: 38,
             height: 1,
             background: "var(--line)",

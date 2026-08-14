@@ -32,7 +32,13 @@ export function Pipeline({verdict}: {verdict: Verdict}) {
       return;
     }
     const node = root.current;
-    if (!node) return;
+    // Some in-app wallet browsers ship without IntersectionObserver. Without this the
+    // sequence would never start and the explainer would sit on its first frame forever,
+    // which looks like a broken page rather than a missing optimisation.
+    if (!node || typeof IntersectionObserver === "undefined") {
+      setLive(true);
+      return;
+    }
     const observer = new IntersectionObserver(
       ([entry]) => setLive(Boolean(entry?.isIntersecting)),
       {threshold: 0.3},
@@ -132,7 +138,10 @@ export function Pipeline({verdict}: {verdict: Verdict}) {
           <div
             style={{
               position: "absolute",
-              inset: 0,
+              top: 0,
+        right: 0,
+        bottom: 0,
+        left: 0,
               display: "grid",
               placeItems: "center",
               transform: "translateZ(130px)",
@@ -220,7 +229,10 @@ function Scene({show, children}: {show: boolean; children: React.ReactNode}) {
       aria-hidden={!show}
       style={{
         position: "absolute",
-        inset: 0,
+        top: 0,
+        right: 0,
+        bottom: 0,
+        left: 0,
         transformStyle: "preserve-3d",
         opacity: show ? 1 : 0,
         transition: "opacity 520ms ease",
@@ -245,7 +257,10 @@ function Card({
     <div
       style={{
         position: "absolute",
-        inset: 0,
+        top: 0,
+        right: 0,
+        bottom: 0,
+        left: 0,
         display: "grid",
         placeItems: "center",
         transformStyle: "preserve-3d",
@@ -337,7 +352,10 @@ function Agent({
     <div
       style={{
         position: "absolute",
-        inset: 0,
+        top: 0,
+        right: 0,
+        bottom: 0,
+        left: 0,
         display: "grid",
         placeItems: "center",
         transformStyle: "preserve-3d",
@@ -389,7 +407,8 @@ function Track({bull, bear, verdict}: {bull: number; bear: number; verdict: numb
       <div
         style={{
           position: "absolute",
-          insetInline: 0,
+          left: 0,
+            right: 0,
           top: 10,
           height: 3,
           borderRadius: 2,
