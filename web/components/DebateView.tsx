@@ -1,3 +1,4 @@
+import {DownloadVerdict} from "./DownloadVerdict";
 import {SpreadBar} from "./SpreadBar";
 import {daysUntil, money, type Verdict} from "../lib/types";
 
@@ -205,38 +206,7 @@ export function DebateView({verdict}: {verdict: Verdict}) {
           >
             verdict hash {verdict.verdictHash}
           </p>
-          {verdict.stored === true ? (
-            <a
-              href={`/api/verdict/${verdict.verdictHash}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mono"
-              style={{
-                fontSize: 12,
-                color: "var(--green-deep)",
-                border: "1px solid var(--green-line)",
-                background: "var(--green-wash)",
-                borderRadius: 999,
-                padding: "2px 10px",
-                textDecoration: "none",
-              }}
-            >
-              reasoning stored · verify
-            </a>
-          ) : verdict.stored === false ? (
-            <span
-              className="mono"
-              style={{
-                fontSize: 12,
-                color: "var(--ink-60)",
-                border: "1px solid var(--line)",
-                borderRadius: 999,
-                padding: "2px 10px",
-              }}
-            >
-              reasoning not stored
-            </span>
-          ) : null}
+          <DownloadVerdict verdict={verdict} />
           {verdict.inverted && (
             <span
               className="mono"

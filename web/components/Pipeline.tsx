@@ -1,37 +1,29 @@
 "use client";
 
 import {useEffect, useRef, useState} from "react";
+import {money, type Verdict} from "../lib/types";
 
-interface Props {
-  bull: number;
-  bear: number;
-  verdict: number;
-  confidence: number;
-  client: string;
-  amount: string;
-  advanced: string;
-}
-
-const STEPS = ["Upload", "Extract", "Debate", "Verdict"] as const;
-const DWELL = [2200, 2600, 3400, 4200];
+const STEPS = ["Invoice", "Extract", "Debate", "Verdict"] as const;
+const DWELL = [3000, 3400, 4200, 5200];
 
 /**
- * The explainer. Four staged scenes in real 3D space: the document tilts in, its fields lift
- * off it, the two agents rotate apart to opposite sides, and the verdict comes forward
- * between them.
+ * The explainer: one real assessment, moving through the four stages that produced it.
  *
- * CSS transforms rather than WebGL. A canvas renderer would be a heavy dependency for what
- * is fundamentally four cards moving, and it would burn frames on a free instance. Depth
- * here comes from perspective, rotation and scale, not from shadows or glow.
+ * Everything shown is read from the snapshotted run rather than drawn. There are no
+ * placeholder bars standing in for text and no invented figures — a mocked-up product
+ * shot would be the one thing on this page a reader could not check, on a site whose
+ * whole argument is that its numbers are checkable.
  *
- * Numbers are the real ones from the snapshotted run, passed down from the fixture, so this
- * cannot drift into showing figures the product never produced.
+ * CSS transforms rather than WebGL: this is four cards moving in perspective, and a canvas
+ * renderer would be a heavy dependency for it.
  */
-export function Pipeline({bull, bear, verdict, confidence, client, amount, advanced}: Props) {
+export function Pipeline({verdict}: {verdict: Verdict}) {
   const [step, setStep] = useState(0);
   const [live, setLive] = useState(false);
   const [still, setStill] = useState(false);
   const root = useRef<HTMLDivElement>(null);
+
+  const {extraction, bull, bear, arbiter} = verdict.reasoning;
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
@@ -43,7 +35,7 @@ export function Pipeline({bull, bear, verdict, confidence, client, amount, advan
     if (!node) return;
     const observer = new IntersectionObserver(
       ([entry]) => setLive(Boolean(entry?.isIntersecting)),
-      {threshold: 0.35},
+      {threshold: 0.3},
     );
     observer.observe(node);
     return () => observer.disconnect();
@@ -62,68 +54,78 @@ export function Pipeline({bull, bear, verdict, confidence, client, amount, advan
     <div ref={root}>
       <div
         role="group"
-        aria-label="How Tenor prices a receivable"
+        aria-label="One assessment, from invoice to verdict"
         style={{
           position: "relative",
-          height: "clamp(290px, 44vw, 380px)",
-          // The stage exists only to establish the perspective origin. It has no surface of
-          // its own: the cards fill it, so a frame around them would just be a box round a box.
-          perspective: 1400,
-          perspectiveOrigin: "50% 45%",
+          height: "clamp(340px, 46vw, 420px)",
+          perspective: 1500,
+          perspectiveOrigin: "50% 42%",
         }}
       >
         <Scene show={step === 0}>
-          <Card
-            depth={step === 0 ? 0 : -260}
-            rotate={step === 0 ? -9 : -26}
-            label="Invoice"
-          >
-            <Line width="72%" strong />
-            <Line width="46%" />
-            <div style={{height: 8}} />
-            <Line width="88%" />
-            <Line width="80%" />
-            <Line width="62%" />
-            <div style={{height: 8}} />
-            <Line width="38%" strong />
+          <Card rotate={step === 0 ? -8 : -24} depth={step === 0 ? 0 : -240}>
+            <Head>{extraction.client_name ?? "Unnamed payer"}</Head>
+            <Big>
+              {extraction.amount === null
+                ? "amount unknown"
+                : money(extraction.amount, extraction.currency)}
+            </Big>
+            <Meta>
+              {extraction.payment_terms ?? "no terms stated"}
+              {extraction.due_date ? ` · due ${extraction.due_date}` : ""}
+            </Meta>
+            <ul style={{margin: "14px 0 0", padding: 0, listStyle: "none", display: "grid", gap: 6}}>
+              {extraction.deliverables.slice(0, 3).map((item) => (
+                <li key={item} style={{fontSize: 13, color: "var(--ink-60)", lineHeight: 1.45}}>
+                  {truncate(item, 78)}
+                </li>
+              ))}
+            </ul>
           </Card>
         </Scene>
 
         <Scene show={step === 1}>
-          <Card depth={-40} rotate={-11} label="Extracted">
-            {[
-              ["Client", client],
-              ["Amount", amount],
-              ["Terms", "net 45"],
-              ["Payer id", "not stated"],
-            ].map(([k, v], i) => (
-              <div
-                key={k}
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  gap: 10,
-                  fontSize: "clamp(11px, 3vw, 13px)",
-                  padding: "clamp(6px, 2vw, 9px) clamp(9px, 3vw, 12px)",
-                  marginBottom: 7,
-                  borderRadius: 5,
-                  background: "var(--paper)",
-                  border: "1px solid var(--line)",
-                  transform: `translateZ(${(i + 1) * 14}px)`,
-                }}
-              >
-                <span style={{color: "var(--ink-40)"}}>{k}</span>
-                <span className="mono" style={{color: "var(--ink)"}}>
-                  {v}
-                </span>
-              </div>
-            ))}
+          <Card rotate={-10} depth={-30}>
+            <Head>Read out of the document</Head>
+            <div style={{display: "grid", gap: 7, marginTop: 12}}>
+              <Field k="payer" v={extraction.client_name ?? "not stated"} z={14} />
+              <Field
+                k="registration"
+                v={extraction.payer_identifier ?? "not stated"}
+                z={28}
+                weak={!extraction.payer_identifier}
+              />
+              <Field
+                k="history"
+                v={extraction.payer_history ? truncate(extraction.payer_history, 46) : "none stated"}
+                z={42}
+                weak={!extraction.payer_history}
+              />
+              <Field
+                k="late penalty"
+                v={extraction.late_penalty ? truncate(extraction.late_penalty, 46) : "none"}
+                z={56}
+                weak={!extraction.late_penalty}
+              />
+            </div>
           </Card>
         </Scene>
 
         <Scene show={step >= 2}>
-          <Agent side="left" active={step >= 2} tone="green" title="The case for" rate={bull} />
-          <Agent side="right" active={step >= 2} tone="ink" title="The case against" rate={bear} />
+          <Agent
+            side="left"
+            active={step >= 2}
+            title="The case for"
+            rate={bull.proposed_rate}
+            point={bull.arguments[0] ?? ""}
+          />
+          <Agent
+            side="right"
+            active={step >= 2}
+            title="The case against"
+            rate={bear.proposed_rate}
+            point={bear.risk_factors[0] ?? ""}
+          />
         </Scene>
 
         <Scene show={step === 3}>
@@ -133,14 +135,14 @@ export function Pipeline({bull, bear, verdict, confidence, client, amount, advan
               inset: 0,
               display: "grid",
               placeItems: "center",
-              transform: "translateZ(120px)",
+              transform: "translateZ(130px)",
               transformStyle: "preserve-3d",
             }}
           >
             <div
               style={{
-                width: "min(380px, 88%)",
-                padding: "clamp(16px, 4.5vw, 24px)",
+                width: "min(420px, 90%)",
+                padding: "clamp(18px, 4.5vw, 26px)",
                 borderRadius: "var(--radius)",
                 background: "var(--paper)",
                 border: "1px solid var(--green-line)",
@@ -151,21 +153,21 @@ export function Pipeline({bull, bear, verdict, confidence, client, amount, advan
               <div
                 className="mono"
                 style={{
-                  fontSize: "clamp(38px, 12vw, 56px)",
+                  fontSize: "clamp(40px, 12vw, 58px)",
                   fontWeight: 700,
                   lineHeight: 1.1,
                   color: "var(--green-deep)",
                 }}
               >
-                {verdict}%
+                {arbiter.advance_rate}%
               </div>
               <div className="mono" style={{fontSize: 13, color: "var(--ink-60)"}}>
-                {advanced} advanced today
+                {money(verdict.advanceValue, extraction.currency)} advanced today
               </div>
-              <Track bull={bull} bear={bear} verdict={verdict} />
-              <div className="mono" style={{fontSize: 11, color: "var(--ink-40)"}}>
-                confidence {confidence} / 100
-              </div>
+              <Track bull={bull.proposed_rate} bear={bear.proposed_rate} verdict={arbiter.advance_rate} />
+              <p style={{fontSize: 13, lineHeight: 1.5, color: "var(--ink-60)"}}>
+                {truncate(arbiter.rationale, 150)}
+              </p>
             </div>
           </div>
         </Scene>
@@ -177,7 +179,7 @@ export function Pipeline({bull, bear, verdict, confidence, client, amount, advan
           flexWrap: "wrap",
           gap: 8,
           listStyle: "none",
-          margin: "16px 0 0",
+          margin: "18px 0 0",
           padding: 0,
         }}
       >
@@ -191,14 +193,14 @@ export function Pipeline({bull, bear, verdict, confidence, client, amount, advan
                 style={{
                   cursor: "pointer",
                   fontSize: 13,
-                  padding: "7px 14px",
+                  padding: "7px 15px",
                   borderRadius: 999,
                   border: `1px solid ${on ? "var(--green)" : "var(--line)"}`,
                   background: on ? "var(--green-wash)" : "transparent",
                   color: on ? "var(--green-deep)" : "var(--ink-60)",
                 }}
               >
-                {index + 1}. {label}
+                {label}
               </button>
             </li>
           );
@@ -206,6 +208,10 @@ export function Pipeline({bull, bear, verdict, confidence, client, amount, advan
       </ol>
     </div>
   );
+}
+
+function truncate(text: string, max: number): string {
+  return text.length <= max ? text : `${text.slice(0, max - 1).trimEnd()}…`;
 }
 
 function Scene({show, children}: {show: boolean; children: React.ReactNode}) {
@@ -227,14 +233,12 @@ function Scene({show, children}: {show: boolean; children: React.ReactNode}) {
 }
 
 function Card({
-  depth,
   rotate,
-  label,
+  depth,
   children,
 }: {
-  depth: number;
   rotate: number;
-  label: string;
+  depth: number;
   children: React.ReactNode;
 }) {
   return (
@@ -250,53 +254,85 @@ function Card({
       <div
         style={{
           width: "min(520px, 94%)",
-          padding: "clamp(16px, 4vw, 24px) clamp(18px, 5vw, 28px)",
+          padding: "clamp(18px, 4.5vw, 26px) clamp(20px, 5vw, 30px)",
           borderRadius: "var(--radius)",
           background: "var(--paper)",
           border: "1px solid var(--line)",
-          transform: `translateZ(${depth}px) rotateY(${rotate}deg) rotateX(4deg)`,
+          transform: `translateZ(${depth}px) rotateY(${rotate}deg) rotateX(3deg)`,
           transition: "transform 900ms cubic-bezier(0.16, 1, 0.3, 1)",
           transformStyle: "preserve-3d",
+          textAlign: "left",
         }}
       >
-        <span className="eyebrow" style={{display: "block", marginBottom: 10}}>
-          {label}
-        </span>
         {children}
       </div>
     </div>
   );
 }
 
-function Line({width, strong = false}: {width: string; strong?: boolean}) {
+function Head({children}: {children: React.ReactNode}) {
+  return (
+    <div style={{fontSize: 15, fontWeight: 600, letterSpacing: "-0.01em"}}>{children}</div>
+  );
+}
+
+function Big({children}: {children: React.ReactNode}) {
+  return (
+    <div className="mono" style={{fontSize: "clamp(24px, 6vw, 32px)", fontWeight: 700, marginTop: 4}}>
+      {children}
+    </div>
+  );
+}
+
+function Meta({children}: {children: React.ReactNode}) {
+  return (
+    <div style={{fontSize: 13, color: "var(--ink-60)", marginTop: 6, lineHeight: 1.45}}>
+      {children}
+    </div>
+  );
+}
+
+function Field({k, v, z, weak = false}: {k: string; v: string; z: number; weak?: boolean}) {
   return (
     <div
       style={{
-        width,
-        height: strong ? 7 : 5,
-        marginBottom: 6,
-        borderRadius: 3,
-        background: strong ? "var(--ink-40)" : "var(--line)",
+        display: "flex",
+        justifyContent: "space-between",
+        gap: 12,
+        fontSize: 13,
+        padding: "8px 12px",
+        borderRadius: 6,
+        background: "var(--surface)",
+        border: "1px solid var(--line)",
+        transform: `translateZ(${z}px)`,
       }}
-    />
+    >
+      <span style={{color: "var(--ink-40)", flex: "0 0 auto"}}>{k}</span>
+      <span
+        className="mono"
+        style={{color: weak ? "var(--ink-40)" : "var(--ink)", textAlign: "right"}}
+      >
+        {v}
+      </span>
+    </div>
   );
 }
 
 function Agent({
   side,
   active,
-  tone,
   title,
   rate,
+  point,
 }: {
   side: "left" | "right";
   active: boolean;
-  tone: "green" | "ink";
   title: string;
   rate: number;
+  point: string;
 }) {
   const isLeft = side === "left";
-  const accent = tone === "green" ? "var(--green)" : "var(--ink-40)";
+  const accent = isLeft ? "var(--green)" : "var(--ink-40)";
   return (
     <div
       style={{
@@ -309,36 +345,37 @@ function Agent({
     >
       <div
         style={{
-          width: "min(300px, 47%)",
-          padding: "clamp(13px, 3.4vw, 20px)",
+          width: "min(310px, 47%)",
+          padding: "clamp(14px, 3.4vw, 20px)",
           borderRadius: "var(--radius)",
           background: "var(--paper)",
           border: "1px solid var(--line)",
           borderLeft: `4px solid ${accent}`,
           transform: active
-            ? `translateX(${isLeft ? -52 : 52}%) translateZ(30px) rotateY(${isLeft ? 17 : -17}deg)`
-            : "translateX(0) translateZ(-40px) rotateY(0deg)",
+            ? `translateX(${isLeft ? -52 : 52}%) translateZ(30px) rotateY(${isLeft ? 16 : -16}deg)`
+            : "translateX(0) translateZ(-40px)",
           transition: "transform 950ms cubic-bezier(0.16, 1, 0.3, 1)",
           transformStyle: "preserve-3d",
+          textAlign: "left",
         }}
       >
-        <span className="eyebrow" style={{fontSize: 10, letterSpacing: "0.1em"}}>
+        <span className="eyebrow" style={{fontSize: 10}}>
           {title}
         </span>
         <div
           className="mono"
           style={{
-            fontSize: "clamp(26px, 7.4vw, 40px)",
+            fontSize: "clamp(26px, 7vw, 38px)",
             fontWeight: 700,
             lineHeight: 1.15,
-            color: tone === "green" ? "var(--green-deep)" : "var(--ink)",
+            color: isLeft ? "var(--green-deep)" : "var(--ink)",
           }}
         >
           {rate}%
         </div>
-        <Line width="90%" />
-        <Line width="74%" />
-        <Line width="82%" />
+        <p style={{fontSize: 12.5, lineHeight: 1.5, color: "var(--ink-60)", marginTop: 4}}>
+          {truncate(point, 130)}
+        </p>
       </div>
     </div>
   );
@@ -348,7 +385,7 @@ function Track({bull, bear, verdict}: {bull: number; bear: number; verdict: numb
   const low = Math.min(bull, bear);
   const high = Math.max(bull, bear);
   return (
-    <div style={{position: "relative", height: 22, margin: "12px 0 8px"}}>
+    <div style={{position: "relative", height: 22, margin: "14px 0 10px"}}>
       <div
         style={{
           position: "absolute",
