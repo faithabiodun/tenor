@@ -1,14 +1,24 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <rect width="64" height="64" rx="14" fill="#ffffff"/>
-  <text
-    x="32"
-    y="33"
-    text-anchor="middle"
-    dominant-baseline="central"
-    font-family="Geist, 'Helvetica Neue', Arial, sans-serif"
-    font-size="46"
-    font-weight="700"
-    letter-spacing="-2"
-    fill="#0b7a47"
-  >t</text>
+  <!--
+    The wordmark reduced to its letterform. Set as a single U rather than the full word,
+    because "UPTIME" at sixteen pixels is a smudge, and a favicon that cannot be read is
+    worse than one that is merely simple.
+
+    Drawn as a path rather than <text>: a favicon renders in browser chrome with no access
+    to the site's webfont, so type here would fall back to whatever the platform has and
+    the mark would differ on every machine.
+  -->
+  <rect width="64" height="64" rx="13" fill="#edeae4"/>
+
+  <g transform="translate(5.5,0) skewX(-10)">
+    <!-- Heavy italic U: two stems joined by a bowl, stroked so the weight stays even. -->
+    <path
+      d="M17 14 V33.5 a11 11 0 0 0 22 0 V14"
+      fill="none"
+      stroke="#1c1c1e"
+      stroke-width="10.5"
+    />
+    <!-- The tick that follows the word, in the accent colour it always carries. -->
+    <rect x="45.5" y="14" width="7" height="22" fill="#d33f27"/>
+  </g>
 </svg>
