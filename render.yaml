@@ -19,9 +19,9 @@ services:
     # `npm ci` would skip them and the build would fail on a missing typescript.
     buildCommand: npm ci --include=dev && npm run build --workspace web
     startCommand: npm run start --workspace web
-    # Cheap, always-200, and it exercises the workspace import chain rather than just
-    # proving the process is alive.
-    healthCheckPath: /api/samples
+    # The landing page. Static, always 200, and it fails if the workspace import chain
+    # is broken, which is the failure worth catching.
+    healthCheckPath: /
     envVars:
       # Next 16 needs 20.9+; pin so a Render default bump cannot break the build.
       - key: NODE_VERSION
@@ -37,8 +37,8 @@ services:
       # Which X Layer network this deployment targets. 1952 is testnet, 196 is mainnet.
       - key: NEXT_PUBLIC_CHAIN_ID
         value: "1952"
-      # Set once the contract is deployed. Until then the mint panel says so rather than
-      # failing at signing time, and the mint code is stripped from the bundle entirely
+      # Set once UptimeVault is deployed. Until then the chain panels say so rather than
+      # failing at signing time, and the write path is stripped from the bundle entirely
       # because Next inlines NEXT_PUBLIC_* at build time.
       - key: NEXT_PUBLIC_CONTRACT_ADDRESS
         sync: false
@@ -47,7 +47,7 @@ services:
         sync: false
       - key: SUPABASE_SERVICE_ROLE_KEY
         sync: false
-      # The underwriting service's signer. recordVerdict is onlyOwner, so this must be the
+      # The valuation service's signer. recordValuation is onlyOwner, so this must be the
       # key that deployed the contract. Use a dedicated wallet holding only gas.
       - key: DEPLOYER_PRIVATE_KEY
         sync: false
