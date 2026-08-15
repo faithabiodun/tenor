@@ -358,21 +358,21 @@ function Asymmetry() {
             <tbody>
               <tr>
                 <td style={{color: "var(--ink)"}}>Steady, 124 days</td>
-                <td>88%</td>
-                <td>45%</td>
-                <td style={{color: "var(--vermilion)", fontWeight: 600}}>78%</td>
+                <td>95%</td>
+                <td>68%</td>
+                <td style={{color: "var(--vermilion)", fontWeight: 600}}>70%</td>
               </tr>
               <tr>
                 <td style={{color: "var(--ink)"}}>Decaying, hidden outage</td>
-                <td>57.5%</td>
-                <td>8%</td>
-                <td style={{color: "var(--vermilion)", fontWeight: 600}}>30%</td>
+                <td>65%</td>
+                <td>35%</td>
+                <td style={{color: "var(--vermilion)", fontWeight: 600}}>48%</td>
               </tr>
             </tbody>
           </table>
 
           <p style={{marginTop: 20, fontSize: 14, color: "var(--ink-70)", lineHeight: 1.6}}>
-            The investor led with the hole that nobody scripted for it:
+            On the decaying node the arbiter put the real risk in one sentence, unprompted:
           </p>
           <blockquote
             style={{
@@ -384,13 +384,17 @@ function Asymmetry() {
               lineHeight: 1.55,
             }}
           >
-            Nothing in the arrangement compels the operator to keep the node running once the
-            shares are sold. The revenue depends on the continued goodwill of someone who has
-            already been paid.
+            Nothing stops the operator from switching this machine off once they have your
+            money, so I&rsquo;m discounting the rate.
           </blockquote>
-          <p style={{marginTop: 16, fontSize: 12.5, color: "var(--ink-50)"}}>
+          <p style={{marginTop: 16, fontSize: 12.5, color: "var(--ink-50)", lineHeight: 1.6}}>
             Both nodes are fixtures with generated histories, labelled as such in the source.
-            The rates are real model output.
+            The rates are real output from the deployment you are reading this on, and both
+            valuations are stored: fetch{" "}
+            <span className="mono" style={{fontSize: 11.5}}>
+              /api/valuation/0x7d8e1028…
+            </span>{" "}
+            and re-hash the canonical JSON yourself.
           </p>
         </div>
       </div>

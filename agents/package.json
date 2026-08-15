@@ -19,6 +19,7 @@
     "samples": "tsx src/samples/generate.ts",
     "price": "tsx src/cli/price.ts",
     "price:node": "tsx src/cli/price-node.ts",
+    "verify:live": "tsx src/cli/verify-live.ts",
     "spread": "tsx src/cli/spread.ts",
     "verify": "tsx src/cli/verify.ts",
     "read": "tsx src/cli/read.ts",
