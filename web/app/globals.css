@@ -580,21 +580,21 @@ body {
 
 .scene {
   margin: 0;
-  border: 1px solid var(--line);
-  background: var(--paper-deep);
-  padding: 10px;
+  padding: 0;
 }
 
 .scene svg { width: 100%; height: auto; display: block; }
 .scene-short svg { max-height: 260px; }
 
+/* The caption belongs to the drawing, so it sits tight under it and reads as one thing. */
 .scene-caption {
-  margin-top: 18px;
-  font-size: clamp(15.5px, 2vw, 19px);
-  line-height: 1.45;
+  margin: 14px auto 0;
+  font-size: clamp(16px, 2.1vw, 20px);
+  line-height: 1.5;
   color: var(--ink);
-  max-width: 56ch;
-  min-height: 2.9em;
+  max-width: 46ch;
+  text-align: center;
+  min-height: 3em;
 }
 
 .flow-rail {

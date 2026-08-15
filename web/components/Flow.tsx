@@ -72,13 +72,13 @@ function Box({
  * ------------------------------------------------------------------------------------ */
 
 const STAGES = [
-  {id: "register", label: "Register", caption: "An operator lists a machine and the address it is paid to."},
-  {id: "verify", label: "Verify", caption: "Uptime reads what it actually paid out, straight from the chain."},
-  {id: "underwrite", label: "Underwrite", caption: "Two agents pull the price apart. One is paid to find the holes."},
-  {id: "score", label: "Score", caption: "A score for the machine, and a price for a share of what it will earn."},
-  {id: "tokenise", label: "Tokenise", caption: "The term divides into shares. The operator holds all of them."},
-  {id: "invest", label: "Invest", caption: "Buyers take shares. The operator is paid today."},
-  {id: "settle", label: "Settle", caption: "Earnings arrive, and every holder claims their part."},
+  {id: "register", label: "Register", caption: "You own a machine that earns. Tell us where it gets paid."},
+  {id: "verify", label: "Verify", caption: "We look up what it has actually been paid. No paperwork, no promises."},
+  {id: "underwrite", label: "Underwrite", caption: "Two AI agents fight over what it is worth. One of them is paid to find the holes."},
+  {id: "score", label: "Score", caption: "You get a score out of 100, and a price for one share of the next six months."},
+  {id: "tokenise", label: "Tokenise", caption: "Those six months split into 100 shares. You start out holding every one."},
+  {id: "invest", label: "Invest", caption: "People buy some. You get paid today for money the machine has not earned yet."},
+  {id: "settle", label: "Settle", caption: "As it earns, the money arrives and everyone takes their share automatically."},
 ];
 
 const DWELL = 3400;
@@ -426,8 +426,8 @@ export function AgreementFigure() {
       </figure>
       <p className="scene-caption">
         {split
-          ? "Only one of them is given the risk checklist. The gap is structural, not instructed."
-          : "Same brief, same evidence, same answer. A debate with no disagreement in it."}
+          ? "Only one of them gets the list of things that can go wrong. That is why they disagree."
+          : "Give two AI models the same information and they say the same thing. That is not a debate."}
       </p>
     </div>
   );
