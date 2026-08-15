@@ -22,65 +22,50 @@ export default function Home() {
 
 function Hero() {
   return (
-    <section className="wrap" style={{paddingTop: 62, paddingBottom: 40}}>
-      <h1 className="display display-xl rise" style={{maxWidth: "14ch"}}>
-        Sell the earnings your machine has not made yet
-      </h1>
+    <section className="hero">
+      <div className="wrap hero-grid">
+        <div className="hero-copy">
+          <h1 className="display display-xl rise">Sell the earnings your machine has not made yet</h1>
 
-      <p className="lead" style={{marginTop: 30}}>
-        A node that earns twelve dollars a month is invisible to every lender alive. Uptime
-        reads what it has actually paid out, has two AI agents argue over what the next six
-        months are worth, and turns the answer into shares anyone can buy.
-      </p>
+          <p className="lead" style={{marginTop: 28}}>
+            A node that earns twelve dollars a month is invisible to every lender alive.
+            Uptime reads what it has actually paid out, has two AI agents argue over what the
+            next six months are worth, and turns the answer into shares anyone can buy.
+          </p>
 
-      <div style={{display: "flex", gap: 12, marginTop: 26, flexWrap: "wrap"}}>
-        <Link href="/node" className="btn">
-          List a node
-        </Link>
-        <Link href="/#how" className="btn btn-ghost">
-          See the method
-        </Link>
+          <div style={{display: "flex", gap: 12, marginTop: 28, flexWrap: "wrap"}}>
+            <Link href="/node" className="btn">
+              List a node
+            </Link>
+            <Link href="/#how" className="btn btn-ghost">
+              See the method
+            </Link>
+          </div>
+        </div>
+
+        {/*
+          The reference art, keyed off its paper and set on the page's own.
+          Deliberately oversized and bled off the right edge: the card is the subject, and
+          the projections trailing out of frame say more about a future nobody can see the
+          end of than a politely contained image would.
+        */}
+        <div className="hero-art" aria-hidden>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/study/study.png"
+            alt=""
+            width={1961}
+            height={873}
+            fetchPriority="high"
+          />
+        </div>
       </div>
 
-      <Study />
+      <p className="sr-only">
+        Uptime performance study: a triple-fan compute card followed by three wireframe fan
+        studies in red, grey and blue, receding to the right.
+      </p>
     </section>
-  );
-}
-
-/**
- * The performance study, composited from the reference art itself.
- *
- * These four PNGs are crops of the original painting, not redrawings of it. Every attempt
- * to reproduce that sheet in hand-written SVG came out as a diagram of the thing rather
- * than the thing, because the reference is continuous-tone painted art and code-drawn
- * vectors cannot be. So the pixels are the pixels, placed at the reference's own
- * proportions inside a fixed-ratio stage that scales as one image.
- *
- * The stage aspect and every position is locked to the source sheet. The crops carry the
- * sheet's paper in their corners, so each is edge-feathered into a background matched to
- * that paper; without the feather they read as pasted rectangles.
- *
- * The fans crop keeps a sliver of the card's right edge from the extraction, so the card
- * is layered above it and overlaps it by design.
- */
-function Study() {
-  return (
-    <figure
-      className="study"
-      role="img"
-      aria-label="Uptime performance study: a painted triple-fan compute card, followed by three wireframe fan studies in red, grey and blue, receding to the right."
-    >
-      {/* eslint-disable @next/next/no-img-element -- static art, no optimisation needed */}
-      <img className="study-el feather" src="/study/fans.png" alt=""
-        style={{left: "54.5%", top: "45.8%", width: "37.9%"}} />
-      <img className="study-el feather" src="/study/card.png" alt=""
-        style={{left: "5.5%", top: "43.5%", width: "50.6%", zIndex: 1}} />
-      <img className="study-el feather" src="/study/mark.png" alt=""
-        style={{left: "62%", top: "8.8%", width: "32.4%"}} />
-      <img className="study-el feather" src="/study/label.png" alt=""
-        style={{left: "85.3%", top: "42.2%", width: "11%"}} />
-      {/* eslint-enable @next/next/no-img-element */}
-    </figure>
   );
 }
 
