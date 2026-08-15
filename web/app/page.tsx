@@ -1,5 +1,6 @@
 import Link from "next/link";
 import {Footer, Header} from "../components/Chrome";
+import {Flow} from "../components/Flow";
 
 export default function Home() {
   return (
@@ -79,62 +80,17 @@ function Hero() {
  * Method
  * ------------------------------------------------------------------------------------ */
 
-const STEPS = [
-  {
-    n: "01",
-    title: "Read what it earned",
-    body:
-      "Point Uptime at the address a node is paid to. It reads the transfers straight from " +
-      "the chain and derives every figure by arithmetic: monthly totals, volatility, the " +
-      "longest silence, the trend. Nobody is asked to be believed.",
-  },
-  {
-    n: "02",
-    title: "Two agents argue",
-    body:
-      "One represents the operator and argues for the highest price the record supports. " +
-      "The other holds the shares if the node goes dark, and argues for the lowest. A third " +
-      "reads both and decides what a share is worth.",
-  },
-  {
-    n: "03",
-    title: "Shares, and the revenue that follows",
-    body:
-      "Buyers take shares at the priced rate. Earnings delivered to the vault become " +
-      "claimable pro rata, and stay correct even when shares change hands between payouts.",
-  },
-];
-
 function Method() {
   return (
     <section id="how" className="wrap" style={{paddingTop: 96}}>
-      <SectionRule label="Method" />
+      <SectionRule label="How it works" />
 
-      <h2 className="display display-lg" style={{maxWidth: "18ch"}}>
-        Evidence first, opinion second
+      <h2 className="display display-lg" style={{maxWidth: "20ch"}}>
+        Infrastructure that earns, financed by what it earns
       </h2>
 
-      <div
-        style={{
-          marginTop: 44,
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(268px, 1fr))",
-          gap: 1,
-          background: "var(--line)",
-          border: "1px solid var(--line)",
-        }}
-      >
-        {STEPS.map((step) => (
-          <div key={step.n} style={{background: "var(--paper)", padding: "26px 24px 30px"}}>
-            <p className="mono spec-red" style={{fontSize: 12, letterSpacing: "0.2em"}}>
-              {step.n}
-            </p>
-            <h3 style={{marginTop: 14, fontSize: 20, letterSpacing: "-0.02em"}}>{step.title}</h3>
-            <p style={{marginTop: 11, fontSize: 15, color: "var(--ink-70)", lineHeight: 1.6}}>
-              {step.body}
-            </p>
-          </div>
-        ))}
+      <div style={{marginTop: 40}}>
+        <Flow />
       </div>
     </section>
   );
@@ -162,14 +118,9 @@ function Asymmetry() {
             Two models agree unless you stop them
           </h2>
           <p className="lead" style={{marginTop: 20, fontSize: 16}}>
-            Give two language models the same task and the same information and they will reach
-            the same answer nearly every time. You get something debate-shaped with no
-            disagreement inside it.
-          </p>
-          <p className="lead" style={{marginTop: 14, fontSize: 16}}>
-            So they are not given the same information. The investor works from a risk
-            checklist. The operator&rsquo;s advocate never sees it, and is never told it exists.
-            The disagreement is structural, not instructed.
+            Two models given the same task and the same information reach the same answer
+            nearly every time. So they are not given the same information: the investor works
+            from a risk checklist, and the operator&rsquo;s advocate never sees it.
           </p>
         </div>
 
@@ -278,9 +229,8 @@ function OnChain() {
       </h2>
 
       <p className="lead" style={{marginTop: 20}}>
-        Tokenise a building or an invoice and you need someone trustworthy to swear the real
-        thing did what it claimed. That person is the weak link. A node&rsquo;s earnings are
-        already an on-chain event, so there is nobody to trust and nothing to attest.
+        Tokenise a building and someone must swear it did what it claimed. A machine&rsquo;s
+        earnings are already an on-chain event, so there is nobody to trust.
       </p>
 
       <div
