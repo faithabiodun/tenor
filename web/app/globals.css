@@ -86,7 +86,7 @@ h2,
 h3 {
   margin: 0;
   font-weight: 800;
-  letter-spacing: 0;
+  letter-spacing: -0.035em;
   line-height: 1.04;
 }
 
@@ -94,7 +94,7 @@ h3 {
 .display {
   font-weight: 900;
   font-style: italic;
-  letter-spacing: 0;
+  letter-spacing: -0.05em;
   line-height: 0.86;
   text-transform: uppercase;
 }
@@ -139,165 +139,6 @@ a {
   line-height: 1.5;
   color: var(--ink-70);
   max-width: 62ch;
-}
-
-/* --- reference poster landing ------------------------------------------------------ */
-
-.landing-poster {
-  min-height: 100svh;
-  position: relative;
-  overflow: hidden;
-  isolation: isolate;
-  background:
-    linear-gradient(180deg, rgba(28, 28, 30, 0.035), transparent 18%),
-    radial-gradient(circle at 30% 56%, rgba(255, 255, 255, 0.18), transparent 30%),
-    var(--paper);
-}
-
-.landing-poster::before,
-.landing-poster::after {
-  content: "";
-  position: absolute;
-  z-index: 3;
-  width: 26px;
-  height: 10px;
-  border-top: 1px solid var(--ink-30);
-  opacity: 0.48;
-}
-
-.landing-poster::before {
-  top: 18px;
-  left: 14px;
-  border-left: 1px solid var(--ink-30);
-}
-
-.landing-poster::after {
-  top: 18px;
-  right: 14px;
-  border-right: 1px solid var(--vermilion);
-}
-
-.poster-nav {
-  position: absolute;
-  z-index: 4;
-  top: 22px;
-  font-family: var(--font-mono), ui-monospace, monospace;
-  font-size: 7.5px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  text-decoration: none;
-  color: var(--ink-50);
-}
-
-.poster-nav-left {
-  left: 26px;
-}
-
-.poster-nav-right {
-  right: 26px;
-  color: var(--vermilion);
-}
-
-.poster-brand {
-  position: absolute;
-  z-index: 2;
-  top: clamp(50px, 8vh, 78px);
-  right: clamp(24px, 6vw, 72px);
-  width: min-content;
-}
-
-.poster-wordmark {
-  position: relative;
-  display: inline-flex;
-  align-items: flex-start;
-  gap: 8px;
-  font-size: clamp(56px, 12vw, 164px);
-  line-height: 0.74;
-  transform: skewX(-10deg);
-  transform-origin: right center;
-  white-space: nowrap;
-}
-
-.poster-wordmark span {
-  width: clamp(8px, 1.25vw, 17px);
-  height: 0.58em;
-  margin-top: 0.02em;
-  background: var(--vermilion);
-  display: block;
-}
-
-.poster-brand .spec {
-  margin-top: clamp(9px, 1.1vw, 14px);
-  font-size: clamp(7.5px, 1.15vw, 12px);
-  letter-spacing: 0.26em;
-  white-space: nowrap;
-}
-
-.poster-study {
-  position: absolute;
-  z-index: 1;
-  left: clamp(-96px, -4vw, -30px);
-  right: clamp(-300px, -15vw, -120px);
-  bottom: clamp(38px, 6vh, 76px);
-  margin: 0;
-}
-
-.poster-study svg {
-  width: min(1560px, 148vw);
-  height: auto;
-  display: block;
-  overflow: visible;
-}
-
-.poster-chip {
-  position: absolute;
-  z-index: 4;
-  left: 22px;
-  bottom: 18px;
-  width: 24px;
-  height: 28px;
-  display: grid;
-  place-items: center;
-  grid-template-rows: 1fr 1fr;
-  background: var(--ghost-far);
-  color: var(--paper);
-  border: 1px solid rgba(28, 28, 30, 0.22);
-  font-family: var(--font-mono), ui-monospace, monospace;
-  font-size: 8px;
-  font-weight: 800;
-  line-height: 1;
-  text-decoration: none;
-  opacity: 0.86;
-}
-
-@media (max-width: 760px) {
-  .landing-poster {
-    min-height: 78svh;
-  }
-
-  .poster-brand {
-    top: 54px;
-    right: 18px;
-  }
-
-  .poster-wordmark {
-    font-size: clamp(48px, 20vw, 92px);
-  }
-
-  .poster-brand .spec {
-    font-size: 6.8px;
-    letter-spacing: 0.12em;
-  }
-
-  .poster-study {
-    left: -82px;
-    right: -420px;
-    bottom: 46px;
-  }
-
-  .poster-study svg {
-    width: 1200px;
-  }
 }
 
 /* --- drawing furniture ------------------------------------------------------------- */
@@ -489,7 +330,7 @@ label {
   font-variant-numeric: tabular-nums;
   font-size: clamp(23px, 3.2vw, 33px);
   font-weight: 500;
-  letter-spacing: 0;
+  letter-spacing: -0.025em;
   line-height: 1;
 }
 
