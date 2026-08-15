@@ -21,57 +21,30 @@ export function Wordmark({size = 21}: {size?: number}) {
   );
 }
 
-const NAV = [
-  {label: "Method", href: "/#how"},
-  {label: "Evidence", href: "/#evidence"},
-  {label: "On chain", href: "/#chain"},
-];
-
 export function Header() {
   return (
-    <header>
+    <header style={{borderBottom: "1px solid var(--line)"}}>
       <div
         className="wrap"
         style={{
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          minHeight: 82,
-          gap: 20,
+          minHeight: 64,
+          gap: 16,
         }}
       >
-        <Link href="/" style={{textDecoration: "none", flex: "none"}}>
-          <Wordmark size={27} />
+        <Link href="/" style={{textDecoration: "none"}}>
+          <Wordmark />
         </Link>
-
-        {/* Centre rail. Hidden on narrow screens rather than wrapped, because a nav that
-            wraps under the wordmark reads as a mistake. */}
-        <nav className="nav-rail">
-          {NAV.map((item) => (
-            <Link key={item.label} href={item.href} className="nav-link">
-              {item.label}
-            </Link>
-          ))}
-        </nav>
-
-        <div style={{display: "flex", alignItems: "center", gap: 10, flex: "none"}}>
-          <Link href="/node" className="pill pill-ghost">
-            Value a node <span aria-hidden>↗</span>
+        <nav style={{display: "flex", alignItems: "center", gap: 22}}>
+          <Link href="/#how" className="spec" style={{textDecoration: "none"}}>
+            Method
           </Link>
-          <Link href="/node" className="pill pill-solid">
+          <Link href="/node" className="btn" style={{padding: "11px 20px"}}>
             List a node
-            <span
-              aria-hidden
-              style={{
-                width: 7,
-                height: 7,
-                borderRadius: 999,
-                background: "var(--vermilion)",
-                display: "inline-block",
-              }}
-            />
           </Link>
-        </div>
+        </nav>
       </div>
     </header>
   );

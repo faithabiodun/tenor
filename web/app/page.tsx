@@ -1,6 +1,5 @@
 import Link from "next/link";
 import {Footer, Header} from "../components/Chrome";
-import {Hardware} from "../components/Hardware";
 
 export default function Home() {
   return (
@@ -23,157 +22,224 @@ export default function Home() {
 
 function Hero() {
   return (
-    <section className="hero">
-      <div className="wrap">
-        <div className="hero-grid">
-          <div className="rise">
-            <div style={{display: "flex", alignItems: "center", gap: 11, marginBottom: 20}}>
-              <span
-                aria-hidden
-                style={{
-                  width: 8,
-                  height: 8,
-                  borderRadius: 999,
-                  background: "var(--vermilion)",
-                  flex: "none",
-                }}
-              />
-              <span className="spec">Relentless uptime</span>
-              <span className="rule" style={{flex: 1, maxWidth: 120}} />
-            </div>
-
-            <h1
-              className="display display-xl"
-              style={{display: "flex", alignItems: "flex-start", gap: 8}}
-            >
-              Uptime
-              <span
-                aria-hidden
-                style={{
-                  width: "0.09em",
-                  height: "0.52em",
-                  background: "var(--vermilion)",
-                  transform: "skewX(-12deg)",
-                  marginTop: "0.06em",
-                  flex: "none",
-                }}
-              />
-            </h1>
-
-            <p className="spec" style={{marginTop: 16}}>
-              Performance study 01 / Relentless uptime
-            </p>
-
-            <p
-              style={{
-                marginTop: 22,
-                fontSize: 16.5,
-                lineHeight: 1.6,
-                color: "var(--ink-70)",
-                maxWidth: "44ch",
-              }}
-            >
-              Sell the earnings your machine has not made yet. Two agents argue over what six
-              months of a node&rsquo;s revenue is worth today. The chain says what it actually
-              earned.
-            </p>
-
-            <div style={{display: "flex", gap: 11, marginTop: 30, flexWrap: "wrap"}}>
-              <Link href="/node" className="pill pill-solid" style={{padding: "15px 28px"}}>
-                Value a node <span aria-hidden>↗</span>
-              </Link>
-              <Link href="/#how" className="pill pill-ghost" style={{padding: "15px 28px"}}>
-                Read the method
-              </Link>
-            </div>
-          </div>
-
-          <div>
-            <div style={{display: "flex", justifyContent: "flex-end", marginBottom: 4}}>
-              <ChipRail />
-            </div>
-            <Hardware />
-          </div>
-        </div>
-
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            gap: 24,
-            marginTop: 8,
-            flexWrap: "wrap",
-          }}
-        >
-          <div style={{display: "flex", alignItems: "center", gap: 13}}>
-            <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden>
-              <path d="M2 20 L11 2 L20 20 Z" fill="none" stroke="var(--ink-30)" strokeWidth="1.4" />
-              <path d="M7 20 L11 12 L15 20 Z" fill="var(--ink-30)" opacity="0.5" />
-            </svg>
-            <p className="spec" style={{lineHeight: 1.5}}>
-              Built for machines
-              <br />
-              that don&rsquo;t pause
-            </p>
-          </div>
-
-          <div style={{display: "flex", alignItems: "center", gap: 16, flex: 1, minWidth: 160}}>
-            <span className="rule" style={{flex: 1}} />
-            <span className="spec">Uptime // 01</span>
-            <span aria-hidden style={{display: "flex", gap: 3, transform: "skewX(-16deg)"}}>
-              <i style={{width: 5, height: 17, background: "var(--ink)"}} />
-              <i style={{width: 5, height: 17, background: "var(--ink-30)"}} />
-              <i style={{width: 5, height: 17, background: "var(--vermilion)"}} />
-            </span>
-          </div>
-        </div>
+    <section className="wrap" style={{paddingTop: 62, paddingBottom: 40}}>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "baseline",
+          justifyContent: "space-between",
+          gap: 20,
+          flexWrap: "wrap",
+        }}
+      >
+        <p className="spec">Performance study 01 / Relentless uptime</p>
+        <p className="spec spec-red">X Layer · chain 196</p>
       </div>
+
+      <h1 className="display display-xl rise" style={{marginTop: 22, maxWidth: "14ch"}}>
+        Sell the earnings your machine has not made yet
+      </h1>
+
+      <p className="lead" style={{marginTop: 30}}>
+        A node that earns twelve dollars a month is invisible to every lender alive. Uptime
+        reads what it has actually paid out, has two AI agents argue over what the next six
+        months are worth, and turns the answer into shares anyone can buy.
+      </p>
+
+      <div style={{display: "flex", gap: 12, marginTop: 26, flexWrap: "wrap"}}>
+        <Link href="/node" className="btn">
+          List a node
+        </Link>
+        <Link href="/#how" className="btn btn-ghost">
+          See the method
+        </Link>
+      </div>
+
+      <ProjectionStudy />
     </section>
   );
 }
 
 /**
- * Three claims, each one something the deployment actually does rather than a number chosen
- * to look impressive. "99.9% stability" would be the easy version and it would be invented.
+ * The hero drawing.
+ *
+ * One solid module, then three wireframes receding. The sequence is the product: the solid
+ * form is revenue the chain has already recorded, and each ghost is further into a
+ * projection, drawn fainter because less is known about it. Nothing here is styling for its
+ * own sake, and the colours must keep meaning what they mean.
  */
-function ChipRail() {
+function ProjectionStudy() {
   return (
-    <div className="chip-rail">
-      <div className="chip">
-        <svg width="15" height="15" viewBox="0 0 24 24" aria-hidden>
-          <path d="M13 2 L4 14 h6 l-1 8 9-12 h-6 z" fill="var(--vermilion)" />
-        </svg>
-        <div>
-          <p className="chip-value">On chain</p>
-          <p className="chip-label">Read, not reported</p>
-        </div>
-      </div>
+    <figure style={{margin: "54px 0 0"}}>
+      <svg
+        viewBox="0 0 1200 430"
+        role="img"
+        aria-label="One solid module representing observed earnings, followed by three wireframe modules representing projected months, each fainter than the last."
+        style={{width: "100%", height: "auto", display: "block", overflow: "visible"}}
+      >
+        {/* Ground line the modules sit on, as on a drawing sheet. */}
+        <line x1="20" y1="330" x2="1140" y2="330" stroke="var(--line)" strokeWidth="1" />
 
-      <div className="chip">
-        <svg width="15" height="15" viewBox="0 0 24 24" aria-hidden fill="none" stroke="var(--ink)" strokeWidth="1.8">
-          <circle cx="12" cy="12" r="3.2" />
-          <circle cx="12" cy="12" r="8.4" />
-          <path d="M12 3.6 v3.2 M12 17.2 v3.2 M3.6 12 h3.2 M17.2 12 h3.2" />
-        </svg>
-        <div>
-          <p className="chip-value">3 agents</p>
-          <p className="chip-label">Opposing incentives</p>
-        </div>
-      </div>
+        {/* Far ghost first, so nearer forms overlap it. */}
+        <Module x={790} stroke="var(--ghost-far)" opacity={0.62} />
+        <Module x={580} stroke="var(--ghost-mid)" opacity={0.72} />
+        <Module x={372} stroke="var(--ghost-near)" opacity={0.78} />
+        <Module x={44} solid />
 
-      <div className="chip">
-        <svg width="15" height="15" viewBox="0 0 24 24" aria-hidden>
-          <rect x="3" y="13" width="4" height="8" fill="var(--ghost-far)" />
-          <rect x="10" y="8" width="4" height="13" fill="var(--ghost-mid)" />
-          <rect x="17" y="3" width="4" height="18" fill="var(--vermilion)" />
-        </svg>
-        <div>
-          <p className="chip-value">keccak256</p>
-          <p className="chip-label">Tamper evident</p>
-        </div>
-      </div>
-    </div>
+        {/* Shadow under the solid module only. Only real things cast one. */}
+        <ellipse cx="230" cy="335" rx="150" ry="4" fill="var(--ink)" opacity="0.14" />
+
+        {/* Annotation, top right, with a leader running back toward the far ghost. */}
+        <g>
+          <text
+            x="1140"
+            y="106"
+            textAnchor="end"
+            className="mono"
+            fontSize="11"
+            letterSpacing="2.4"
+            fill="var(--ink-70)"
+          >
+            OBSERVED BEFORE PROJECTED
+          </text>
+          <path
+            d="M1136 118 L1136 150 L1010 150 L1010 196"
+            fill="none"
+            stroke="var(--ink-30)"
+            strokeWidth="1"
+            strokeDasharray="3 3"
+          />
+        </g>
+
+        {/* Registration mark, far right margin. */}
+        <g stroke="var(--ink-30)" strokeWidth="1" opacity="0.6" fill="none">
+          <line x1="1168" y1="238" x2="1188" y2="238" />
+          <line x1="1178" y1="228" x2="1178" y2="248" />
+          <circle cx="1178" cy="238" r="6" />
+        </g>
+
+        <Caption x={44} label="OBSERVED" sub="READ FROM CHAIN" tone="var(--ink-70)" />
+        <Caption x={372} label="MONTH 1–2" sub="PROJECTED" tone="var(--ghost-near)" />
+        <Caption x={580} label="MONTH 3–4" sub="PROJECTED" tone="var(--ghost-mid)" />
+        <Caption x={790} label="MONTH 5–6" sub="PROJECTED" tone="var(--ghost-far)" />
+      </svg>
+    </figure>
+  );
+}
+
+/** A compute module: body, three fans, mounting tab. Solid when measured, wireframe when not. */
+function Module({
+  x,
+  solid = false,
+  stroke = "var(--ink)",
+  opacity = 1,
+}: {
+  x: number;
+  solid?: boolean;
+  stroke?: string;
+  opacity?: number;
+}) {
+  const y = 160;
+  const w = 360;
+  const h = 150;
+  const body =
+    `M${x},${y + 20} L${x + 16},${y} L${x + w - 34},${y} L${x + w},${y + 26} ` +
+    `L${x + w},${y + h - 20} L${x + w - 18},${y + h} L${x + 18},${y + h} L${x},${y + h - 22} Z`;
+  const fans = [0.24, 0.5, 0.76].map((t) => x + w * t);
+  const cy = y + h / 2;
+
+  return (
+    <g opacity={opacity}>
+      <path
+        d={body}
+        fill={solid ? "var(--carbon)" : "none"}
+        stroke={solid ? "var(--ink)" : stroke}
+        strokeWidth={solid ? 1.5 : 1.1}
+      />
+
+      {/* Accent stripe along the top edge, the one flash of colour on the real hardware. */}
+      {solid && (
+        <path
+          d={`M${x + 24},${y + 9} L${x + w - 40},${y + 9}`}
+          stroke="var(--vermilion)"
+          strokeWidth="2.5"
+        />
+      )}
+
+      {fans.map((cx, i) => (
+        <g key={i}>
+          <circle
+            cx={cx}
+            cy={cy}
+            r="44"
+            fill="none"
+            stroke={solid ? "var(--ink-50)" : stroke}
+            strokeWidth={solid ? 1.4 : 1}
+          />
+          <circle
+            cx={cx}
+            cy={cy}
+            r="15"
+            fill={solid ? "var(--ink)" : "none"}
+            stroke={solid ? "var(--ink-50)" : stroke}
+            strokeWidth="1"
+          />
+          {/* Blades are drawn only on the measured module. A projection has no detail to show. */}
+          {solid &&
+            Array.from({length: 9}, (_, b) => {
+              const a = (b / 9) * Math.PI * 2;
+              return (
+                <line
+                  key={b}
+                  x1={cx + Math.cos(a) * 16}
+                  y1={cy + Math.sin(a) * 16}
+                  x2={cx + Math.cos(a + 0.5) * 43}
+                  y2={cy + Math.sin(a + 0.5) * 43}
+                  stroke="var(--ink-50)"
+                  strokeWidth="1"
+                  opacity="0.75"
+                />
+              );
+            })}
+        </g>
+      ))}
+
+      {/* Mounting tab and serial plate, on the measured module only. */}
+      {solid && (
+        <>
+          <path
+            d={`M${x - 14},${y + 6} L${x},${y + 20} L${x},${y + h - 22} L${x - 14},${y + h - 6} Z`}
+            fill="var(--carbon)"
+            stroke="var(--ink)"
+            strokeWidth="1.2"
+          />
+          <text
+            x={x + 26}
+            y={y + h - 16}
+            className="mono"
+            fontSize="10"
+            letterSpacing="1.8"
+            fill="var(--ghost-mid)"
+          >
+            UP·01
+          </text>
+        </>
+      )}
+    </g>
+  );
+}
+
+function Caption({x, label, sub, tone}: {x: number; label: string; sub: string; tone: string}) {
+  return (
+    <g>
+      <line x1={x} y1="352" x2={x} y2="364" stroke="var(--line)" strokeWidth="1" />
+      <text x={x} y="382" className="mono" fontSize="11" letterSpacing="2" fill={tone}>
+        {label}
+      </text>
+      <text x={x} y="399" className="mono" fontSize="9.5" letterSpacing="1.6" fill="var(--ink-30)">
+        {sub}
+      </text>
+    </g>
   );
 }
 
@@ -209,7 +275,7 @@ const STEPS = [
 
 function Method() {
   return (
-    <section id="how" className="wrap" style={{paddingTop: 104}}>
+    <section id="how" className="wrap" style={{paddingTop: 96}}>
       <SectionRule label="Method" />
 
       <h2 className="display display-lg" style={{maxWidth: "18ch"}}>
@@ -248,7 +314,7 @@ function Method() {
 
 function Asymmetry() {
   return (
-    <section id="evidence" className="wrap" style={{paddingTop: 104}}>
+    <section className="wrap" style={{paddingTop: 96}}>
       <SectionRule label="The asymmetry" />
 
       <div
@@ -363,7 +429,7 @@ const COMMITMENTS = [
 
 function OnChain() {
   return (
-    <section id="chain" className="wrap" style={{paddingTop: 104}}>
+    <section className="wrap" style={{paddingTop: 96}}>
       <SectionRule label="On chain" />
 
       <h2 className="display display-lg" style={{maxWidth: "20ch"}}>
@@ -396,8 +462,8 @@ function OnChain() {
       </div>
 
       <div style={{marginTop: 48}}>
-        <Link href="/node" className="pill pill-solid" style={{padding: "15px 28px"}}>
-          Value a node <span aria-hidden>↗</span>
+        <Link href="/node" className="btn">
+          List a node
         </Link>
       </div>
     </section>
