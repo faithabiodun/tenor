@@ -59,14 +59,9 @@ function Hero() {
           months are worth, and turns the answer into shares anyone can buy.
         </p>
 
-        {/* One action. Two buttons of equal weight ask the reader to choose before they
-            know enough to; the second is a quiet link for anyone not ready. */}
         <div className="hero-actions">
           <Link href="/node" className="btn">
             Value a node
-          </Link>
-          <Link href="/#how" className="quiet-link">
-            or see how it works
           </Link>
         </div>
       </div>

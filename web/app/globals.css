@@ -855,3 +855,64 @@ body {
   color: var(--ink);
   border-color: var(--ink);
 }
+
+/* --- the evidence plate, given depth --------------------------------------------------- */
+
+/*
+ * The one panel on the page carrying hard numbers, so it is the one thing lifted off the
+ * paper. Turned slightly and shadowed, with the table and the quote standing proud of the
+ * card face in Z, which is what makes it read as an object rather than a rotated rectangle.
+ */
+.plate {
+  background: var(--paper);
+  transform: perspective(1700px) rotateY(-7deg);
+  transform-style: preserve-3d;
+  box-shadow: 0 28px 48px rgba(28, 28, 30, 0.13);
+  transition: transform 760ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.plate:hover {
+  transform: perspective(1700px) rotateY(-2.5deg);
+}
+
+.plate .scroll-x { transform: translateZ(30px); }
+.plate blockquote { transform: translateZ(18px); }
+.plate > .spec { transform: translateZ(38px); display: block; }
+
+/* Flat on narrow screens: a turned card at 380px wide just looks like a mistake, and the
+   table inside it becomes harder to read for no gain. */
+@media (max-width: 900px) {
+  .plate,
+  .plate:hover {
+    transform: none;
+    box-shadow: 0 14px 24px rgba(28, 28, 30, 0.09);
+  }
+  .plate .scroll-x,
+  .plate blockquote,
+  .plate > .spec {
+    transform: none;
+  }
+}
+
+/*
+ * The plate is also the reveal target, and .reveal.is-in sets transform: none, which
+ * outranks .plate and would flatten the card the moment it appeared. Composed here so the
+ * reveal slides it in and leaves it turned, rather than the two fighting over one property.
+ */
+.reveal.plate {
+  transform: perspective(1700px) rotateY(-7deg) translateY(20px);
+}
+
+.reveal.is-in.plate {
+  transform: perspective(1700px) rotateY(-7deg);
+}
+
+.reveal.is-in.plate:hover {
+  transform: perspective(1700px) rotateY(-2.5deg);
+}
+
+@media (max-width: 900px) {
+  .reveal.plate { transform: translateY(20px); }
+  .reveal.is-in.plate,
+  .reveal.is-in.plate:hover { transform: none; }
+}

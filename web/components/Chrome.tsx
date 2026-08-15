@@ -38,9 +38,6 @@ export function Header() {
           <Wordmark />
         </Link>
         <nav style={{display: "flex", alignItems: "center", gap: 22}}>
-          <Link href="/#how" className="spec" style={{textDecoration: "none"}}>
-            Method
-          </Link>
           <Link href="/node" className="btn" style={{padding: "11px 20px"}}>
             List a node
           </Link>
@@ -55,7 +52,6 @@ const FOOTER_LINKS: {heading: string; links: {label: string; href: string}[]}[] 
     heading: "Product",
     links: [
       {label: "List a node", href: "/node"},
-      {label: "Method", href: "/#how"},
       {label: "On chain", href: "/#how"},
     ],
   },
