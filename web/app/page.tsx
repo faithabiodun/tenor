@@ -1,10 +1,9 @@
 import Link from "next/link";
-import {Footer, Header} from "../components/Chrome";
+import {Footer} from "../components/Chrome";
 
 export default function Home() {
   return (
     <>
-      <Header />
       <main>
         <Hero />
         <Method />
@@ -22,223 +21,226 @@ export default function Home() {
 
 function Hero() {
   return (
-    <section className="wrap" style={{paddingTop: 62, paddingBottom: 40}}>
-      <div
-        style={{
-          display: "flex",
-          alignItems: "baseline",
-          justifyContent: "space-between",
-          gap: 20,
-          flexWrap: "wrap",
-        }}
-      >
+    <section className="landing-poster" aria-labelledby="landing-title">
+      <Link href="/node" className="poster-nav poster-nav-left" aria-label="List a node">
+        01 / node bay
+      </Link>
+      <Link href="/#how" className="poster-nav poster-nav-right" aria-label="Read the method">
+        method / 03
+      </Link>
+
+      <div className="poster-brand">
+        <h1 id="landing-title" className="display poster-wordmark">
+          Uptime
+          <span aria-hidden />
+        </h1>
         <p className="spec">Performance study 01 / Relentless uptime</p>
-        <p className="spec spec-red">X Layer · chain 196</p>
-      </div>
-
-      <h1 className="display display-xl rise" style={{marginTop: 22, maxWidth: "14ch"}}>
-        Sell the earnings your machine has not made yet
-      </h1>
-
-      <p className="lead" style={{marginTop: 30}}>
-        A node that earns twelve dollars a month is invisible to every lender alive. Uptime
-        reads what it has actually paid out, has two AI agents argue over what the next six
-        months are worth, and turns the answer into shares anyone can buy.
-      </p>
-
-      <div style={{display: "flex", gap: 12, marginTop: 26, flexWrap: "wrap"}}>
-        <Link href="/node" className="btn">
-          List a node
-        </Link>
-        <Link href="/#how" className="btn btn-ghost">
-          See the method
-        </Link>
       </div>
 
       <ProjectionStudy />
+
+      <Link href="/node" className="poster-chip" aria-label="Open Uptime node bay">
+        <span>UP</span>
+        <span>01</span>
+      </Link>
     </section>
   );
 }
 
-/**
- * The hero drawing.
- *
- * One solid module, then three wireframes receding. The sequence is the product: the solid
- * form is revenue the chain has already recorded, and each ghost is further into a
- * projection, drawn fainter because less is known about it. Nothing here is styling for its
- * own sake, and the colours must keep meaning what they mean.
- */
 function ProjectionStudy() {
   return (
-    <figure style={{margin: "54px 0 0"}}>
+    <figure className="poster-study">
       <svg
-        viewBox="0 0 1200 430"
+        viewBox="0 0 1440 560"
         role="img"
-        aria-label="One solid module representing observed earnings, followed by three wireframe modules representing projected months, each fainter than the last."
-        style={{width: "100%", height: "auto", display: "block", overflow: "visible"}}
+        aria-label="A solid triple-fan Uptime compute module followed by three wireframe projection studies."
       >
-        {/* Ground line the modules sit on, as on a drawing sheet. */}
-        <line x1="20" y1="330" x2="1140" y2="330" stroke="var(--line)" strokeWidth="1" />
+        <defs>
+          <linearGradient id="cardFace" x1="0%" x2="100%" y1="0%" y2="100%">
+            <stop offset="0%" stopColor="#38383a" />
+            <stop offset="52%" stopColor="#151517" />
+            <stop offset="100%" stopColor="#28282b" />
+          </linearGradient>
+          <radialGradient id="fanWell" cx="50%" cy="48%" r="58%">
+            <stop offset="0%" stopColor="#2f3032" />
+            <stop offset="45%" stopColor="#111113" />
+            <stop offset="100%" stopColor="#050506" />
+          </radialGradient>
+          <filter id="softShadow" x="-10%" y="-20%" width="120%" height="160%">
+            <feDropShadow dx="0" dy="9" stdDeviation="5" floodColor="#1c1c1e" floodOpacity="0.24" />
+          </filter>
+        </defs>
 
-        {/* Far ghost first, so nearer forms overlap it. */}
-        <Module x={790} stroke="var(--ghost-far)" opacity={0.62} />
-        <Module x={580} stroke="var(--ghost-mid)" opacity={0.72} />
-        <Module x={372} stroke="var(--ghost-near)" opacity={0.78} />
-        <Module x={44} solid />
+        <line x1="0" y1="478" x2="1428" y2="478" stroke="var(--line)" strokeWidth="1.2" />
+        <line x1="46" y1="184" x2="1146" y2="184" stroke="var(--line-soft)" strokeWidth="0.9" />
+        <line x1="46" y1="246" x2="1210" y2="246" stroke="var(--line-soft)" strokeWidth="0.7" />
+        <line x1="46" y1="410" x2="1258" y2="410" stroke="var(--line-soft)" strokeWidth="0.7" />
 
-        {/* Shadow under the solid module only. Only real things cast one. */}
-        <ellipse cx="230" cy="335" rx="150" ry="4" fill="var(--ink)" opacity="0.14" />
+        <WireModule x={1048} y={238} stroke="var(--ghost-far)" opacity={0.52} />
+        <WireModule x={842} y={238} stroke="var(--ghost-mid)" opacity={0.54} />
+        <WireModule x={636} y={238} stroke="var(--ghost-near)" opacity={0.58} />
+        <SolidModule />
 
-        {/* Annotation, top right, with a leader running back toward the far ghost. */}
         <g>
           <text
-            x="1140"
-            y="106"
+            x="1298"
+            y="164"
             textAnchor="end"
             className="mono"
-            fontSize="11"
-            letterSpacing="2.4"
+            fontSize="12"
+            letterSpacing="2.1"
             fill="var(--ink-70)"
           >
-            OBSERVED BEFORE PROJECTED
+            FORM BEFORE POWER
           </text>
           <path
-            d="M1136 118 L1136 150 L1010 150 L1010 196"
+            d="M1286 173 L1286 195 L1162 195 L1119 237"
             fill="none"
             stroke="var(--ink-30)"
             strokeWidth="1"
-            strokeDasharray="3 3"
           />
         </g>
 
-        {/* Registration mark, far right margin. */}
-        <g stroke="var(--ink-30)" strokeWidth="1" opacity="0.6" fill="none">
-          <line x1="1168" y1="238" x2="1188" y2="238" />
-          <line x1="1178" y1="228" x2="1178" y2="248" />
-          <circle cx="1178" cy="238" r="6" />
+        <g stroke="var(--ghost-far)" strokeWidth="1" opacity="0.55" fill="none">
+          <line x1="1390" y1="255" x2="1422" y2="255" />
+          <line x1="1406" y1="239" x2="1406" y2="271" />
+          <circle cx="1406" cy="255" r="8" />
+          <circle cx="1406" cy="255" r="2.5" />
         </g>
-
-        <Caption x={44} label="OBSERVED" sub="READ FROM CHAIN" tone="var(--ink-70)" />
-        <Caption x={372} label="MONTH 1–2" sub="PROJECTED" tone="var(--ghost-near)" />
-        <Caption x={580} label="MONTH 3–4" sub="PROJECTED" tone="var(--ghost-mid)" />
-        <Caption x={790} label="MONTH 5–6" sub="PROJECTED" tone="var(--ghost-far)" />
       </svg>
     </figure>
   );
 }
 
-/** A compute module: body, three fans, mounting tab. Solid when measured, wireframe when not. */
-function Module({
-  x,
-  solid = false,
-  stroke = "var(--ink)",
-  opacity = 1,
-}: {
-  x: number;
-  solid?: boolean;
-  stroke?: string;
-  opacity?: number;
-}) {
-  const y = 160;
-  const w = 360;
-  const h = 150;
-  const body =
-    `M${x},${y + 20} L${x + 16},${y} L${x + w - 34},${y} L${x + w},${y + 26} ` +
-    `L${x + w},${y + h - 20} L${x + w - 18},${y + h} L${x + 18},${y + h} L${x},${y + h - 22} Z`;
-  const fans = [0.24, 0.5, 0.76].map((t) => x + w * t);
-  const cy = y + h / 2;
+function SolidModule() {
+  const fans = [191, 391, 591];
 
   return (
-    <g opacity={opacity}>
+    <g filter="url(#softShadow)">
       <path
-        d={body}
-        fill={solid ? "var(--carbon)" : "none"}
-        stroke={solid ? "var(--ink)" : stroke}
-        strokeWidth={solid ? 1.5 : 1.1}
+        d="M92 226 L125 190 L750 190 L806 233 L806 406 L770 440 L122 440 L92 404 Z"
+        fill="url(#cardFace)"
+        stroke="#070708"
+        strokeWidth="3"
       />
+      <path
+        d="M74 209 L92 226 L92 404 L74 424 L50 424 L50 209 Z"
+        fill="#1a1a1c"
+        stroke="#070708"
+        strokeWidth="3"
+      />
+      <path
+        d="M806 233 L831 252 L831 388 L806 406 Z"
+        fill="#1a1a1c"
+        stroke="#070708"
+        strokeWidth="3"
+      />
+      <path d="M126 198 L734 198 L785 236" fill="none" stroke="var(--vermilion)" strokeWidth="4" />
+      <path d="M137 430 L226 430 L226 450 L137 450 Z" fill="#19191b" stroke="#080809" strokeWidth="2" />
+      <path d="M354 440 L354 458 L405 458 L405 440" fill="#202023" stroke="#080809" strokeWidth="2" />
+      <path d="M112 439 L304 439" stroke="#b99047" strokeWidth="6" strokeDasharray="8 5" />
 
-      {/* Accent stripe along the top edge, the one flash of colour on the real hardware. */}
-      {solid && (
-        <path
-          d={`M${x + 24},${y + 9} L${x + w - 40},${y + 9}`}
-          stroke="var(--vermilion)"
-          strokeWidth="2.5"
-        />
-      )}
+      <g opacity="0.42" stroke="#f2eee6" strokeWidth="1">
+        <line x1="126" y1="223" x2="780" y2="223" />
+        <line x1="124" y1="412" x2="772" y2="412" />
+        <line x1="265" y1="200" x2="226" y2="438" />
+        <line x1="525" y1="200" x2="486" y2="438" />
+      </g>
 
       {fans.map((cx, i) => (
-        <g key={i}>
-          <circle
-            cx={cx}
-            cy={cy}
-            r="44"
-            fill="none"
-            stroke={solid ? "var(--ink-50)" : stroke}
-            strokeWidth={solid ? 1.4 : 1}
-          />
-          <circle
-            cx={cx}
-            cy={cy}
-            r="15"
-            fill={solid ? "var(--ink)" : "none"}
-            stroke={solid ? "var(--ink-50)" : stroke}
-            strokeWidth="1"
-          />
-          {/* Blades are drawn only on the measured module. A projection has no detail to show. */}
-          {solid &&
-            Array.from({length: 9}, (_, b) => {
-              const a = (b / 9) * Math.PI * 2;
-              return (
-                <line
-                  key={b}
-                  x1={cx + Math.cos(a) * 16}
-                  y1={cy + Math.sin(a) * 16}
-                  x2={cx + Math.cos(a + 0.5) * 43}
-                  y2={cy + Math.sin(a + 0.5) * 43}
-                  stroke="var(--ink-50)"
-                  strokeWidth="1"
-                  opacity="0.75"
-                />
-              );
-            })}
-        </g>
+        <Fan key={cx} cx={cx} cy={315} label={i === 1 ? "03" : i === 0 ? "UPTIME" : "RELENTLESS"} />
       ))}
 
-      {/* Mounting tab and serial plate, on the measured module only. */}
-      {solid && (
-        <>
-          <path
-            d={`M${x - 14},${y + 6} L${x},${y + 20} L${x},${y + h - 22} L${x - 14},${y + h - 6} Z`}
-            fill="var(--carbon)"
-            stroke="var(--ink)"
-            strokeWidth="1.2"
-          />
-          <text
-            x={x + 26}
-            y={y + h - 16}
-            className="mono"
-            fontSize="10"
-            letterSpacing="1.8"
-            fill="var(--ghost-mid)"
-          >
-            UP·01
-          </text>
-        </>
-      )}
+      <g className="mono">
+        <text x="114" y="356" fontSize="28" fontWeight="800" letterSpacing="1.6" fill="#d8e4e8">
+          UP
+        </text>
+        <text x="116" y="386" fontSize="27" fontWeight="800" letterSpacing="1.6" fill="#d8e4e8">
+          01
+        </text>
+        <text x="116" y="407" fontSize="11" letterSpacing="1.7" fill="var(--vermilion)">
+          UPTIME SERIES
+        </text>
+        <text x="522" y="210" fontSize="10" letterSpacing="2.3" fill="#c9c4bd">
+          TYPE R / D3 / ON-CHAIN
+        </text>
+      </g>
     </g>
   );
 }
 
-function Caption({x, label, sub, tone}: {x: number; label: string; sub: string; tone: string}) {
+function Fan({cx, cy, label}: {cx: number; cy: number; label: string}) {
   return (
     <g>
-      <line x1={x} y1="352" x2={x} y2="364" stroke="var(--line)" strokeWidth="1" />
-      <text x={x} y="382" className="mono" fontSize="11" letterSpacing="2" fill={tone}>
+      <circle cx={cx} cy={cy} r="79" fill="#070708" stroke="#4e4f51" strokeWidth="4" />
+      <circle cx={cx} cy={cy} r="65" fill="url(#fanWell)" stroke="#26272a" strokeWidth="2" />
+      {Array.from({length: 11}, (_, i) => (
+        <path
+          key={i}
+          d={`M${cx + 10} ${cy - 10} C ${cx + 43} ${cy - 55}, ${cx + 75} ${cy - 38}, ${cx + 43} ${cy - 5} C ${cx + 30} ${cy + 7}, ${cx + 18} ${cy + 8}, ${cx + 6} ${cy + 3} Z`}
+          fill="#17181a"
+          stroke="#3b3c3f"
+          strokeWidth="1"
+          transform={`rotate(${i * 32.72} ${cx} ${cy})`}
+        />
+      ))}
+      <circle cx={cx} cy={cy} r="24" fill="#202123" stroke="#595a5c" strokeWidth="2" />
+      <text
+        x={cx}
+        y={cy + 4}
+        textAnchor="middle"
+        className="mono"
+        fontSize={label === "03" ? 20 : 9}
+        fontWeight="800"
+        letterSpacing={label === "03" ? 1.2 : 0.8}
+        fill="#d7d1c8"
+      >
         {label}
       </text>
-      <text x={x} y="399" className="mono" fontSize="9.5" letterSpacing="1.6" fill="var(--ink-30)">
-        {sub}
-      </text>
+    </g>
+  );
+}
+
+function WireModule({
+  x,
+  y,
+  stroke = "var(--ink)",
+  opacity = 1,
+}: {
+  x: number;
+  y: number;
+  stroke?: string;
+  opacity?: number;
+}) {
+  const w = 276;
+  const h = 168;
+  const body =
+    `M${x},${y + 19} L${x + 25},${y} L${x + w - 39},${y} L${x + w},${y + 31} ` +
+    `L${x + w},${y + h - 26} L${x + w - 31},${y + h} L${x + 26},${y + h} L${x},${y + h - 25} Z`;
+  const fans = [0.24, 0.5, 0.76].map((t) => x + w * t);
+  const cy = y + h / 2;
+
+  return (
+    <g opacity={opacity} fill="none" stroke={stroke} strokeWidth="1.25">
+      <path d={body} />
+      <path d={`M${x + 29},${y + 10} L${x + w - 48},${y + 10} L${x + w - 14},${y + 38}`} />
+      <path d={`M${x + 18},${y + h - 13} L${x + w - 44},${y + h - 13}`} />
+      <path d={`M${x + 92},${y} L${x + 58},${y + h}`} opacity="0.6" />
+      <path d={`M${x + 190},${y} L${x + 156},${y + h}`} opacity="0.6" />
+      {fans.map((cx, i) => (
+        <g key={i}>
+          <circle cx={cx} cy={cy} r="47" />
+          <circle cx={cx} cy={cy} r="15" />
+          {Array.from({length: 9}, (_, b) => (
+            <path
+              key={b}
+              d={`M${cx + 7} ${cy - 5} C ${cx + 29} ${cy - 37}, ${cx + 48} ${cy - 25}, ${cx + 28} ${cy - 3}`}
+              transform={`rotate(${b * 40} ${cx} ${cy})`}
+              opacity="0.72"
+            />
+          ))}
+        </g>
+      ))}
     </g>
   );
 }
@@ -343,7 +345,7 @@ function Asymmetry() {
 
         <div className="plate">
           <p className="spec" style={{marginBottom: 18}}>
-            Two sample nodes · same code, same day
+            Two sample nodes / same code, same day
           </p>
 
           <table>
@@ -392,7 +394,7 @@ function Asymmetry() {
             The rates are real output from the deployment you are reading this on, and both
             valuations are stored: fetch{" "}
             <span className="mono" style={{fontSize: 11.5}}>
-              /api/valuation/0x7d8e1028…
+              /api/valuation/0x7d8e1028...
             </span>{" "}
             and re-hash the canonical JSON yourself.
           </p>
