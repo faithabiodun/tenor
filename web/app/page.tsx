@@ -186,6 +186,7 @@ function Asymmetry() {
                 <thead>
                 <tr>
                   <th>Node</th>
+                  <th>Score</th>
                   <th>Operator</th>
                   <th>Investor</th>
                   <th>Verdict</th>
@@ -194,22 +195,24 @@ function Asymmetry() {
               <tbody>
                 <tr>
                   <td style={{color: "var(--ink)"}}>Steady, 124 days</td>
-                  <td>95%</td>
-                  <td>68%</td>
-                  <td style={{color: "var(--vermilion)", fontWeight: 600}}>70%</td>
+                  <td>84</td>
+                  <td>92%</td>
+                  <td>50%</td>
+                  <td style={{color: "var(--vermilion)", fontWeight: 600}}>62%</td>
                 </tr>
                 <tr>
                   <td style={{color: "var(--ink)"}}>Decaying, hidden outage</td>
-                  <td>65%</td>
-                  <td>35%</td>
-                  <td style={{color: "var(--vermilion)", fontWeight: 600}}>48%</td>
+                  <td>55</td>
+                  <td>74%</td>
+                  <td>10%</td>
+                  <td style={{color: "var(--vermilion)", fontWeight: 600}}>30%</td>
                 </tr>
               </tbody>
             </table>
           </div>
 
           <p style={{marginTop: 20, fontSize: 14, color: "var(--ink-70)", lineHeight: 1.6}}>
-            On the decaying node the arbiter put the real risk in one sentence, unprompted:
+            On the decaying node the investor reached the real risk unprompted:
           </p>
           <blockquote
             style={{
@@ -221,15 +224,16 @@ function Asymmetry() {
               lineHeight: 1.55,
             }}
           >
-            Nothing stops the operator from switching this machine off once they have your
-            money, so I&rsquo;m discounting the rate.
+            Net margin is thin and shrinking: 8.46 against operating costs of 5.20. Another
+            38% drop makes the node unprofitable, and the operator has no obligation to keep
+            it running once paid.
           </blockquote>
           <p style={{marginTop: 16, fontSize: 12.5, color: "var(--ink-50)", lineHeight: 1.6}}>
             Both nodes are fixtures with generated histories, labelled as such in the source.
-            The rates are real output from the deployment you are reading this on, and both
-            valuations are stored: fetch{" "}
+            The rates are real output from this deployment, and both valuations are stored:
+            fetch{" "}
             <span className="mono" style={{fontSize: 11.5}}>
-              /api/valuation/0x7d8e1028…
+              /api/valuation/0xc8f8d03d…
             </span>{" "}
             and re-hash the canonical JSON yourself.
           </p>
@@ -260,7 +264,7 @@ const COMMITMENTS = [
     label: "recordValuation",
     body:
       "Restricted to the valuation service. An operator pricing their own node is the " +
-      "failure this entire design exists to prevent.",
+      "failure this design prevents.",
   },
 ];
 
@@ -312,7 +316,6 @@ function SectionRule({label}: {label: string}) {
     <div style={{display: "flex", alignItems: "center", gap: 14, marginBottom: 26}}>
       <p className="spec">{label}</p>
       <div className="rule" style={{flex: 1}} />
-      <div className="crosshair" />
     </div>
   );
 }

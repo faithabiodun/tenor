@@ -61,9 +61,6 @@ body {
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  /* Paper tooth, so large empty areas read as stock rather than a flat digital field. */
-  background-image: radial-gradient(rgba(28, 28, 30, 0.02) 1px, transparent 1px);
-  background-size: 3px 3px;
 }
 
 .wrap {
@@ -225,29 +222,6 @@ a {
   position: relative;
   border: 1px solid var(--line);
   padding: 26px;
-}
-
-.plate::before,
-.plate::after {
-  content: "";
-  position: absolute;
-  width: 9px;
-  height: 9px;
-  border: 1px solid var(--ink-30);
-}
-
-.plate::before {
-  top: -1px;
-  left: -1px;
-  border-right: 0;
-  border-bottom: 0;
-}
-
-.plate::after {
-  bottom: -1px;
-  right: -1px;
-  border-left: 0;
-  border-top: 0;
 }
 
 /* --- controls ---------------------------------------------------------------------- */

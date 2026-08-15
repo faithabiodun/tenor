@@ -1,4 +1,4 @@
-# Deploy UptimeReceivables to X Layer testnet, from PowerShell.
+# Deploy UptimeVault to X Layer testnet, from PowerShell.
 #
 #   .\scripts\deploy-testnet.ps1
 #
@@ -13,7 +13,7 @@ $ErrorActionPreference = "Stop"
 $Rpc = "https://testrpc.xlayer.tech"
 $ChainId = 1952
 $Account = $env:UPTIME_ACCOUNT
-if (-not $Account) { $Account = "uptime-deployer" }
+if (-not $Account) { $Account = "tenor-deployer" }
 
 # Repo root is the parent of this script's directory.
 $Root = Split-Path -Parent $PSScriptRoot
@@ -29,7 +29,7 @@ if (-not (Get-Command forge -ErrorAction SilentlyContinue)) {
 }
 
 Write-Host ""
-Write-Host "  Deploying UptimeReceivables to X Layer testnet (chain $ChainId)"
+Write-Host "  Deploying UptimeVault to X Layer testnet (chain $ChainId)"
 Write-Host ""
 
 # 1. Keystore. Skipped entirely when this account already exists.
@@ -65,13 +65,13 @@ Write-Host "  Broadcasting..."
 Write-Host ""
 Push-Location (Join-Path $Root "contracts")
 try {
-    forge script script/Deploy.s.sol:Deploy --rpc-url $Rpc --account $Account --broadcast
+    forge script script/DeployVault.s.sol:DeployVault --rpc-url $Rpc --account $Account --broadcast
 } finally {
     Pop-Location
 }
 
 # 4. Read the address out of the broadcast record rather than scraping stdout.
-$Record = Join-Path $Root "contracts\broadcast\Deploy.s.sol\$ChainId\run-latest.json"
+$Record = Join-Path $Root "contracts\broadcast\DeployVault.s.sol\$ChainId\run-latest.json"
 $Deployed = ""
 if (Test-Path $Record) {
     $Run = Get-Content $Record -Raw | ConvertFrom-Json
@@ -89,7 +89,7 @@ if ($Deployed) {
     Write-Host "    2. On Render set NEXT_PUBLIC_CONTRACT_ADDRESS=$Deployed"
     Write-Host "       (this triggers a rebuild, not just a restart)"
     Write-Host "    3. On Render set DEPLOYER_PRIVATE_KEY to this wallet's key, so the"
-    Write-Host "       service can call recordVerdict, which is onlyOwner."
+    Write-Host "       service can call recordValuation, which is onlyOwner."
 } else {
     Write-Host "  Deploy finished but no CREATE transaction was found in the broadcast record."
     Write-Host "  Check the output above."
