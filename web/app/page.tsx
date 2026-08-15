@@ -1,6 +1,6 @@
 import Link from "next/link";
 import {Footer, Header} from "../components/Chrome";
-import {AgreementFigure, Flow, OracleFigure} from "../components/Flow";
+import {Flow} from "../components/Flow";
 import {Reveal} from "../components/Reveal";
 
 export default function Home() {
@@ -124,9 +124,10 @@ function Asymmetry() {
           <h2 className="display display-lg beat-head" style={{maxWidth: "16ch"}}>
             Two models agree unless you stop them
           </h2>
-          <div style={{marginTop: 26}}>
-            <AgreementFigure />
-          </div>
+          <p className="beat-sub">
+            Give two models the same information and they agree. So only one of them is given
+            the list of things that can go wrong.
+          </p>
         </Reveal>
 
         <Reveal delay={140} className="plate">
@@ -210,11 +211,6 @@ function OnChain() {
         The chain is the oracle
       </h2>
 
-      <Reveal delay={120}>
-        <div style={{marginTop: 34}}>
-          <OracleFigure />
-        </div>
-      </Reveal>
 
       <div style={{marginTop: 48}}>
         <Link href="/node" className="btn">
