@@ -534,3 +534,70 @@ td {
   white-space: nowrap;
   border: 0;
 }
+
+/* --- responsive ---------------------------------------------------------------------- */
+
+/*
+ * Content that cannot shrink past its own width scrolls inside its own box. Tabular
+ * figures and long hashes are the two that do this, and left alone they push the entire
+ * page sideways, which on a phone is the difference between a site and a broken site.
+ */
+.scroll-x {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  /* Reserve the scrollbar's space so the row does not jump when it appears. */
+  scrollbar-width: thin;
+}
+
+/* Nothing may cause the document itself to scroll sideways. The hero art is deliberately
+   wider than the viewport, so this is the backstop that keeps that from becoming a bug. */
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* Hashes and addresses are single unbroken tokens with no natural wrap point. */
+.mono {
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 900px) {
+  /* Section rhythm tightens: 96px of air between sections is generous on a desktop and
+     wasteful on a screen you scroll with your thumb. */
+  main > section {
+    padding-top: 64px !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .btn {
+    /* Full width, stacked. Two side-by-side buttons at 360px leave each too narrow to
+       read and too small to hit reliably. */
+    width: 100%;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .plate {
+    padding: 18px;
+  }
+
+  .panel,
+  .panel-flat {
+    padding: 16px;
+  }
+}
+
+/* Touch targets. A 10px caption is legible but a 10px tap target is not, so anything
+   interactive keeps a floor regardless of the type size inside it. */
+@media (pointer: coarse) {
+  a.btn,
+  button,
+  .nav-link {
+    min-height: 44px;
+  }
+}
