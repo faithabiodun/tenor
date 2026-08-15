@@ -916,3 +916,32 @@ body {
   .reveal.is-in.plate,
   .reveal.is-in.plate:hover { transform: none; }
 }
+
+/* --- study motion ---------------------------------------------------------------------- */
+
+/* Forms rise out of the ground line rather than appearing whole, which is the same idea the
+   drawing carries: something was measured, and it grew from nothing to that. */
+.grow {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: growUp 900ms cubic-bezier(0.2, 0.85, 0.28, 1) both;
+}
+
+@keyframes growUp {
+  from { transform: scaleY(0.04); opacity: 0; }
+  to { transform: none; opacity: 1; }
+}
+
+/* Leader lines draw themselves toward what they point at. */
+.draw {
+  stroke-dasharray: 6 6;
+  animation: drawIn 1600ms linear infinite;
+}
+
+@keyframes drawIn {
+  to { stroke-dashoffset: -48; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .grow, .draw { animation: none; }
+}
