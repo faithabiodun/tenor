@@ -80,11 +80,20 @@ export function historyFor(payoutAddress: string): RevenueHistory | null {
   return HISTORIES.get(payoutAddress.toLowerCase()) ?? null;
 }
 
+/**
+ * Mainnet, deliberately.
+ *
+ * These fixtures were on testnet, and the panel priced them at the floor of the band with
+ * the investor pointing out that testnet USDT is not worth anything, so a claim on a stream
+ * of it is worth almost nothing either. That was correct: an earnings stream denominated in
+ * play money is worthless no matter how reliably it arrives. The fixture was wrong, not the
+ * reasoning, and it is also where a real listing would live.
+ */
 const ONCHAIN: RevenueHistory["provenance"] = {
   kind: "onchain",
-  chain: "X Layer testnet",
-  chain_id: 1952,
-  rpc_url: "https://testrpc.xlayer.tech",
+  chain: "X Layer",
+  chain_id: 196,
+  rpc_url: "https://rpc.xlayer.tech",
 };
 
 const ATTESTED: RevenueHistory["provenance"] = {
