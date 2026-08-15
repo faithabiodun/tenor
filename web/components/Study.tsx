@@ -1,3 +1,7 @@
+"use client";
+
+import {useEffect, useRef, useState} from "react";
+
 /**
 
  * The projection study, restored.
@@ -524,5 +528,92 @@ function StudyCaption({x, label, sub, tone}: {x: number; label: string; sub: str
         {sub}
       </text>
     </g>
+  );
+}
+
+/* --------------------------------------------------------------------------------------
+ * The three studies as one sequence
+ * ------------------------------------------------------------------------------------ */
+
+const SEQUENCE = [
+  {
+    id: "read",
+    Figure: ProjectionStudy,
+    caption:
+      "We read what the machine has actually been paid, straight from the chain. Everything past today is a projection, and it is drawn fainter the further out it goes.",
+  },
+  {
+    id: "argue",
+    Figure: AgreementStudy,
+    caption:
+      "Two AI agents price it. Give them the same information and they agree, so only one of them is handed the list of things that can go wrong.",
+  },
+  {
+    id: "trust",
+    Figure: OracleStudy,
+    caption:
+      "Tokenise a building and somebody has to vouch for it. A machine's earnings are already an event on the chain, so there is nobody to trust.",
+  },
+];
+
+const DWELL = 6000;
+
+/** The three drawings as one sequence, with the caption carried underneath in prose. */
+export function StudySequence() {
+  const [i, setI] = useState(0);
+  const [live, setLive] = useState(false);
+  const [held, setHeld] = useState(false);
+  const root = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = root.current;
+    // Wallet in-app browsers sometimes ship without it. Run rather than sit on frame one.
+    if (!el || typeof IntersectionObserver === "undefined") {
+      setLive(true);
+      return;
+    }
+    const io = new IntersectionObserver(([e]) => setLive(Boolean(e?.isIntersecting)), {
+      threshold: 0.2,
+    });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!live || held) return;
+    if (typeof matchMedia !== "undefined" && matchMedia("(prefers-reduced-motion: reduce)").matches)
+      return;
+    const t = setTimeout(() => setI((n) => (n + 1) % SEQUENCE.length), DWELL);
+    return () => clearTimeout(t);
+  }, [i, live, held]);
+
+  const step = SEQUENCE[i]!;
+  const Figure = step.Figure;
+
+  return (
+    <div ref={root} className="sequence">
+      {/* Keyed so each drawing remounts and replays its own build-in. */}
+      <div key={step.id} className="sequence-figure">
+        <Figure />
+      </div>
+
+      <p className="study-caption">{step.caption}</p>
+
+      <div className="sequence-dots" role="tablist" aria-label="Choose a step">
+        {SEQUENCE.map((s, n) => (
+          <button
+            key={s.id}
+            role="tab"
+            aria-selected={n === i}
+            aria-label={s.caption.slice(0, 40)}
+            className={n === i ? "is-on" : undefined}
+            onClick={() => {
+              setI(n);
+              setHeld(true);
+            }}
+          />
+        ))}
+      </div>
+    </div>
   );
 }

@@ -945,3 +945,58 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .grow, .draw { animation: none; }
 }
+
+/* --- the study sequence ---------------------------------------------------------------- */
+
+.sequence-figure figure { margin: 0; }
+
+/*
+ * The caption is prose, so it is set in the page's own voice rather than the technical
+ * mono used for labels inside the drawings. Those label a part; this explains the picture.
+ */
+.study-caption {
+  margin: 22px auto 0;
+  max-width: 58ch;
+  text-align: center;
+  font-family: var(--font-display), "Helvetica Neue", Arial, sans-serif;
+  font-size: clamp(16.5px, 2.05vw, 21px);
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  min-height: 4.5em;
+}
+
+.sequence-dots {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 6px;
+}
+
+.sequence-dots button {
+  width: 34px;
+  height: 3px;
+  padding: 0;
+  border: 0;
+  border-radius: 2px;
+  background: var(--line);
+  cursor: pointer;
+  transition: background 200ms ease;
+}
+
+.sequence-dots button.is-on { background: var(--vermilion); }
+
+@media (pointer: coarse) {
+  /* A 3px bar is not a tap target, so pad it out without making it look heavier. */
+  .sequence-dots button {
+    height: 3px;
+    border-top: 14px solid transparent;
+    border-bottom: 14px solid transparent;
+    background-clip: padding-box;
+  }
+}
+
+@media (max-width: 640px) {
+  .study-caption { min-height: 7em; }
+}
