@@ -576,32 +576,30 @@ body {
   }
 }
 
-/* --- the flow explainer -------------------------------------------------------------- */
+/* --- scenes -------------------------------------------------------------------------- */
 
-.flow-stage {
+.scene {
+  margin: 0;
   border: 1px solid var(--line);
   background: var(--paper-deep);
-  padding: 18px;
+  padding: 10px;
 }
 
-.flow-stage svg {
-  width: 100%;
-  height: auto;
-  display: block;
-}
+.scene svg { width: 100%; height: auto; display: block; }
+.scene-short svg { max-height: 260px; }
 
-.flow-caption {
+.scene-caption {
   margin-top: 18px;
-  font-size: clamp(16px, 2.1vw, 21px);
+  font-size: clamp(15.5px, 2vw, 19px);
   line-height: 1.45;
   color: var(--ink);
-  max-width: 54ch;
-  min-height: 3em;
+  max-width: 56ch;
+  min-height: 2.9em;
 }
 
 .flow-rail {
   list-style: none;
-  margin: 24px 0 0;
+  margin: 22px 0 0;
   padding: 0;
   display: grid;
   grid-template-columns: repeat(7, 1fr);
@@ -615,7 +613,7 @@ body {
   width: 100%;
   display: block;
   text-align: left;
-  padding: 12px 10px 14px;
+  padding: 11px 10px 13px;
   background: var(--paper);
   border: 0;
   font: inherit;
@@ -624,14 +622,7 @@ body {
   overflow: hidden;
 }
 
-.flow-step.is-done {
-  color: var(--ink-70);
-}
-
-.flow-step.is-active {
-  background: var(--paper-deep);
-  color: var(--ink);
-}
+.flow-step.is-active { background: var(--paper-deep); color: var(--ink); }
 
 .flow-step-n {
   display: block;
@@ -641,9 +632,7 @@ body {
   color: var(--ink-30);
 }
 
-.flow-step.is-active .flow-step-n {
-  color: var(--vermilion);
-}
+.flow-step.is-active .flow-step-n { color: var(--vermilion); }
 
 .flow-step-label {
   display: block;
@@ -653,8 +642,6 @@ body {
   letter-spacing: -0.01em;
 }
 
-/* The dwell timer, drawn. It is the only thing on the page that tells you the sequence is
-   advancing on its own rather than waiting for you. */
 .flow-step-bar {
   position: absolute;
   left: 0;
@@ -664,84 +651,66 @@ body {
   animation: flowbar 3400ms linear forwards;
 }
 
-@keyframes flowbar {
-  from { width: 0; }
-  to { width: 100%; }
-}
+@keyframes flowbar { from { width: 0; } to { width: 100%; } }
 
 @media (max-width: 720px) {
-  .flow-rail {
-    grid-template-columns: repeat(4, 1fr);
-  }
-  .flow-caption {
-    min-height: 4.5em;
-  }
+  .flow-rail { grid-template-columns: repeat(4, 1fr); }
+  .scene-caption { min-height: 4.4em; }
 }
 
 /* --- scene motion -------------------------------------------------------------------- */
 
 .fx-in { animation: fxIn 520ms cubic-bezier(0.2, 0.7, 0.3, 1) both; }
-.fx-d2 { animation-delay: 260ms; }
-.fx-d3 { animation-delay: 520ms; }
+@keyframes fxIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 
-@keyframes fxIn {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: none; }
-}
+/* The machine arrives by settling onto the ground plane. */
+.fx-drop-in { animation: fxDropIn 700ms cubic-bezier(0.2, 0.9, 0.25, 1) both; }
+@keyframes fxDropIn { from { opacity: 0; transform: translateY(-46px); } to { opacity: 1; transform: none; } }
 
-/* Bars rise from the baseline, so the eye reads them as measurements being taken. */
-.fx-grow { animation: fxGrow 620ms cubic-bezier(0.2, 0.8, 0.3, 1) both; transform-origin: 50% 100%; }
-@keyframes fxGrow {
-  from { transform: scaleY(0); opacity: 0; }
-  to { transform: scaleY(1); opacity: 1; }
-}
+.fx-ping { animation: fxPing 2100ms ease-out infinite both; transform-origin: center; }
+@keyframes fxPing { from { opacity: 0.8; transform: scale(0.15); } to { opacity: 0; transform: scale(1); } }
 
-.fx-wide { animation: fxWide 760ms cubic-bezier(0.2, 0.8, 0.3, 1) both; transform-origin: 0 50%; }
-@keyframes fxWide {
-  from { transform: scaleX(0); }
-  to { transform: scaleX(1); }
-}
+.fx-rise { animation: fxRise 620ms cubic-bezier(0.2, 0.85, 0.3, 1) both; }
+@keyframes fxRise { from { opacity: 0; transform: translateY(26px); } to { opacity: 1; transform: none; } }
 
-/* 415 is the circumference of the r=66 ring, so the arc stops at 84 percent of it. */
-.fx-arc {
-  stroke-dasharray: 415;
-  animation: fxArc 1100ms cubic-bezier(0.2, 0.8, 0.3, 1) both;
-}
-@keyframes fxArc {
-  from { stroke-dashoffset: 415; }
-  to { stroke-dashoffset: 66; }
-}
+.fx-tile { animation: fxTile 460ms cubic-bezier(0.2, 0.9, 0.3, 1) both; }
+@keyframes fxTile { from { opacity: 0; transform: translateY(-22px); } to { opacity: 1; transform: none; } }
 
-.fx-pop { animation: fxPop 380ms cubic-bezier(0.2, 0.9, 0.3, 1) both; transform-origin: 50% 50%; }
-@keyframes fxPop {
-  from { opacity: 0; transform: scale(0.4); }
-  to { opacity: 1; transform: none; }
-}
+.fx-lift { animation: fxLift 760ms cubic-bezier(0.25, 0.8, 0.3, 1) both; }
+@keyframes fxLift { from { transform: none; } to { transform: translateY(-26px); } }
 
-.fx-move { animation: fxMove 900ms cubic-bezier(0.3, 0.7, 0.3, 1) both; }
-@keyframes fxMove {
-  from { transform: translateX(-160px); opacity: 0.2; }
-  to { transform: none; opacity: 1; }
-}
+.fx-arc { stroke-dasharray: 465; animation: fxArc 1200ms cubic-bezier(0.2, 0.8, 0.3, 1) both; }
+@keyframes fxArc { from { stroke-dashoffset: 465; } to { stroke-dashoffset: 74; } }
 
-.fx-drop { animation: fxDrop 1200ms cubic-bezier(0.4, 0.1, 0.3, 1) both; }
-@keyframes fxDrop {
-  0% { transform: none; opacity: 0; }
-  20% { opacity: 1; }
-  100% { transform: translate(210px, 60px); opacity: 0; }
-}
-
-.fx-fan { animation: fxFan 1300ms cubic-bezier(0.3, 0.2, 0.3, 1) both; }
-@keyframes fxFan {
-  0% { transform: none; opacity: 0; }
+.fx-fall { animation: fxFall 1500ms cubic-bezier(0.4, 0.05, 0.35, 1) infinite both; }
+@keyframes fxFall {
+  0% { opacity: 0; transform: translateY(-60px); }
   25% { opacity: 1; }
-  100% { transform: translate(190px, -46px); opacity: 0; }
+  70%, 100% { opacity: 0; transform: translateY(46px); }
+}
+
+.fx-pay { animation: fxPay 1700ms cubic-bezier(0.3, 0.2, 0.3, 1) infinite both; }
+@keyframes fxPay {
+  0% { opacity: 0; transform: none; }
+  20% { opacity: 1; }
+  100% { opacity: 0; transform: translate(var(--tx), var(--ty)); }
+}
+
+.fx-morph polygon { transition: all 900ms cubic-bezier(0.3, 0.7, 0.3, 1); }
+
+.fx-pulse { animation: fxPulse 2000ms ease-in-out infinite both; }
+@keyframes fxPulse { 0%, 100% { opacity: 0.55; } 50% { opacity: 1; } }
+
+.fx-travel { animation: fxTravel 1900ms cubic-bezier(0.35, 0.1, 0.35, 1) infinite both; }
+@keyframes fxTravel {
+  0% { opacity: 0; transform: none; }
+  18% { opacity: 1; }
+  100% { opacity: 0; transform: translate(62px, 62px); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .fx-in, .fx-grow, .fx-wide, .fx-arc, .fx-pop, .fx-move, .fx-drop, .fx-fan, .flow-step-bar {
-    animation: none !important;
-  }
-  .fx-arc { stroke-dashoffset: 66; }
-  .fx-drop, .fx-fan { opacity: 1; }
+  .fx-in, .fx-drop-in, .fx-ping, .fx-rise, .fx-tile, .fx-lift, .fx-arc,
+  .fx-fall, .fx-pay, .fx-pulse, .fx-travel, .flow-step-bar { animation: none !important; }
+  .fx-arc { stroke-dashoffset: 74; }
+  .fx-ping, .fx-fall, .fx-pay, .fx-travel { opacity: 0.85; }
 }

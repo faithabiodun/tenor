@@ -1,6 +1,6 @@
 import Link from "next/link";
 import {Footer, Header} from "../components/Chrome";
-import {Flow} from "../components/Flow";
+import {AgreementFigure, Flow, OracleFigure} from "../components/Flow";
 
 export default function Home() {
   return (
@@ -83,8 +83,6 @@ function Hero() {
 function Method() {
   return (
     <section id="how" className="wrap" style={{paddingTop: 96}}>
-      <SectionRule label="How it works" />
-
       <h2 className="display display-lg" style={{maxWidth: "20ch"}}>
         Infrastructure that earns, financed by what it earns
       </h2>
@@ -103,8 +101,6 @@ function Method() {
 function Asymmetry() {
   return (
     <section className="wrap" style={{paddingTop: 96}}>
-      <SectionRule label="The asymmetry" />
-
       <div
         style={{
           display: "grid",
@@ -117,11 +113,9 @@ function Asymmetry() {
           <h2 className="display display-lg" style={{maxWidth: "16ch"}}>
             Two models agree unless you stop them
           </h2>
-          <p className="lead" style={{marginTop: 20, fontSize: 16}}>
-            Two models given the same task and the same information reach the same answer
-            nearly every time. So they are not given the same information: the investor works
-            from a risk checklist, and the operator&rsquo;s advocate never sees it.
-          </p>
+          <div style={{marginTop: 26}}>
+            <AgreementFigure />
+          </div>
         </div>
 
         <div className="plate">
@@ -198,58 +192,15 @@ function Asymmetry() {
  * On chain
  * ------------------------------------------------------------------------------------ */
 
-const COMMITMENTS = [
-  {
-    label: "sourceHash",
-    body:
-      "A fingerprint of the exact earnings history the agents read, so a later claim about " +
-      "what a node was earning can be checked against what was actually seen at the time.",
-  },
-  {
-    label: "verdictHash",
-    body:
-      "A fingerprint of the reasoning that produced the price. It cannot be quietly " +
-      "rewritten once shares have sold.",
-  },
-  {
-    label: "recordValuation",
-    body:
-      "Restricted to the valuation service. An operator pricing their own node is the " +
-      "failure this design prevents.",
-  },
-];
-
 function OnChain() {
   return (
     <section className="wrap" style={{paddingTop: 96}}>
-      <SectionRule label="On chain" />
-
       <h2 className="display display-lg" style={{maxWidth: "20ch"}}>
         The chain is the oracle
       </h2>
 
-      <p className="lead" style={{marginTop: 20}}>
-        Tokenise a building and someone must swear it did what it claimed. A machine&rsquo;s
-        earnings are already an on-chain event, so there is nobody to trust.
-      </p>
-
-      <div
-        style={{
-          marginTop: 40,
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
-          gap: 28,
-        }}
-      >
-        {COMMITMENTS.map((c) => (
-          <div key={c.label}>
-            <p className="mono" style={{fontSize: 13, color: "var(--vermilion)"}}>
-              {c.label}
-            </p>
-            <div className="rule" style={{margin: "10px 0 12px"}} />
-            <p style={{fontSize: 14.5, color: "var(--ink-70)", lineHeight: 1.6}}>{c.body}</p>
-          </div>
-        ))}
+      <div style={{marginTop: 34}}>
+        <OracleFigure />
       </div>
 
       <div style={{marginTop: 48}}>
@@ -258,14 +209,5 @@ function OnChain() {
         </Link>
       </div>
     </section>
-  );
-}
-
-function SectionRule({label}: {label: string}) {
-  return (
-    <div style={{display: "flex", alignItems: "center", gap: 14, marginBottom: 26}}>
-      <p className="spec">{label}</p>
-      <div className="rule" style={{flex: 1}} />
-    </div>
   );
 }
