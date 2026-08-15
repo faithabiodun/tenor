@@ -1,6 +1,6 @@
-# Tenor: adversarial underwriting for freelancer receivables
+# Uptime: adversarial underwriting for freelancer receivables
 
-Tenor prices an unpaid invoice by making two AI agents argue about it. One represents the
+Uptime prices an unpaid invoice by making two AI agents argue about it. One represents the
 freelancer and argues for the highest defensible advance. One is the capital provider who
 would be holding the asset if it went bad. A third weighs both, sets a rate, and a hash of
 the full reasoning is written to X Layer so the argument behind the number cannot be
@@ -8,11 +8,11 @@ quietly rewritten later.
 
 Built for the X Layer **AI Season** hackathon, **AI-RWA** track.
 
-- **Live:** https://tenor-ph5c.onrender.com
+- **Live:** https://uptime-ph5c.onrender.com
 - **Contract (X Layer testnet):** [`0xE0a24398…4b00`](https://www.oklink.com/x-layer-testnet/address/0xE0a24398Ba9A70a3B930B2dd2A69E4F8eda44b00) — verified
 - **Contract (X Layer mainnet):** pending
 
-> Built for a hackathon. Tenor does not accept money from real users, and every document,
+> Built for a hackathon. Uptime does not accept money from real users, and every document,
 > company and figure here is fictional. Nothing in this repository is financial advice or an
 > offer of credit.
 
@@ -25,7 +25,7 @@ receivables go unfinanced.
 
 Automated underwriting changes that arithmetic. That is the whole pitch.
 
-## What Tenor does
+## What Uptime does
 
 - **Reads the document.** Upload a signed contract or an unpaid invoice as a PDF. The fields
   are extracted and shown to you to correct before anything is priced. You stay in charge of
@@ -97,7 +97,7 @@ To check a real one, ask the live site to price a sample and re-derive the hash 
 ```bash
 curl -s -X POST -H 'content-type: application/json' \
   -d '{"sampleId":"contentious"}' \
-  https://tenor-ph5c.onrender.com/api/price > verdict.json
+  https://uptime-ph5c.onrender.com/api/price > verdict.json
 
 npm run verify -- reasoning.json <the verdictHash from verdict.json>
 ```
@@ -148,8 +148,8 @@ photographs are rejected with an explanation rather than a hollow extraction.
 Requires [Foundry](https://getfoundry.sh) and Node 22+.
 
 ```bash
-git clone --recursive https://github.com/faithabiodun/tenor
-cd tenor && npm install
+git clone --recursive https://github.com/faithabiodun/uptime
+cd uptime && npm install
 cp .env.example .env          # fill in DEEPSEEK_API_KEY
 
 npm run samples               # render the sample invoices
@@ -163,7 +163,7 @@ cd contracts && forge test    # 24 contract tests
 ## Repository
 
 ```
-contracts/    Foundry project: TenorReceivables.sol, tests, deploy script, flattened source
+contracts/    Foundry project: UptimeReceivables.sol, tests, deploy script, flattened source
 agents/       Extraction, the two debaters, the arbiter, canonicalisation, sample generation
 samples/      Five synthetic receivables as PDFs. Every name and figure is fictional.
 web/          Next.js app. The agents run in its route handlers, so model credentials stay

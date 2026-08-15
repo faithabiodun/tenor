@@ -1,4 +1,4 @@
-# Render Blueprint for Tenor (free tier, $0).
+# Render Blueprint for Uptime (free tier, $0).
 # Render's Blueprint flow reads THIS file from the REPO ROOT on the main branch.
 # In Render: New > Blueprint > pick this repo. Then set DEEPSEEK_API_KEY (marked
 # sync:false, so it is never committed) in the dashboard when prompted.
@@ -8,7 +8,7 @@
 # server, which is exactly what a Render web service is.
 services:
   - type: web
-    name: tenor
+    name: uptime
     runtime: node
     plan: free
     # Build from the REPO ROOT so the npm workspaces resolve; the agents package is

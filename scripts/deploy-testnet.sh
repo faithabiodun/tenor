@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Deploy TenorReceivables to X Layer testnet.
+# Deploy UptimeReceivables to X Layer testnet.
 #
 #   bash scripts/deploy-testnet.sh
 #
@@ -10,7 +10,7 @@ set -euo pipefail
 
 RPC="https://testrpc.xlayer.tech"
 CHAIN_ID=1952
-ACCOUNT="${TENOR_ACCOUNT:-tenor-deployer}"
+ACCOUNT="${UPTIME_ACCOUNT:-uptime-deployer}"
 
 cd "$(dirname "$0")/.."
 
@@ -23,7 +23,7 @@ command -v forge >/dev/null 2>&1 || {
 }
 
 echo
-echo "  Deploying TenorReceivables to X Layer testnet (chain $CHAIN_ID)"
+echo "  Deploying UptimeReceivables to X Layer testnet (chain $CHAIN_ID)"
 echo
 
 # 1. Keystore. Skipped entirely if this account already exists.

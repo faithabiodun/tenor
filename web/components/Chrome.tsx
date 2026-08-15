@@ -1,5 +1,26 @@
 import Link from "next/link";
 
+/** The wordmark, set the way the reference sheet sets it: heavy, italic, with a tick. */
+export function Wordmark({size = 21}: {size?: number}) {
+  return (
+    <span style={{display: "inline-flex", alignItems: "flex-start", gap: 3}}>
+      <span className="display" style={{fontSize: size, lineHeight: 1}}>
+        Uptime
+      </span>
+      <span
+        aria-hidden
+        style={{
+          width: Math.max(2, size * 0.1),
+          height: size * 0.52,
+          background: "var(--vermilion)",
+          transform: "skewX(-12deg)",
+          marginTop: size * 0.05,
+        }}
+      />
+    </span>
+  );
+}
+
 export function Header() {
   return (
     <header style={{borderBottom: "1px solid var(--line)"}}>
@@ -9,31 +30,19 @@ export function Header() {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          minHeight: 62,
+          minHeight: 64,
           gap: 16,
         }}
       >
-        <Link
-          href="/"
-          style={{
-            textDecoration: "none",
-            fontWeight: 700,
-            letterSpacing: "-0.03em",
-            fontSize: 20,
-            color: "var(--green)",
-          }}
-        >
-          Tenor
+        <Link href="/" style={{textDecoration: "none"}}>
+          <Wordmark />
         </Link>
-        <nav style={{display: "flex", alignItems: "center", gap: 20, fontSize: 14}}>
-          <Link href="/#how" className="nav-secondary" style={{textDecoration: "none"}}>
-            How it works
+        <nav style={{display: "flex", alignItems: "center", gap: 22}}>
+          <Link href="/#how" className="spec" style={{textDecoration: "none"}}>
+            Method
           </Link>
-          <Link href="/docs" className="nav-secondary" style={{textDecoration: "none"}}>
-            Docs
-          </Link>
-          <Link href="/price" style={{textDecoration: "none"}}>
-            <Cta compact>Get started</Cta>
+          <Link href="/node" className="btn" style={{padding: "11px 20px"}}>
+            List a node
           </Link>
         </nav>
       </div>
@@ -41,42 +50,18 @@ export function Header() {
   );
 }
 
-export function Cta({children, compact = false}: {children: React.ReactNode; compact?: boolean}) {
-  return (
-    <span
-      style={{
-        display: "inline-block",
-        background: "var(--green)",
-        color: "#ffffff",
-        padding: compact ? "10px 18px" : "17px 34px",
-        fontSize: compact ? 14 : 17,
-        fontWeight: 500,
-        letterSpacing: "-0.01em",
-        border: "1px solid var(--green)",
-        borderRadius: 999,
-      }}
-    >
-      {children}
-    </span>
-  );
-}
-
 const FOOTER_LINKS: {heading: string; links: {label: string; href: string}[]}[] = [
   {
     heading: "Product",
     links: [
-      {label: "Get started", href: "/price"},
-      {label: "How it works", href: "/#how"},
-      {label: "Docs", href: "/docs"},
+      {label: "List a node", href: "/node"},
+      {label: "Method", href: "/#how"},
+      {label: "On chain", href: "/#how"},
     ],
   },
   {
     heading: "Technical",
-    links: [
-      {label: "What goes on chain", href: "/docs#chain"},
-      {label: "Verifying a verdict", href: "/docs#verify"},
-      {label: "Source on GitHub", href: "https://github.com/faithabiodun/tenor"},
-    ],
+    links: [{label: "Source on GitHub", href: "https://github.com/faithabiodun/uptime"}],
   },
   {
     heading: "X Layer",
@@ -90,35 +75,26 @@ const FOOTER_LINKS: {heading: string; links: {label: string; href: string}[]}[] 
 
 export function Footer() {
   return (
-    <footer style={{borderTop: "1px solid var(--line)", marginTop: 96}}>
-      <div className="wrap" style={{padding: "44px 0 56px"}}>
+    <footer style={{borderTop: "1px solid var(--line)", marginTop: 110}}>
+      <div className="wrap" style={{padding: "46px 0 58px"}}>
         <div
           style={{
             display: "grid",
             gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
-            gap: 32,
+            gap: 34,
             alignItems: "start",
           }}
         >
           <div>
-            <div
-              style={{
-                fontWeight: 700,
-                letterSpacing: "-0.03em",
-                fontSize: 20,
-                color: "var(--green)",
-              }}
-            >
-              Tenor
-            </div>
-            <p style={{marginTop: 8, fontSize: 14, color: "var(--ink-60)", maxWidth: "26ch"}}>
-              Adversarial underwriting for freelancer receivables.
+            <Wordmark size={19} />
+            <p style={{marginTop: 10, fontSize: 14, color: "var(--ink-50)", maxWidth: "26ch"}}>
+              Adversarial pricing for infrastructure that already earns.
             </p>
           </div>
 
           {FOOTER_LINKS.map((group) => (
             <nav key={group.heading} aria-label={group.heading}>
-              <p className="eyebrow" style={{marginBottom: 12}}>
+              <p className="spec" style={{marginBottom: 13}}>
                 {group.heading}
               </p>
               <ul style={{listStyle: "none", margin: 0, padding: 0, display: "grid", gap: 9}}>
@@ -126,7 +102,7 @@ export function Footer() {
                   <li key={link.label}>
                     <Link
                       href={link.href}
-                      style={{fontSize: 14, color: "var(--ink-60)", textDecoration: "none"}}
+                      style={{fontSize: 14, color: "var(--ink-70)", textDecoration: "none"}}
                     >
                       {link.label}
                     </Link>
@@ -137,19 +113,15 @@ export function Footer() {
           ))}
         </div>
 
-        <p
-          style={{
-            marginTop: 40,
-            paddingTop: 22,
-            borderTop: "1px solid var(--line)",
-            maxWidth: "78ch",
-            fontSize: 13,
-            color: "var(--ink-40)",
-          }}
-        >
-          Tenor is built for the X Layer AI Season hackathon. It does not accept money from
-          real users, and every document, company and figure shown here is fictional. Nothing
-          on this site is financial advice or an offer of credit.
+        <div style={{display: "flex", alignItems: "center", gap: 14, marginTop: 42}}>
+          <div className="rule" style={{flex: 1}} />
+          <div className="crosshair" />
+        </div>
+
+        <p style={{marginTop: 20, maxWidth: "80ch", fontSize: 13, color: "var(--ink-50)"}}>
+          Uptime is built for the X Layer AI Season hackathon. It does not take money from real
+          users. Sample nodes are clearly labelled as fixtures and their earnings histories are
+          generated, not observed. Nothing here is financial advice or an offer of credit.
         </p>
       </div>
     </footer>

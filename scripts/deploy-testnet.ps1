@@ -1,4 +1,4 @@
-# Deploy TenorReceivables to X Layer testnet, from PowerShell.
+# Deploy UptimeReceivables to X Layer testnet, from PowerShell.
 #
 #   .\scripts\deploy-testnet.ps1
 #
@@ -12,8 +12,8 @@ $ErrorActionPreference = "Stop"
 
 $Rpc = "https://testrpc.xlayer.tech"
 $ChainId = 1952
-$Account = $env:TENOR_ACCOUNT
-if (-not $Account) { $Account = "tenor-deployer" }
+$Account = $env:UPTIME_ACCOUNT
+if (-not $Account) { $Account = "uptime-deployer" }
 
 # Repo root is the parent of this script's directory.
 $Root = Split-Path -Parent $PSScriptRoot
@@ -29,7 +29,7 @@ if (-not (Get-Command forge -ErrorAction SilentlyContinue)) {
 }
 
 Write-Host ""
-Write-Host "  Deploying TenorReceivables to X Layer testnet (chain $ChainId)"
+Write-Host "  Deploying UptimeReceivables to X Layer testnet (chain $ChainId)"
 Write-Host ""
 
 # 1. Keystore. Skipped entirely when this account already exists.

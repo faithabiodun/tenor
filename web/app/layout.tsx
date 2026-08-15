@@ -1,10 +1,14 @@
 import type {Metadata} from "next";
-import {Geist, Geist_Mono} from "next/font/google";
+import {Archivo, Geist_Mono} from "next/font/google";
 import "./globals.css";
 
-// The reference site runs Geist Variable; this is the same family from Google Fonts.
-const display = Geist({
+// Archivo carries the display voice: it has a true 900 and a real italic, which is what the
+// heavy slanted wordmark on the reference sheet needs. Faux-oblique would shear the letters
+// and look exactly like what it is.
+const display = Archivo({
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800", "900"],
+  style: ["normal", "italic"],
   variable: "--font-display",
   display: "swap",
 });
@@ -16,10 +20,10 @@ const mono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Tenor — get paid for work you have already done",
+  title: "Uptime — sell the earnings your machine has not made yet",
   description:
-    "Two AI agents with opposing incentives argue about what your unpaid invoice is worth " +
-    "today. A third decides, and the reasoning is hashed on X Layer.",
+    "Two AI agents with opposing incentives argue about what a node's future earnings are " +
+    "worth today. A third decides, and the reasoning is hashed on X Layer.",
 };
 
 export default function RootLayout({children}: {children: React.ReactNode}) {

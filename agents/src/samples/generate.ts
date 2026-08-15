@@ -35,7 +35,7 @@ for (const sample of [...SAMPLES, ...EXTRA_SAMPLES]) {
 
   doc.moveDown(2).fontSize(7).fillColor("#6B615A");
   doc.text(
-    "Synthetic document generated for the Tenor prototype. Every company, person and " +
+    "Synthetic document generated for the Uptime prototype. Every company, person and " +
       "figure above is fictional.",
     {lineGap: 1},
   );

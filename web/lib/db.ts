@@ -11,7 +11,7 @@ import type {Verdict} from "./types";
  * canonical bytes that were hashed are stored verbatim and served back to anyone who asks.
  *
  * Writes go through the service role, which bypasses row level security. There is
- * deliberately no anon insert policy on any Tenor table: a forged verdict row would break
+ * deliberately no anon insert policy on any Uptime table: a forged verdict row would break
  * the one property this project is built around. Reads of verdicts are public, because
  * that is the point.
  *
@@ -81,7 +81,7 @@ export async function saveVerdict(
       // Content addressed, so re-uploading the same file reuses the row rather than
       // creating a second identity for identical bytes.
       const {data} = await supabase
-        .from("tenor_documents")
+        .from("uptime_documents")
         .upsert(
           {doc_hash: options.docHash, user_wallet: options.wallet ?? null},
           {onConflict: "doc_hash"},
@@ -94,14 +94,14 @@ export async function saveVerdict(
     const {reasoning} = verdict;
 
     if (documentId) {
-      await supabase.from("tenor_extractions").insert({
+      await supabase.from("uptime_extractions").insert({
         document_id: documentId,
         payload: reasoning.extraction,
         document_quality: reasoning.extraction.document_quality,
       });
     }
 
-    const {error} = await supabase.from("tenor_verdicts").upsert(
+    const {error} = await supabase.from("uptime_verdicts").upsert(
       {
         document_id: documentId,
         extraction: reasoning.extraction,
@@ -134,7 +134,7 @@ export async function findVerdict(hash: string): Promise<StoredVerdict | null> {
   if (!supabase) return null;
 
   const {data, error} = await supabase
-    .from("tenor_verdicts")
+    .from("uptime_verdicts")
     .select(
       "verdict_hash, canonical_json, extraction, bull, bear, arbiter, advance_value, spread, inverted, created_at",
     )
@@ -159,12 +159,12 @@ export async function saveMint(input: {
   if (!supabase) return false;
 
   const {data} = await supabase
-    .from("tenor_verdicts")
+    .from("uptime_verdicts")
     .select("id")
     .eq("verdict_hash", input.verdictHash.toLowerCase())
     .maybeSingle();
 
-  const {error} = await supabase.from("tenor_mints").insert({
+  const {error} = await supabase.from("uptime_mints").insert({
     verdict_id: data?.id ?? null,
     token_id: input.tokenId,
     tx_hash: input.txHash,
@@ -184,7 +184,7 @@ export async function recentVerdicts(limit = 20): Promise<StoredVerdict[]> {
   if (!supabase) return [];
 
   const {data, error} = await supabase
-    .from("tenor_verdicts")
+    .from("uptime_verdicts")
     .select(
       "verdict_hash, canonical_json, extraction, bull, bear, arbiter, advance_value, spread, inverted, created_at",
     )

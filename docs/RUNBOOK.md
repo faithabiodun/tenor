@@ -1,4 +1,4 @@
-# Tenor runbook
+# Uptime runbook
 
 Everything left to do, in order. Deadline: **21 August 2026, 23:59 UTC**.
 
@@ -6,13 +6,13 @@ Facts you will need throughout:
 
 | Thing | Value |
 | --- | --- |
-| Repo | https://github.com/faithabiodun/tenor |
-| Live site | https://tenor-ph5c.onrender.com (Railway) |
+| Repo | https://github.com/faithabiodun/uptime |
+| Live site | https://uptime-ph5c.onrender.com (Railway) |
 | Deployer wallet | `0xDB6450b96ed49c640bAf8acA782C5ffaE99cA7e8` |
-| Foundry keystore | `tenor-deployer` (already imported) |
+| Foundry keystore | `uptime-deployer` (already imported) |
 | X Layer testnet | chain **1952**, RPC `https://testrpc.xlayer.tech` |
 | X Layer mainnet | chain **196**, RPC `https://rpc.xlayer.tech` |
-| Supabase project | `tenor` — `https://svbqoplujdigkbmwxvib.supabase.co` |
+| Supabase project | `uptime` — `https://svbqoplujdigkbmwxvib.supabase.co` |
 | Compiler settings | solc **0.8.24**, optimizer **on**, **200** runs, EVM **Paris** |
 
 Those compiler settings are not optional. Explorer verification compares bytecode, and any
@@ -38,15 +38,15 @@ cast wallet new
 Note the address and key, claim faucet OKB to the new address, then import it:
 
 ```bash
-cast wallet import tenor-deployer-2 --interactive
-TENOR_ACCOUNT=tenor-deployer-2 bash scripts/deploy-testnet.sh
+cast wallet import uptime-deployer-2 --interactive
+UPTIME_ACCOUNT=uptime-deployer-2 bash scripts/deploy-testnet.sh
 ```
 
 If you are happy reusing `0xDB64…`, skip to 1.2.
 
 ### 1.2 Deploy
 
-From the `tenor` directory. **PowerShell** (the default Windows terminal):
+From the `uptime` directory. **PowerShell** (the default Windows terminal):
 
 ```powershell
 .\scripts\deploy-testnet.ps1
@@ -69,7 +69,7 @@ or skip the script and run the two commands it wraps:
 
 ```powershell
 cd contracts
-forge script script/Deploy.s.sol:Deploy --rpc-url https://testrpc.xlayer.tech --account tenor-deployer --broadcast
+forge script script/Deploy.s.sol:Deploy --rpc-url https://testrpc.xlayer.tech --account uptime-deployer --broadcast
 ```
 
 It prompts for the **keystore password**, not the private key. Expect:
@@ -92,7 +92,7 @@ roughly two thousand of them.
 
 ## Phase 2 — Configure Render
 
-Ten minutes. Render dashboard → the `tenor` service → **Environment**.
+Ten minutes. Render dashboard → the `uptime` service → **Environment**.
 
 Add or confirm all six:
 
@@ -102,7 +102,7 @@ Add or confirm all six:
 | `NEXT_PUBLIC_CONTRACT_ADDRESS` | the address from 1.2 | |
 | `SUPABASE_URL` | `https://svbqoplujdigkbmwxvib.supabase.co` | |
 | `SUPABASE_PUBLISHABLE_KEY` | `sb_publishable_dOstlitdBB0idA3B9sr43g_jsnbsCaQ` | not secret |
-| `SUPABASE_SERVICE_ROLE_KEY` | Supabase → `tenor` → Settings → API → `service_role` | **secret** |
+| `SUPABASE_SERVICE_ROLE_KEY` | Supabase → `uptime` → Settings → API → `service_role` | **secret** |
 | `DEPLOYER_PRIVATE_KEY` | the key that deployed in 1.2 | **secret** |
 
 Three of these are already in `render.yaml`, but a service created before they were added
@@ -127,7 +127,7 @@ Ten minutes. Unverified contracts read as unfinished work to judges.
    - Open source licence: **MIT**
    - Optimization: **Yes**, **200** runs
    - EVM version: **paris**
-4. Paste the entire contents of `contracts/flattened/TenorReceivables.flat.sol`
+4. Paste the entire contents of `contracts/flattened/UptimeReceivables.flat.sol`
 5. Constructor arguments: **leave empty** — there are none
 6. Verify. It usually takes 30 to 60 seconds.
 
@@ -140,7 +140,7 @@ optimizer runs and EVM version first.
 
 Five minutes, and worth doing carefully because this is what the demo video shows.
 
-1. Open https://tenor-ph5c.onrender.com/price
+1. Open https://uptime-ph5c.onrender.com/price
 2. Pick the **contentious** sample, or upload a PDF invoice
 3. Check the extracted fields, press **Price this receivable**
 4. Wait about 45 seconds for the debate
@@ -173,7 +173,7 @@ Twenty minutes. Also a **pass/fail requirement**.
    cd contracts
    forge script script/Deploy.s.sol:Deploy \
      --rpc-url https://rpc.xlayer.tech \
-     --account tenor-deployer \
+     --account uptime-deployer \
      --broadcast
    ```
 4. Verify on OKLink exactly as in Phase 3, but under

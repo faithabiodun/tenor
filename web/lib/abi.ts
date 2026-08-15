@@ -1,8 +1,8 @@
-// Generated from contracts/src/TenorReceivables.sol.
-// Regenerate with:  forge inspect TenorReceivables abi --json
+// Generated from contracts/src/UptimeReceivables.sol.
+// Regenerate with:  forge inspect UptimeReceivables abi --json
 // Do not hand-edit: a drifted ABI fails at signing time, in front of whoever is watching.
 
-export const TENOR_ABI = [
+export const UPTIME_ABI = [
   {
     "type": "constructor",
     "inputs": [],
@@ -110,7 +110,7 @@ export const TENOR_ABI = [
       {
         "name": "",
         "type": "tuple",
-        "internalType": "struct TenorReceivables.Receivable",
+        "internalType": "struct UptimeReceivables.Receivable",
         "components": [
           {
             "name": "freelancer",
@@ -150,7 +150,7 @@ export const TENOR_ABI = [
           {
             "name": "status",
             "type": "uint8",
-            "internalType": "enum TenorReceivables.Status"
+            "internalType": "enum UptimeReceivables.Status"
           }
         ]
       }
@@ -330,7 +330,7 @@ export const TENOR_ABI = [
       {
         "name": "status",
         "type": "uint8",
-        "internalType": "enum TenorReceivables.Status"
+        "internalType": "enum UptimeReceivables.Status"
       }
     ],
     "stateMutability": "view"

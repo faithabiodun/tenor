@@ -21,7 +21,7 @@ returns. This is a prototype and the posts should sound like someone building on
 > Invoice financing exists, but nobody will manually underwrite $3,000 — the assessment
 > costs more than the fee.
 >
-> Building Tenor to see if AI changes that arithmetic.
+> Building Uptime to see if AI changes that arithmetic.
 
 ## 2. The contract
 
@@ -80,7 +80,7 @@ Build-in-public posts land better when they show something going wrong.
 
 ## 7. Mainnet
 
-> Tenor is on X Layer mainnet. <address> — verified on OKLink.
+> Uptime is on X Layer mainnet. <address> — verified on OKLink.
 >
 > <explorer link>
 
@@ -89,7 +89,7 @@ Build-in-public posts land better when they show something going wrong.
 This is the one the rules require. Do not skip the mention, and post it before the deadline
 of 21 August 2026, 23:59 UTC.
 
-> Submitting Tenor to @XLayerOfficial AI Season, AI-RWA track.
+> Submitting Uptime to @XLayerOfficial AI Season, AI-RWA track.
 >
 > Upload an unpaid invoice. Two AI agents with opposing incentives argue about what it is
 > worth today. A third decides, and a hash of the reasoning goes on chain so the rationale

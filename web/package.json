@@ -1,5 +1,5 @@
 {
-  "name": "@tenor/web",
+  "name": "@uptime/web",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.112.3",
-    "@tenor/agents": "*",
+    "@uptime/agents": "*",
     "dotenv": "^17.2.3",
     "next": "^16.3.0",
     "react": "^19.2.0",

@@ -29,7 +29,7 @@ const config: NextConfig = {
   outputFileTracingRoot: repoRoot,
   // The agents workspace ships TypeScript source rather than a build artefact, so Next has
   // to compile it the same way it compiles the app.
-  transpilePackages: ["@tenor/agents"],
+  transpilePackages: ["@uptime/agents"],
 };
 
 export default config;
