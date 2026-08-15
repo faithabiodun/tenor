@@ -49,18 +49,35 @@ function series(opts: {
   return {payments, from};
 }
 
+/**
+ * Every history built here is kept, keyed by payout address.
+ *
+ * A NodeProfile is derived data and cannot be hashed into a sourceHash, so anything that
+ * wants to store or verify a fixture valuation needs the observations the profile came
+ * from. Registering on construction keeps the two from drifting apart, which is the whole
+ * point of committing to a source hash in the first place.
+ */
+const HISTORIES = new Map<string, RevenueHistory>();
+
 function history(
   address: string,
   provenance: RevenueHistory["provenance"],
   built: {payments: Payment[]; from: number},
 ): RevenueHistory {
-  return {
+  const record: RevenueHistory = {
     address,
     provenance,
     observed_from: built.from,
     observed_to: WINDOW_END,
     payments: built.payments,
   };
+  HISTORIES.set(address.toLowerCase(), record);
+  return record;
+}
+
+/** The observations a profile was derived from, for hashing and for storage. */
+export function historyFor(payoutAddress: string): RevenueHistory | null {
+  return HISTORIES.get(payoutAddress.toLowerCase()) ?? null;
 }
 
 const ONCHAIN: RevenueHistory["provenance"] = {

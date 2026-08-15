@@ -1,6 +1,8 @@
 import {NextResponse} from "next/server";
-import {nodeSampleById} from "@uptime/agents/node-samples";
+import {historyFor, nodeSampleById} from "@uptime/agents/node-samples";
+import {revenueSourceHash} from "@uptime/agents/revenue";
 import {DataQualityError, priceNode} from "@uptime/agents/valuation";
+import {saveValuation, writesConfigured} from "../../../lib/db";
 
 /** The panel makes three model calls; the arbiter waits on both debaters. */
 export const maxDuration = 300;
@@ -29,16 +31,46 @@ export async function POST(request: Request) {
 
   try {
     const valuation = await priceNode(sample.profile);
+
+    // The observations the profile came from, so the valuation can be filed against a
+    // source hash rather than against a number nobody can trace back.
+    const history = historyFor(sample.profile.payout_address);
+    const sourceHash = history ? revenueSourceHash(history) : null;
+
+    let stored: {saved: boolean; reason?: string} = {
+      saved: false,
+      reason: writesConfigured ? "no revenue history for this node" : "storage is not configured",
+    };
+
+    if (history && sourceHash) {
+      stored = await saveValuation({
+        history,
+        sourceHash,
+        reasoning: valuation.reasoning,
+        canonicalJson: valuation.canonicalJson,
+        verdictHash: valuation.verdictHash,
+        pricePerShare: valuation.pricePerShare,
+        projectedTermRevenue: valuation.projectedTermRevenue,
+        spread: valuation.spread,
+        inverted: valuation.inverted,
+      });
+    }
+
     return NextResponse.json({
       id: sample.id,
       profile: valuation.reasoning.profile,
       reasoning: valuation.reasoning,
       canonicalJson: valuation.canonicalJson,
       verdictHash: valuation.verdictHash,
+      sourceHash,
       pricePerShare: valuation.pricePerShare,
       projectedTermRevenue: valuation.projectedTermRevenue,
       spread: valuation.spread,
       inverted: valuation.inverted,
+      // Reported rather than swallowed. A valuation that priced but did not file is still a
+      // valuation, and the UI should be able to say it cannot be verified later.
+      stored: stored.saved,
+      storedReason: stored.saved ? undefined : stored.reason,
     });
   } catch (error) {
     // A refusal is a correct outcome, not a server fault, so it gets its own status and its
