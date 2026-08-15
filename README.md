@@ -1,183 +1,129 @@
-# Uptime: adversarial underwriting for freelancer receivables
+# Uptime: sell the earnings your machine has not made yet
 
-Uptime prices an unpaid invoice by making two AI agents argue about it. One represents the
-freelancer and argues for the highest defensible advance. One is the capital provider who
-would be holding the asset if it went bad. A third weighs both, sets a rate, and a hash of
-the full reasoning is written to X Layer so the argument behind the number cannot be
-quietly rewritten later.
+Uptime prices the future revenue of an infrastructure node by making two AI agents argue
+about it. One represents the operator and argues for the highest price the record supports.
+One is the investor who ends up holding the shares if the node goes dark. A third weighs
+both, sets a price per share, and a hash of the full reasoning is written to X Layer so the
+argument behind the number cannot be quietly rewritten afterwards.
 
-Built for the X Layer **AI Season** hackathon, **AI-RWA** track.
+Built for the X Layer AI Season hackathon, AI-RWA track.
 
-- **Live:** https://uptime-ph5c.onrender.com
-- **Contract (X Layer testnet):** [`0xE0a24398…4b00`](https://www.oklink.com/x-layer-testnet/address/0xE0a24398Ba9A70a3B930B2dd2A69E4F8eda44b00) — verified
-- **Contract (X Layer mainnet):** pending
-
-> Built for a hackathon. Uptime does not accept money from real users, and every document,
-> company and figure here is fictional. Nothing in this repository is financial advice or an
-> offer of credit.
+---
 
 ## The problem
 
-A freelancer finishes a job, invoices for $3,000 on 60 day terms, and waits two months to be
-paid for work already delivered. Invoice financing exists, but a lender assessing a $3,000
-receivable spends more on the assessment than it earns in fees. So nobody does it, and small
-receivables go unfinanced.
+Someone runs a machine that earns small amounts continuously — a bandwidth node, a GPU
+renting out compute, a wireless hotspot. It might make twelve dollars a month. Reliable,
+but slow, and far too small for any lender to look at.
 
-Automated underwriting changes that arithmetic. That is the whole pitch.
+So the operator waits. Meanwhile the thing has an obvious value: it *has* been earning,
+verifiably, and will probably keep earning. That is an asset. It is just not one anybody
+knows how to price.
 
-## What Uptime does
+## What it does
 
-- **Reads the document.** Upload a signed contract or an unpaid invoice as a PDF. The fields
-  are extracted and shown to you to correct before anything is priced. You stay in charge of
-  the inputs; the agents only do the judgement.
-- **Argues about it.** Two agents with opposing interests assess the same receivable in
-  parallel, then an arbiter sets an advance rate between 50 and 95 with a confidence score
-  and a plain-language rationale.
-- **Tells you what would raise it.** The arbiter returns up to three specific changes and
-  what each is worth: get the outstanding milestone signed off, obtain the payer's
-  registration number, add a late payment clause.
-- **Commits the reasoning.** The receivable is minted as an ERC-721 and the verdict is
-  recorded on chain: a hash of the document, a hash of the reasoning, the priced values and
-  a forward-only status.
-- **Hands you the evidence.** Every assessment downloads as a file containing the reasoning,
-  the exact bytes that were hashed, and the steps to re-derive the hash yourself.
+1. **Reads what the node earned.** Point Uptime at the address a node is paid to. It reads
+   the transfers straight from the chain and derives every figure by arithmetic — monthly
+   totals, volatility, longest gap, trend. No one is asked to be believed.
+2. **Runs a panel.** Two agents with opposing incentives argue over what fraction of
+   projected term earnings a buyer should pay today. A third decides.
+3. **Tokenises the result.** The operator lists the node and holds every share. Buyers take
+   shares at the priced rate. Revenue delivered to the vault becomes claimable pro rata.
 
-It works the same for creators. A sponsorship invoice is structurally identical to a
-freelance one, and the risks that matter — payment gated on brand approval, a takedown right,
-net 90 terms — are the same risks under different names.
+## Why the debate is real
 
-## Why two agents rather than one
+Give two language models the same task and the same information and they reach the same
+answer nearly every time. You get something debate-shaped with no disagreement inside it.
 
-A single model asked to price an asset anchors on the face value, shaves off a
-plausible-sounding percentage, and returns a confident number with nothing behind it.
+So they are not given the same information. **The investor works from a risk checklist. The
+operator's advocate never sees it, and is never told it exists.** The disagreement is
+structural rather than instructed.
 
-The failure mode of a two-agent debate is that both agents agree, because models are
-agreeable. The fix is not a stronger instruction to argue. It is **asymmetric information**:
-the capital provider is given a risk checklist and the freelancer's advocate never sees it.
-There is no code path that shows it to the other side.
+Two sample nodes, same code, same day:
 
-`npm run spread` fails the build on two conditions — if the debaters land within 5 points on
-the contentious sample, and if the advocate ever proposes a *lower* rate than the capital
-provider, which would mean it argued against its own client.
+| Node | Operator | Investor | Verdict | Confidence |
+| --- | --- | --- | --- | --- |
+| Steady, 124 days on chain | 88% | 45% | **78%** | 62 |
+| Decaying rewards, hidden 10-day outage | 57.5% | 8% | **30%** | 45 |
 
-## What goes on chain
+The investor led with the hole nobody scripted for it:
 
-Inference happens off chain. The contract stores commitments only.
+> Nothing in the arrangement compels the operator to keep the node running once the shares
+> are sold. The revenue depends on the continued goodwill of someone who has already been
+> paid.
 
-| Field | Meaning |
+That is the real weakness in this entire idea, and the system says it out loud, in the
+product, to the person about to hand over money.
+
+## The chain is the oracle
+
+Tokenise a building or an invoice and you need someone trustworthy to swear the real thing
+did what it claimed. That person is the weak link, and every RWA project has one.
+
+A node's earnings are already an on-chain event. We do not ask the operator what they made,
+we read it, and anyone can repeat the query and get the same answer.
+
+`UptimeVault` stores commitments only:
+
+| | |
 | --- | --- |
-| `docHash` | `keccak256` of the uploaded document bytes |
-| `verdictHash` | `keccak256` of the canonical reasoning JSON |
-| `faceValue` | what the client owes, in minor units |
-| `advanceValue` | the agent-priced value today, in minor units |
-| `dueDate`, `confidence`, `status` | terms and lifecycle |
+| `sourceHash` | keccak256 of the canonical earnings history the agents read |
+| `verdictHash` | keccak256 of the canonical reasoning JSON |
+| `recordValuation` | `onlyOwner` — an operator must not price their own node |
 
-The document itself is never published — only its hash, which is enough to tie a price to
-exactly those bytes without revealing what they say.
+Shares are ERC-1155, one token id per node. Revenue splits through a cumulative
+`accRevenuePerShare` accumulator with reward debt settled on both sides of every balance
+change, so shares can change hands between payouts without anyone gaining or losing revenue
+they did not hold shares for. After every party claims, the vault holds exactly zero.
 
-`recordVerdict` is `onlyOwner`. Pricing is deliberately not something a holder can do to
-their own paper.
+## What is honest about this, and what is not
 
-## Verifying a verdict
+- The contract and its accounting are real, and tested. `forge test` — 27 passing, including
+  the mid-stream transfer case and a full-drain solvency check.
+- The panel is real. The rates in the table above are live model output, not written by hand.
+- **The sample nodes are fixtures.** Their earnings histories are generated from a seeded
+  sequence so hashes stay reproducible. They are labelled as fixtures in the source and on
+  the site. They are not a real machine.
+- The quality gate refuses to price a node with too little history, and that refusal is a
+  feature. A number drawn from eleven days looks exactly as confident as one drawn from a
+  year, which is precisely why it is not produced.
 
-Canonicalisation is deliberately boring so anyone can reproduce it: object keys sorted at
-every level by UTF-16 code unit, array order preserved, no whitespace, UTF-8, then
-`keccak256`.
-
-```
-$ npm run verify
-
-  input      {"b":2,"a":[3,1],"c":{"z":null,"y":"x"}}
-  canonical  {"a":[3,1],"b":2,"c":{"y":"x","z":null}}
-  keccak256  0xfae1d27fb04ddc38b3fceaff82ae580c519ea35b662e979b6f6605a68a77a75a
-```
-
-To check a real one, ask the live site to price a sample and re-derive the hash it returns:
-
-```bash
-curl -s -X POST -H 'content-type: application/json' \
-  -d '{"sampleId":"contentious"}' \
-  https://uptime-ph5c.onrender.com/api/price > verdict.json
-
-npm run verify -- reasoning.json <the verdictHash from verdict.json>
-```
-
-`GET /api/verdict/<hash>` does the same server side and reports whether the stored reasoning
-still hashes to the value it claims. A mismatch is a 500, not a quiet `false`.
-
-## Architecture
+## Layout
 
 ```
-Upload a contract or invoice (PDF)
-            |
-     Extraction agent          text layer parsed locally, only text sent to the model
-            |
-   document_quality < 40  ->  rejected, ask for a better copy
-            |
-      +-----+-----+
-  The case    The case         run in parallel; only one of them sees the risk checklist
-   for         against
-      +-----+-----+
-            |
-        Arbiter                 rate, confidence, rationale, what would raise it
-            |
-  Reasoning stored, hash committed
-            |
-  ERC-721 minted, verdict recorded on X Layer
+contracts/   UptimeVault.sol, tests, deploy script     (Foundry, Solidity 0.8.24)
+agents/      revenue reader, panel, prompts, fixtures  (TypeScript, DeepSeek)
+web/         the site and the valuation bay            (Next.js 16, viem)
 ```
 
-## The agent panel
-
-| Agent | Model |
-| --- | --- |
-| Extraction | `deepseek-v4-pro` on the text layer; `claude-haiku-4-5` for scans |
-| The case for | `deepseek-v4-pro` |
-| The case against | `deepseek-v4-pro` |
-| Arbiter | `deepseek-v4-pro` |
-
-The debaters run warm so they do not collapse onto the same number. The arbiter runs cold, so
-the same debate produces the same verdict — disagreement should come from the debaters, not
-from sampling noise in the judge.
-
-A PDF with a text layer never needs vision: the text is parsed locally and only the text is
-sent to a model, which is cheaper and more faithful than asking one to read pixels. Scans and
-photographs are rejected with an explanation rather than a hollow extraction.
+The integrity core is `agents/src/canonical.ts`: keys sorted at every level by UTF-16 code
+unit, array order preserved, no whitespace, UTF-8, then keccak256. Deliberately boring so a
+third party can reproduce it.
 
 ## Running it
 
-Requires [Foundry](https://getfoundry.sh) and Node 22+.
-
 ```bash
-git clone --recursive https://github.com/faithabiodun/uptime
-cd uptime && npm install
-cp .env.example .env          # fill in DEEPSEEK_API_KEY
+npm install
+cp .env.example .env          # DEEPSEEK_API_KEY, then the chain vars
 
-npm run samples               # render the sample invoices
-npm run price -- contentious  # run one debate in the terminal
-npm run spread -- --all       # the assertion suite
-npm run dev --workspace web   # the app on :3000
+npm run price:node -w @uptime/agents -- steady     # run the panel on a fixture
+npm run price:node -w @uptime/agents -- thin       # watch the quality gate refuse
+npm run dev -w @uptime/web                         # the site
 
-cd contracts && forge test    # 24 contract tests
+cd contracts && forge test                         # 27 tests
 ```
 
-## Repository
+## Deployment
 
-```
-contracts/    Foundry project: UptimeReceivables.sol, tests, deploy script, flattened source
-agents/       Extraction, the two debaters, the arbiter, canonicalisation, sample generation
-samples/      Five synthetic receivables as PDFs. Every name and figure is fictional.
-web/          Next.js app. The agents run in its route handlers, so model credentials stay
-              server side and nobody can drive them directly.
-docs/         Runbook and posting plan
-```
+| | |
+| --- | --- |
+| X Layer testnet | chain 1952 |
+| X Layer mainnet | chain 196 |
 
-## Chain details
+Chain ids were confirmed by calling `eth_chainId` directly. Published chain lists disagree
+with each other about X Layer testnet, and most of them are wrong.
 
-X Layer testnet is **1952**, confirmed with `eth_chainId` against the live RPC rather than
-taken from a chain list — most lists still advertise 195, which is the retired Polygon CDK
-zkEVM testnet. Mainnet is **196**. Contracts compile with solc `0.8.24+commit.e11b9ed9`,
-optimizer on at 200 runs, EVM version `paris`.
+---
 
-## Licence
-
-MIT.
+Uptime does not take money from real users. Nothing here is financial advice or an offer of
+credit.

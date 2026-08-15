@@ -1,5 +1,9 @@
 # Uptime runbook
 
+> The ticks in this runbook were earned by the previous contract, which priced invoices and
+> has been deleted. `UptimeVault` is a different contract and has not been deployed to either
+> network yet, so Phases 1, 3 and 5 all start again from zero.
+
 Everything left to do, in order. Deadline: **21 August 2026, 23:59 UTC**.
 
 Facts you will need throughout:
@@ -20,7 +24,7 @@ difference produces a different hash and a failed verification.
 
 ---
 
-## Phase 1 — Deploy to testnet  ✅ DONE
+## Phase 1 — Deploy to testnet
 
 Roughly ten minutes. This is a **pass/fail hackathon requirement**.
 
@@ -115,7 +119,7 @@ browser bundle. Wait for the deploy to finish before testing.
 
 ---
 
-## Phase 3 — Verify the contract on OKLink  ✅ DONE (testnet)
+## Phase 3 — Verify the contract on OKLink
 
 Ten minutes. Unverified contracts read as unfinished work to judges.
 
