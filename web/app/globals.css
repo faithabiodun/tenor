@@ -463,13 +463,14 @@ td {
 
 .hero-art img {
   display: block;
-  width: 148%;
+  /* Wider than its column so the card reads at size and the far projection runs past the
+     right edge. Held at 130%: enough bleed to feel deliberate, not so much that the blue
+     projection is lost, which would cost the drawing its point. */
+  width: 130%;
   height: auto;
-  /* Turned in space rather than merely tilted: the near edge of the card comes forward and
-     the projections fall away, which is the same story the drawing tells. */
-  transform: perspective(1900px) rotateY(-13deg) rotateZ(-2.2deg) scale(1.04);
-  transform-origin: 22% 50%;
-  filter: drop-shadow(0 26px 34px rgba(28, 28, 30, 0.16));
+  /* Set square. The card carries its own painted shadow and its own perspective; adding a
+     CSS transform on top fought both, and a drop-shadow would have thrown a second shadow
+     around wireframes that are not solid objects. */
 }
 
 @media (max-width: 900px) {
@@ -483,12 +484,9 @@ td {
     max-width: 14ch;
   }
 
-  /* Flat and contained on small screens. The turn reads as depth at size and as a mistake
-     at 380px wide. */
+  /* Nearly contained on small screens: a heavy bleed at 380px wide just looks cropped. */
   .hero-art img {
-    width: 112%;
-    transform: none;
-    filter: drop-shadow(0 14px 20px rgba(28, 28, 30, 0.14));
+    width: 108%;
   }
 }
 
