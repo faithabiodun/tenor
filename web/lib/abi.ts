@@ -1,5 +1,5 @@
-// Generated from contracts/src/UptimeReceivables.sol.
-// Regenerate with:  forge inspect UptimeReceivables abi --json
+// Generated from contracts/src/UptimeVault.sol.
+// Regenerate with:  forge inspect UptimeVault abi --json
 // Do not hand-edit: a drifted ABI fails at signing time, in front of whoever is watching.
 
 export const UPTIME_ABI = [
@@ -10,30 +10,17 @@ export const UPTIME_ABI = [
   },
   {
     "type": "function",
-    "name": "approve",
+    "name": "balanceOf",
     "inputs": [
       {
-        "name": "to",
+        "name": "account",
         "type": "address",
         "internalType": "address"
       },
       {
-        "name": "tokenId",
+        "name": "id",
         "type": "uint256",
         "internalType": "uint256"
-      }
-    ],
-    "outputs": [],
-    "stateMutability": "nonpayable"
-  },
-  {
-    "type": "function",
-    "name": "balanceOf",
-    "inputs": [
-      {
-        "name": "owner",
-        "type": "address",
-        "internalType": "address"
       }
     ],
     "outputs": [
@@ -47,10 +34,39 @@ export const UPTIME_ABI = [
   },
   {
     "type": "function",
-    "name": "fund",
+    "name": "balanceOfBatch",
     "inputs": [
       {
-        "name": "tokenId",
+        "name": "accounts",
+        "type": "address[]",
+        "internalType": "address[]"
+      },
+      {
+        "name": "ids",
+        "type": "uint256[]",
+        "internalType": "uint256[]"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256[]",
+        "internalType": "uint256[]"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "buyShares",
+    "inputs": [
+      {
+        "name": "nodeId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "count",
         "type": "uint256",
         "internalType": "uint256"
       }
@@ -60,48 +76,42 @@ export const UPTIME_ABI = [
   },
   {
     "type": "function",
-    "name": "funders",
+    "name": "claim",
     "inputs": [
       {
-        "name": "",
+        "name": "nodeId",
         "type": "uint256",
         "internalType": "uint256"
       }
     ],
     "outputs": [
       {
-        "name": "",
-        "type": "address",
-        "internalType": "address"
-      }
-    ],
-    "stateMutability": "view"
-  },
-  {
-    "type": "function",
-    "name": "getApproved",
-    "inputs": [
-      {
-        "name": "tokenId",
+        "name": "amount",
         "type": "uint256",
         "internalType": "uint256"
       }
     ],
-    "outputs": [
-      {
-        "name": "",
-        "type": "address",
-        "internalType": "address"
-      }
-    ],
-    "stateMutability": "view"
+    "stateMutability": "nonpayable"
   },
   {
     "type": "function",
-    "name": "getReceivable",
+    "name": "deliverRevenue",
     "inputs": [
       {
-        "name": "tokenId",
+        "name": "nodeId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "payable"
+  },
+  {
+    "type": "function",
+    "name": "getNode",
+    "inputs": [
+      {
+        "name": "nodeId",
         "type": "uint256",
         "internalType": "uint256"
       }
@@ -110,15 +120,15 @@ export const UPTIME_ABI = [
       {
         "name": "",
         "type": "tuple",
-        "internalType": "struct UptimeReceivables.Receivable",
+        "internalType": "struct UptimeVault.Node",
         "components": [
           {
-            "name": "freelancer",
+            "name": "operator",
             "type": "address",
             "internalType": "address"
           },
           {
-            "name": "docHash",
+            "name": "sourceHash",
             "type": "bytes32",
             "internalType": "bytes32"
           },
@@ -128,17 +138,27 @@ export const UPTIME_ABI = [
             "internalType": "bytes32"
           },
           {
-            "name": "faceValue",
+            "name": "sharesTotal",
             "type": "uint256",
             "internalType": "uint256"
           },
           {
-            "name": "advanceValue",
+            "name": "pricePerShare",
             "type": "uint256",
             "internalType": "uint256"
           },
           {
-            "name": "dueDate",
+            "name": "revenueTotal",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "accRevenuePerShare",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "termEnd",
             "type": "uint64",
             "internalType": "uint64"
           },
@@ -148,9 +168,9 @@ export const UPTIME_ABI = [
             "internalType": "uint8"
           },
           {
-            "name": "status",
-            "type": "uint8",
-            "internalType": "enum UptimeReceivables.Status"
+            "name": "valued",
+            "type": "bool",
+            "internalType": "bool"
           }
         ]
       }
@@ -162,7 +182,7 @@ export const UPTIME_ABI = [
     "name": "isApprovedForAll",
     "inputs": [
       {
-        "name": "owner",
+        "name": "account",
         "type": "address",
         "internalType": "address"
       },
@@ -183,71 +203,32 @@ export const UPTIME_ABI = [
   },
   {
     "type": "function",
-    "name": "markDefaulted",
+    "name": "listNode",
     "inputs": [
       {
-        "name": "tokenId",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ],
-    "outputs": [],
-    "stateMutability": "nonpayable"
-  },
-  {
-    "type": "function",
-    "name": "markRepaid",
-    "inputs": [
-      {
-        "name": "tokenId",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ],
-    "outputs": [],
-    "stateMutability": "nonpayable"
-  },
-  {
-    "type": "function",
-    "name": "mintReceivable",
-    "inputs": [
-      {
-        "name": "docHash",
+        "name": "sourceHash",
         "type": "bytes32",
         "internalType": "bytes32"
       },
       {
-        "name": "faceValue",
+        "name": "sharesTotal",
         "type": "uint256",
         "internalType": "uint256"
       },
       {
-        "name": "dueDate",
+        "name": "termEnd",
         "type": "uint64",
         "internalType": "uint64"
       }
     ],
     "outputs": [
       {
-        "name": "tokenId",
+        "name": "nodeId",
         "type": "uint256",
         "internalType": "uint256"
       }
     ],
     "stateMutability": "nonpayable"
-  },
-  {
-    "type": "function",
-    "name": "name",
-    "inputs": [],
-    "outputs": [
-      {
-        "name": "",
-        "type": "string",
-        "internalType": "string"
-      }
-    ],
-    "stateMutability": "view"
   },
   {
     "type": "function",
@@ -264,88 +245,39 @@ export const UPTIME_ABI = [
   },
   {
     "type": "function",
-    "name": "ownerOf",
+    "name": "pending",
     "inputs": [
       {
-        "name": "tokenId",
+        "name": "nodeId",
         "type": "uint256",
         "internalType": "uint256"
+      },
+      {
+        "name": "holder",
+        "type": "address",
+        "internalType": "address"
       }
     ],
     "outputs": [
       {
         "name": "",
-        "type": "address",
-        "internalType": "address"
+        "type": "uint256",
+        "internalType": "uint256"
       }
     ],
     "stateMutability": "view"
   },
   {
     "type": "function",
-    "name": "receivables",
+    "name": "recordValuation",
     "inputs": [
       {
-        "name": "",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ],
-    "outputs": [
-      {
-        "name": "freelancer",
-        "type": "address",
-        "internalType": "address"
-      },
-      {
-        "name": "docHash",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      },
-      {
-        "name": "verdictHash",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      },
-      {
-        "name": "faceValue",
+        "name": "nodeId",
         "type": "uint256",
         "internalType": "uint256"
       },
       {
-        "name": "advanceValue",
-        "type": "uint256",
-        "internalType": "uint256"
-      },
-      {
-        "name": "dueDate",
-        "type": "uint64",
-        "internalType": "uint64"
-      },
-      {
-        "name": "confidence",
-        "type": "uint8",
-        "internalType": "uint8"
-      },
-      {
-        "name": "status",
-        "type": "uint8",
-        "internalType": "enum UptimeReceivables.Status"
-      }
-    ],
-    "stateMutability": "view"
-  },
-  {
-    "type": "function",
-    "name": "recordVerdict",
-    "inputs": [
-      {
-        "name": "tokenId",
-        "type": "uint256",
-        "internalType": "uint256"
-      },
-      {
-        "name": "advanceValue",
+        "name": "pricePerShare",
         "type": "uint256",
         "internalType": "uint256"
       },
@@ -372,7 +304,7 @@ export const UPTIME_ABI = [
   },
   {
     "type": "function",
-    "name": "safeTransferFrom",
+    "name": "safeBatchTransferFrom",
     "inputs": [
       {
         "name": "from",
@@ -385,9 +317,19 @@ export const UPTIME_ABI = [
         "internalType": "address"
       },
       {
-        "name": "tokenId",
-        "type": "uint256",
-        "internalType": "uint256"
+        "name": "ids",
+        "type": "uint256[]",
+        "internalType": "uint256[]"
+      },
+      {
+        "name": "values",
+        "type": "uint256[]",
+        "internalType": "uint256[]"
+      },
+      {
+        "name": "data",
+        "type": "bytes",
+        "internalType": "bytes"
       }
     ],
     "outputs": [],
@@ -408,7 +350,12 @@ export const UPTIME_ABI = [
         "internalType": "address"
       },
       {
-        "name": "tokenId",
+        "name": "id",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "value",
         "type": "uint256",
         "internalType": "uint256"
       },
@@ -460,39 +407,7 @@ export const UPTIME_ABI = [
   },
   {
     "type": "function",
-    "name": "symbol",
-    "inputs": [],
-    "outputs": [
-      {
-        "name": "",
-        "type": "string",
-        "internalType": "string"
-      }
-    ],
-    "stateMutability": "view"
-  },
-  {
-    "type": "function",
-    "name": "tokenURI",
-    "inputs": [
-      {
-        "name": "tokenId",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ],
-    "outputs": [
-      {
-        "name": "",
-        "type": "string",
-        "internalType": "string"
-      }
-    ],
-    "stateMutability": "view"
-  },
-  {
-    "type": "function",
-    "name": "totalMinted",
+    "name": "totalNodes",
     "inputs": [],
     "outputs": [
       {
@@ -502,29 +417,6 @@ export const UPTIME_ABI = [
       }
     ],
     "stateMutability": "view"
-  },
-  {
-    "type": "function",
-    "name": "transferFrom",
-    "inputs": [
-      {
-        "name": "from",
-        "type": "address",
-        "internalType": "address"
-      },
-      {
-        "name": "to",
-        "type": "address",
-        "internalType": "address"
-      },
-      {
-        "name": "tokenId",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ],
-    "outputs": [],
-    "stateMutability": "nonpayable"
   },
   {
     "type": "function",
@@ -540,36 +432,30 @@ export const UPTIME_ABI = [
     "stateMutability": "nonpayable"
   },
   {
-    "type": "event",
-    "name": "Approval",
+    "type": "function",
+    "name": "uri",
     "inputs": [
       {
-        "name": "owner",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
-      },
-      {
-        "name": "approved",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
-      },
-      {
-        "name": "tokenId",
+        "name": "",
         "type": "uint256",
-        "indexed": true,
         "internalType": "uint256"
       }
     ],
-    "anonymous": false
+    "outputs": [
+      {
+        "name": "",
+        "type": "string",
+        "internalType": "string"
+      }
+    ],
+    "stateMutability": "view"
   },
   {
     "type": "event",
     "name": "ApprovalForAll",
     "inputs": [
       {
-        "name": "owner",
+        "name": "account",
         "type": "address",
         "indexed": true,
         "internalType": "address"
@@ -585,6 +471,43 @@ export const UPTIME_ABI = [
         "type": "bool",
         "indexed": false,
         "internalType": "bool"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "NodeListed",
+    "inputs": [
+      {
+        "name": "nodeId",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      },
+      {
+        "name": "operator",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "sourceHash",
+        "type": "bytes32",
+        "indexed": false,
+        "internalType": "bytes32"
+      },
+      {
+        "name": "sharesTotal",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "termEnd",
+        "type": "uint64",
+        "indexed": false,
+        "internalType": "uint64"
       }
     ],
     "anonymous": false
@@ -610,29 +533,16 @@ export const UPTIME_ABI = [
   },
   {
     "type": "event",
-    "name": "ReceivableDefaulted",
+    "name": "RevenueClaimed",
     "inputs": [
       {
-        "name": "tokenId",
-        "type": "uint256",
-        "indexed": true,
-        "internalType": "uint256"
-      }
-    ],
-    "anonymous": false
-  },
-  {
-    "type": "event",
-    "name": "ReceivableFunded",
-    "inputs": [
-      {
-        "name": "tokenId",
+        "name": "nodeId",
         "type": "uint256",
         "indexed": true,
         "internalType": "uint256"
       },
       {
-        "name": "funder",
+        "name": "holder",
         "type": "address",
         "indexed": true,
         "internalType": "address"
@@ -648,58 +558,70 @@ export const UPTIME_ABI = [
   },
   {
     "type": "event",
-    "name": "ReceivableMinted",
+    "name": "RevenueDelivered",
     "inputs": [
       {
-        "name": "tokenId",
+        "name": "nodeId",
         "type": "uint256",
         "indexed": true,
         "internalType": "uint256"
       },
       {
-        "name": "freelancer",
+        "name": "from",
         "type": "address",
         "indexed": true,
         "internalType": "address"
       },
       {
-        "name": "docHash",
-        "type": "bytes32",
-        "indexed": false,
-        "internalType": "bytes32"
-      },
-      {
-        "name": "faceValue",
+        "name": "amount",
         "type": "uint256",
         "indexed": false,
         "internalType": "uint256"
-      },
-      {
-        "name": "dueDate",
-        "type": "uint64",
-        "indexed": false,
-        "internalType": "uint64"
       }
     ],
     "anonymous": false
   },
   {
     "type": "event",
-    "name": "ReceivableRepaid",
+    "name": "SharesBought",
     "inputs": [
       {
-        "name": "tokenId",
+        "name": "nodeId",
         "type": "uint256",
         "indexed": true,
         "internalType": "uint256"
+      },
+      {
+        "name": "buyer",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "shares",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "paid",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
       }
     ],
     "anonymous": false
   },
   {
     "type": "event",
-    "name": "Transfer",
+    "name": "TransferBatch",
     "inputs": [
+      {
+        "name": "operator",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
       {
         "name": "from",
         "type": "address",
@@ -713,7 +635,69 @@ export const UPTIME_ABI = [
         "internalType": "address"
       },
       {
-        "name": "tokenId",
+        "name": "ids",
+        "type": "uint256[]",
+        "indexed": false,
+        "internalType": "uint256[]"
+      },
+      {
+        "name": "values",
+        "type": "uint256[]",
+        "indexed": false,
+        "internalType": "uint256[]"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "TransferSingle",
+    "inputs": [
+      {
+        "name": "operator",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "from",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "to",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "id",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "value",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "URI",
+    "inputs": [
+      {
+        "name": "value",
+        "type": "string",
+        "indexed": false,
+        "internalType": "string"
+      },
+      {
+        "name": "id",
         "type": "uint256",
         "indexed": true,
         "internalType": "uint256"
@@ -723,16 +707,16 @@ export const UPTIME_ABI = [
   },
   {
     "type": "event",
-    "name": "VerdictRecorded",
+    "name": "ValuationRecorded",
     "inputs": [
       {
-        "name": "tokenId",
+        "name": "nodeId",
         "type": "uint256",
         "indexed": true,
         "internalType": "uint256"
       },
       {
-        "name": "advanceValue",
+        "name": "pricePerShare",
         "type": "uint256",
         "indexed": false,
         "internalType": "uint256"
@@ -754,17 +738,12 @@ export const UPTIME_ABI = [
   },
   {
     "type": "error",
-    "name": "AdvanceExceedsFace",
+    "name": "AlreadyValued",
     "inputs": []
   },
   {
     "type": "error",
-    "name": "DueDateInPast",
-    "inputs": []
-  },
-  {
-    "type": "error",
-    "name": "ERC721IncorrectOwner",
+    "name": "ERC1155InsufficientBalance",
     "inputs": [
       {
         "name": "sender",
@@ -772,25 +751,14 @@ export const UPTIME_ABI = [
         "internalType": "address"
       },
       {
-        "name": "tokenId",
+        "name": "balance",
         "type": "uint256",
         "internalType": "uint256"
       },
       {
-        "name": "owner",
-        "type": "address",
-        "internalType": "address"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "ERC721InsufficientApproval",
-    "inputs": [
-      {
-        "name": "operator",
-        "type": "address",
-        "internalType": "address"
+        "name": "needed",
+        "type": "uint256",
+        "internalType": "uint256"
       },
       {
         "name": "tokenId",
@@ -801,7 +769,7 @@ export const UPTIME_ABI = [
   },
   {
     "type": "error",
-    "name": "ERC721InvalidApprover",
+    "name": "ERC1155InvalidApprover",
     "inputs": [
       {
         "name": "approver",
@@ -812,7 +780,23 @@ export const UPTIME_ABI = [
   },
   {
     "type": "error",
-    "name": "ERC721InvalidOperator",
+    "name": "ERC1155InvalidArrayLength",
+    "inputs": [
+      {
+        "name": "idsLength",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "valuesLength",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "ERC1155InvalidOperator",
     "inputs": [
       {
         "name": "operator",
@@ -823,18 +807,7 @@ export const UPTIME_ABI = [
   },
   {
     "type": "error",
-    "name": "ERC721InvalidOwner",
-    "inputs": [
-      {
-        "name": "owner",
-        "type": "address",
-        "internalType": "address"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "ERC721InvalidReceiver",
+    "name": "ERC1155InvalidReceiver",
     "inputs": [
       {
         "name": "receiver",
@@ -845,7 +818,7 @@ export const UPTIME_ABI = [
   },
   {
     "type": "error",
-    "name": "ERC721InvalidSender",
+    "name": "ERC1155InvalidSender",
     "inputs": [
       {
         "name": "sender",
@@ -856,18 +829,23 @@ export const UPTIME_ABI = [
   },
   {
     "type": "error",
-    "name": "ERC721NonexistentToken",
+    "name": "ERC1155MissingApprovalForAll",
     "inputs": [
       {
-        "name": "tokenId",
-        "type": "uint256",
-        "internalType": "uint256"
+        "name": "operator",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "owner",
+        "type": "address",
+        "internalType": "address"
       }
     ]
   },
   {
     "type": "error",
-    "name": "EmptyDocHash",
+    "name": "EmptySourceHash",
     "inputs": []
   },
   {
@@ -877,17 +855,27 @@ export const UPTIME_ABI = [
   },
   {
     "type": "error",
-    "name": "IllegalStatusTransition",
-    "inputs": []
-  },
-  {
-    "type": "error",
-    "name": "IncorrectFundingAmount",
+    "name": "IncorrectPayment",
     "inputs": []
   },
   {
     "type": "error",
     "name": "InvalidConfidence",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "NotEnoughSharesAvailable",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "NotValued",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "NothingToClaim",
     "inputs": []
   },
   {
@@ -914,22 +902,37 @@ export const UPTIME_ABI = [
   },
   {
     "type": "error",
+    "name": "ReentrancyGuardReentrantCall",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "TermEndInPast",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "TermEnded",
+    "inputs": []
+  },
+  {
+    "type": "error",
     "name": "TransferFailed",
     "inputs": []
   },
   {
     "type": "error",
-    "name": "VerdictAlreadyRecorded",
-    "inputs": []
-  },
-  {
-    "type": "error",
-    "name": "VerdictNotRecorded",
+    "name": "UnknownNode",
     "inputs": []
   },
   {
     "type": "error",
     "name": "ZeroAmount",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "ZeroShares",
     "inputs": []
   }
 ] as const;

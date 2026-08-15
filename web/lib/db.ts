@@ -1,22 +1,22 @@
 import "server-only";
 
 import {createClient, type SupabaseClient} from "@supabase/supabase-js";
-import type {Verdict} from "./types";
+import type {NodeReasoning} from "@uptime/agents/node-schemas";
+import type {RevenueHistory} from "@uptime/agents/revenue";
 
 /**
- * Persistence for priced receivables.
+ * Persistence for priced nodes.
  *
- * This exists to make the integrity claim mean something. A verdict hash written on chain
- * only commits to the reasoning if the reasoning can still be produced later, so the
- * canonical bytes that were hashed are stored verbatim and served back to anyone who asks.
+ * This exists to make the integrity claim mean something. A hash written on chain only
+ * commits to something if that something can still be produced later, so the canonical bytes
+ * that were hashed are stored verbatim and served back to anyone who asks.
  *
  * Writes go through the service role, which bypasses row level security. There is
- * deliberately no anon insert policy on any Uptime table: a forged verdict row would break
- * the one property this project is built around. Reads of verdicts are public, because
- * that is the point.
+ * deliberately no anon insert policy on any Uptime table: a forged valuation row would break
+ * the one property this project is built around. Reads are public, because that is the point.
  *
- * Storage is optional. If it is not configured the pipeline still prices, it just cannot
- * be verified afterwards, and the API says so rather than pretending it saved.
+ * Storage is optional. Without it the panel still runs, it just cannot be verified
+ * afterwards, and the API says so rather than pretending it saved.
  */
 const url = process.env.SUPABASE_URL;
 const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -36,164 +36,161 @@ function db(): SupabaseClient | null {
 }
 
 /**
- * Read-side client. Verdict rows are publicly readable by policy, so verification works
- * on a deployment that holds no secret at all. Falls back to the service role when only
+ * Read-side client. Node and valuation rows are publicly readable by policy, so verification
+ * works on a deployment holding no secret at all. Falls back to the service role when only
  * that is configured.
  */
-function dbRead(): SupabaseClient | null {
-  if (!url) return null;
-  const key = publishableKey ?? serviceKey;
-  if (!key) return null;
-  reader ??= createClient(url, key, {auth: {persistSession: false}});
+function ro(): SupabaseClient | null {
+  if (!storageConfigured) return null;
+  reader ??= createClient(url!, (publishableKey ?? serviceKey)!, {
+    auth: {persistSession: false},
+  });
   return reader;
 }
 
-export interface StoredVerdict {
-  verdict_hash: string;
-  canonical_json: string;
-  extraction: unknown;
-  bull: unknown;
-  bear: unknown;
-  arbiter: unknown;
-  advance_value: number | null;
+export interface StoredValuation {
+  verdictHash: string;
+  sourceHash: string | null;
+  reasoning: NodeReasoning;
+  canonicalJson: string;
+  pricePerShare: number | null;
+  projectedTermRevenue: number | null;
   spread: number | null;
   inverted: boolean;
-  created_at: string;
-  doc_hash?: string | null;
+  createdAt: string | null;
 }
 
 /**
- * Save a priced receivable. Never throws: losing the record is worse than losing the
- * response, but it is not worth failing a debate the user already waited a minute for.
- * Returns whether it landed so the caller can be honest about it.
+ * Save a node and the argument that priced it.
+ *
+ * Never throws. A valuation that succeeded but could not be filed is still a valuation, and
+ * losing it to a storage outage would be worse than serving it unsaved — the caller is told
+ * what happened and can say so in the response.
  */
-export async function saveVerdict(
-  verdict: Verdict,
-  options: {docHash?: string; wallet?: string} = {},
-): Promise<boolean> {
-  const supabase = db();
-  if (!supabase) return false;
+export async function saveValuation(input: {
+  history: RevenueHistory;
+  sourceHash: string;
+  reasoning: NodeReasoning;
+  canonicalJson: string;
+  verdictHash: string;
+  pricePerShare: number;
+  projectedTermRevenue: number;
+  spread: number;
+  inverted: boolean;
+}): Promise<{saved: boolean; reason?: string}> {
+  const client = db();
+  if (!client) return {saved: false, reason: "storage is not configured"};
+
+  const {profile} = input.reasoning;
 
   try {
-    let documentId: string | null = null;
+    // Upsert on source_hash: the same observations hashed twice are one node, not two.
+    const {data: node, error: nodeError} = await client
+      .from("uptime_nodes")
+      .upsert(
+        {
+          source_hash: input.sourceHash,
+          payout_address: profile.payout_address,
+          chain: profile.chain,
+          chain_id: input.history.provenance.kind === "onchain"
+            ? input.history.provenance.chain_id
+            : null,
+          verifiable: profile.verifiable,
+          network: profile.network,
+          hardware: profile.hardware,
+          term_months: profile.term_months,
+          shares_total: profile.shares_total,
+          history: input.history,
+        },
+        {onConflict: "source_hash"},
+      )
+      .select("id")
+      .single();
 
-    if (options.docHash) {
-      // Content addressed, so re-uploading the same file reuses the row rather than
-      // creating a second identity for identical bytes.
-      const {data} = await supabase
-        .from("uptime_documents")
-        .upsert(
-          {doc_hash: options.docHash, user_wallet: options.wallet ?? null},
-          {onConflict: "doc_hash"},
-        )
-        .select("id")
-        .single();
-      documentId = data?.id ?? null;
-    }
+    if (nodeError) return {saved: false, reason: nodeError.message};
 
-    const {reasoning} = verdict;
-
-    if (documentId) {
-      await supabase.from("uptime_extractions").insert({
-        document_id: documentId,
-        payload: reasoning.extraction,
-        document_quality: reasoning.extraction.document_quality,
-      });
-    }
-
-    const {error} = await supabase.from("uptime_verdicts").upsert(
+    const {error} = await client.from("uptime_valuations").upsert(
       {
-        document_id: documentId,
-        extraction: reasoning.extraction,
-        bull: reasoning.bull,
-        bear: reasoning.bear,
-        arbiter: reasoning.arbiter,
-        canonical_json: verdict.canonicalJson,
-        verdict_hash: verdict.verdictHash,
-        advance_value: verdict.advanceValue,
-        spread: verdict.spread,
-        inverted: verdict.inverted ?? false,
+        node_id: node?.id ?? null,
+        source_hash: input.sourceHash,
+        profile,
+        operator_case: input.reasoning.operator,
+        investor_case: input.reasoning.investor,
+        arbiter: input.reasoning.arbiter,
+        canonical_json: input.canonicalJson,
+        verdict_hash: input.verdictHash,
+        price_rate: input.reasoning.arbiter.price_rate,
+        price_per_share: input.pricePerShare,
+        projected_term_revenue: input.projectedTermRevenue,
+        confidence: input.reasoning.arbiter.confidence,
+        spread: input.spread,
+        inverted: input.inverted,
       },
       {onConflict: "verdict_hash"},
     );
 
-    if (error) {
-      console.error("saveVerdict failed", error.message);
-      return false;
-    }
-    return true;
+    if (error) return {saved: false, reason: error.message};
+    return {saved: true};
   } catch (error) {
-    console.error("saveVerdict threw", error);
-    return false;
+    return {saved: false, reason: error instanceof Error ? error.message : "unknown error"};
   }
 }
 
-/** Fetch a stored verdict by its hash. This is what makes verification self-service. */
-export async function findVerdict(hash: string): Promise<StoredVerdict | null> {
-  const supabase = dbRead();
-  if (!supabase) return null;
+/** Fetch one valuation by its hash. This is the self-service verification path. */
+export async function findValuation(verdictHash: string): Promise<StoredValuation | null> {
+  const client = ro();
+  if (!client) return null;
 
-  const {data, error} = await supabase
-    .from("uptime_verdicts")
+  const {data, error} = await client
+    .from("uptime_valuations")
     .select(
-      "verdict_hash, canonical_json, extraction, bull, bear, arbiter, advance_value, spread, inverted, created_at",
+      "verdict_hash, source_hash, profile, operator_case, investor_case, arbiter, " +
+        "canonical_json, price_per_share, projected_term_revenue, spread, inverted, created_at",
     )
-    .eq("verdict_hash", hash.toLowerCase())
+    .eq("verdict_hash", verdictHash)
     .maybeSingle();
 
-  if (error) {
-    console.error("findVerdict failed", error.message);
-    return null;
-  }
-  return (data as StoredVerdict) ?? null;
+  if (error || !data) return null;
+  return shape(data);
 }
 
-/** Record a mint against the verdict it priced. */
-export async function saveMint(input: {
-  verdictHash: string;
-  tokenId: string;
-  txHash: string;
-  network: string;
-}): Promise<boolean> {
-  const supabase = db();
-  if (!supabase) return false;
+/** The most recent valuations, for a public ledger view. */
+export async function recentValuations(limit = 12): Promise<StoredValuation[]> {
+  const client = ro();
+  if (!client) return [];
 
-  const {data} = await supabase
-    .from("uptime_verdicts")
-    .select("id")
-    .eq("verdict_hash", input.verdictHash.toLowerCase())
-    .maybeSingle();
-
-  const {error} = await supabase.from("uptime_mints").insert({
-    verdict_id: data?.id ?? null,
-    token_id: input.tokenId,
-    tx_hash: input.txHash,
-    network: input.network,
-  });
-
-  if (error) {
-    console.error("saveMint failed", error.message);
-    return false;
-  }
-  return true;
-}
-
-/** Most recent verdicts, for a public ledger view. */
-export async function recentVerdicts(limit = 20): Promise<StoredVerdict[]> {
-  const supabase = dbRead();
-  if (!supabase) return [];
-
-  const {data, error} = await supabase
-    .from("uptime_verdicts")
+  const {data, error} = await client
+    .from("uptime_valuations")
     .select(
-      "verdict_hash, canonical_json, extraction, bull, bear, arbiter, advance_value, spread, inverted, created_at",
+      "verdict_hash, source_hash, profile, operator_case, investor_case, arbiter, " +
+        "canonical_json, price_per_share, projected_term_revenue, spread, inverted, created_at",
     )
     .order("created_at", {ascending: false})
     .limit(limit);
 
-  if (error) {
-    console.error("recentVerdicts failed", error.message);
-    return [];
-  }
-  return (data as StoredVerdict[]) ?? [];
+  if (error || !data) return [];
+  return data.map(shape);
+}
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
+function shape(row: any): StoredValuation {
+  return {
+    verdictHash: row.verdict_hash,
+    sourceHash: row.source_hash ?? null,
+    // Reassembled in the same key order the pipeline built it in. Canonicalisation sorts
+    // keys anyway, so the hash does not depend on this, but keeping the shape identical
+    // means a reader comparing the two by eye sees the same object.
+    reasoning: {
+      profile: row.profile,
+      operator: row.operator_case,
+      investor: row.investor_case,
+      arbiter: row.arbiter,
+    },
+    canonicalJson: row.canonical_json,
+    pricePerShare: row.price_per_share,
+    projectedTermRevenue: row.projected_term_revenue,
+    spread: row.spread,
+    inverted: Boolean(row.inverted),
+    createdAt: row.created_at ?? null,
+  };
 }
