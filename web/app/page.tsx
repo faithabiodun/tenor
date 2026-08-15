@@ -1,6 +1,7 @@
 import Link from "next/link";
 import {Footer, Header} from "../components/Chrome";
 import {AgreementFigure, Flow, OracleFigure} from "../components/Flow";
+import {Reveal} from "../components/Reveal";
 
 export default function Home() {
   return (
@@ -58,12 +59,14 @@ function Hero() {
           months are worth, and turns the answer into shares anyone can buy.
         </p>
 
+        {/* One action. Two buttons of equal weight ask the reader to choose before they
+            know enough to; the second is a quiet link for anyone not ready. */}
         <div className="hero-actions">
           <Link href="/node" className="btn">
-            List a node
+            Value a node
           </Link>
-          <Link href="/#how" className="btn btn-ghost">
-            See the method
+          <Link href="/#how" className="quiet-link">
+            or see how it works
           </Link>
         </div>
       </div>
@@ -82,14 +85,22 @@ function Hero() {
 
 function Method() {
   return (
-    <section id="how" className="wrap" style={{paddingTop: 96}}>
-      <h2 className="display display-lg" style={{maxWidth: "20ch"}}>
-        Infrastructure that earns, financed by what it earns
-      </h2>
+    <section id="how" className="wrap beat">
+      <Reveal>
+        <h2 className="display display-lg beat-head">
+          Infrastructure that earns, financed by what it earns
+        </h2>
+        <p className="beat-sub">
+          A GPU rig, an inference server, an edge node. Real machines with real customers and
+          a payout address anyone can read.
+        </p>
+      </Reveal>
 
-      <div style={{marginTop: 40}}>
-        <Flow />
-      </div>
+      <Reveal delay={120}>
+        <div style={{marginTop: 40}}>
+          <Flow />
+        </div>
+      </Reveal>
     </section>
   );
 }
@@ -100,7 +111,7 @@ function Method() {
 
 function Asymmetry() {
   return (
-    <section className="wrap" style={{paddingTop: 96}}>
+    <section className="wrap beat">
       <div
         style={{
           display: "grid",
@@ -109,16 +120,16 @@ function Asymmetry() {
           alignItems: "start",
         }}
       >
-        <div>
-          <h2 className="display display-lg" style={{maxWidth: "16ch"}}>
+        <Reveal>
+          <h2 className="display display-lg beat-head" style={{maxWidth: "16ch"}}>
             Two models agree unless you stop them
           </h2>
           <div style={{marginTop: 26}}>
             <AgreementFigure />
           </div>
-        </div>
+        </Reveal>
 
-        <div className="plate">
+        <Reveal delay={140} className="plate">
           <p className="spec" style={{marginBottom: 18}}>
             Two sample nodes · same code, same day
           </p>
@@ -182,7 +193,7 @@ function Asymmetry() {
             </span>{" "}
             and re-hash the canonical JSON yourself.
           </p>
-        </div>
+        </Reveal>
       </div>
     </section>
   );
@@ -199,9 +210,11 @@ function OnChain() {
         The chain is the oracle
       </h2>
 
-      <div style={{marginTop: 34}}>
-        <OracleFigure />
-      </div>
+      <Reveal delay={120}>
+        <div style={{marginTop: 34}}>
+          <OracleFigure />
+        </div>
+      </Reveal>
 
       <div style={{marginTop: 48}}>
         <Link href="/node" className="btn">

@@ -714,3 +714,66 @@ body {
   .fx-arc { stroke-dashoffset: 74; }
   .fx-ping, .fx-fall, .fx-pay, .fx-travel { opacity: 0.85; }
 }
+
+/* --- progressive reveal --------------------------------------------------------------- */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity 760ms cubic-bezier(0.2, 0.7, 0.3, 1),
+    transform 760ms cubic-bezier(0.2, 0.7, 0.3, 1);
+  /* Only these two properties animate, so the compositor can carry the whole page. */
+  will-change: opacity, transform;
+}
+
+.reveal.is-in {
+  opacity: 1;
+  transform: none;
+  will-change: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* --- section rhythm ------------------------------------------------------------------- */
+
+/*
+ * One idea per screen. The sections were pitched at 96px apart, which reads as a document;
+ * a narrative wants air around each beat so the reader arrives at one thing at a time.
+ */
+.beat {
+  padding-top: clamp(88px, 13vh, 152px);
+}
+
+.beat-head {
+  max-width: 21ch;
+}
+
+.beat-sub {
+  margin-top: 18px;
+  font-size: clamp(16px, 2vw, 19px);
+  line-height: 1.5;
+  color: var(--ink-70);
+  max-width: 54ch;
+}
+
+.quiet-link {
+  align-self: center;
+  font-size: 15px;
+  color: var(--ink-50);
+  text-decoration: none;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 2px;
+  transition: color 140ms ease, border-color 140ms ease;
+}
+
+.quiet-link:hover {
+  color: var(--ink);
+  border-color: var(--ink);
+}
