@@ -1,6 +1,6 @@
 import Link from "next/link";
 import {Footer, Header} from "../components/Chrome";
-import {Flow} from "../components/Flow";
+import {AgreementStudy, OracleStudy, ProjectionStudy} from "../components/Study";
 import {Reveal} from "../components/Reveal";
 
 export default function Home() {
@@ -97,9 +97,7 @@ function Method() {
       </Reveal>
 
       <Reveal delay={120}>
-        <div style={{marginTop: 40}}>
-          <Flow />
-        </div>
+        <ProjectionStudy />
       </Reveal>
     </section>
   );
@@ -128,6 +126,7 @@ function Asymmetry() {
             Give two models the same information and they agree. So only one of them is given
             the list of things that can go wrong.
           </p>
+          <AgreementStudy />
         </Reveal>
 
         <Reveal delay={140} className="plate">
@@ -206,15 +205,22 @@ function Asymmetry() {
 
 function OnChain() {
   return (
-    <section className="wrap" style={{paddingTop: 96}}>
-      <h2 className="display display-lg" style={{maxWidth: "20ch"}}>
-        The chain is the oracle
-      </h2>
+    <section id="chain" className="wrap beat">
+      <Reveal>
+        <h2 className="display display-lg beat-head">The chain is the oracle</h2>
+        <p className="beat-sub">
+          Tokenise a building and somebody must swear it did what it claimed. A machine&rsquo;s
+          earnings are already an event on the chain, so there is nobody to trust.
+        </p>
+      </Reveal>
 
+      <Reveal delay={120}>
+        <OracleStudy />
+      </Reveal>
 
       <div style={{marginTop: 48}}>
         <Link href="/node" className="btn">
-          List a node
+          Value a node
         </Link>
       </div>
     </section>
