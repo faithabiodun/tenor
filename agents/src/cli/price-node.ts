@@ -45,6 +45,10 @@ try {
     `  ${valuation.projectedTermRevenue.toFixed(2)} ${p.currency} projected over ` +
       `${p.term_months} months · ${valuation.pricePerShare.toFixed(4)} ${p.currency} per share`,
   );
+  console.log(
+    `  node score ${arbiter.node_score}/100  ·  next month ` +
+      `${arbiter.expected_monthly_low}–${arbiter.expected_monthly_high} ${p.currency}`,
+  );
   console.log(`  confidence ${arbiter.confidence}  ·  ${arbiter.which_agent_prevailed} prevailed`);
   console.log(`  spread ${valuation.spread.toFixed(1)} points${valuation.inverted ? "  INVERTED" : ""}`);
   console.log(`\n  ${arbiter.rationale}\n`);

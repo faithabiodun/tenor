@@ -111,6 +111,15 @@ export async function priceNode(
   });
   onProgress("arbiter", "done");
 
+  // A range handed back the wrong way round is a slip in generation, not a judgement, and
+  // the order carries no information worth preserving. Normalise it rather than shipping a
+  // panel that reports earnings "between 15 and 11".
+  if (arbiter.expected_monthly_low > arbiter.expected_monthly_high) {
+    const {expected_monthly_low: lo, expected_monthly_high: hi} = arbiter;
+    arbiter.expected_monthly_low = hi;
+    arbiter.expected_monthly_high = lo;
+  }
+
   const reasoning: NodeReasoning = {profile, operator, investor, arbiter};
 
   const projectedTermRevenue = profile.mean_monthly * profile.term_months;

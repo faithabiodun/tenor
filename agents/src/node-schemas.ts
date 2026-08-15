@@ -26,6 +26,22 @@ export const NodeArbiterSchema = z.object({
    */
   price_rate: z.number().min(20).max(85),
   confidence: z.number().int().min(0).max(100),
+  /**
+   * The node's own quality, 0-100, independent of what a share costs.
+   *
+   * Separate from confidence on purpose: confidence is how sure the panel is about its own
+   * number, and the score is how good the machine is. A long, clean, verifiable record of a
+   * decaying node earns high confidence in a low score, and collapsing the two would hide
+   * exactly that case.
+   */
+  node_score: z.number().int().min(0).max(100),
+  /**
+   * The range next month's earnings are expected to fall in. A range rather than a point
+   * estimate because a point estimate implies a precision no projection has, and a buyer
+   * deciding on one deserves to see the width of the uncertainty.
+   */
+  expected_monthly_low: z.number().min(0),
+  expected_monthly_high: z.number().min(0),
   rationale: z.string().min(1),
   decisive_arguments: z.array(z.string()).min(1),
   which_agent_prevailed: z.enum(["operator", "investor", "split"]),

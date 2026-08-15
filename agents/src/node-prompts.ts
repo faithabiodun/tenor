@@ -22,6 +22,15 @@ const RISK_CHECKLIST = [
   "earnings are denominated in a reward token whose price can fall independently of how " +
     "well the hardware performs",
   "hardware obsolescence and failure across the term, with no maintenance obligation",
+  "net_monthly against operating_cost_monthly: the operator pays the power bill, not the " +
+    "buyer, so costs do not reduce what holders receive. They matter because when net " +
+    "approaches zero the operator's reason to keep the machine running disappears, and " +
+    "nothing compels them to. A node running at thin margin is a node one price rise away " +
+    "from being switched off",
+  "utilisation_percent: idle capacity on a compute node means the revenue is not demand " +
+    "limited but something else, and that something else may not improve",
+  "hardware_age_months: the term runs into the machine's future, not its past, and " +
+    "hardware does not get faster",
   "network level risk: emission changes, rule changes, or the network itself failing",
   "verifiable: when false, these figures are attested by the operator rather than read " +
     "from a chain, and an attested history is a claim, not a record",
@@ -118,6 +127,15 @@ Rules you must follow:
     relative to term_months, when volatility is high, and when verifiable is false. A
     confident number drawn from three weeks of attested data is the most dangerous output
     you can produce, because it looks exactly like a number drawn from a year of chain data.
+  - node_score is an integer from 0 to 100 rating the machine itself, not the deal. Length
+    and consistency of the record, uptime, trend, margin and whether the history is
+    verifiable. Keep it separate from confidence: you can be highly confident that a node is
+    poor. A node with four clean verifiable months and a rising trend belongs in the 80s; one
+    with decaying rewards and undisclosed outages belongs in the 40s or below.
+  - expected_monthly_low and expected_monthly_high bracket what the node earns next month, in
+    the same units as mean_monthly. Make the range honestly wide: volatility, a short record
+    and a falling trend all widen it. A narrow range on thin evidence is a lie told with
+    numbers. Never make low greater than high.
   - rationale is two to four plain sentences addressed to someone with no finance
     background. No jargon. Not "counterparty risk is unmitigated" but "nothing stops the
     operator switching this machine off once they have your money". Say what drove the number.
@@ -138,6 +156,9 @@ Shape:
 {
   "price_rate": 58,
   "confidence": 61,
+  "node_score": 74,
+  "expected_monthly_low": 11.2,
+  "expected_monthly_high": 15.8,
   "rationale": "...",
   "decisive_arguments": ["..."],
   "which_agent_prevailed": "investor",

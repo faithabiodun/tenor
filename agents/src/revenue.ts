@@ -69,6 +69,22 @@ export interface NodeProfile {
   shares_total: number;
   operator_claims: string | null;
 
+  /**
+   * What the machine costs to run each month, and what is left after that.
+   *
+   * These are not deducted from what investors receive: the operator pays the power bill,
+   * and holders have a claim on revenue delivered, not on profit. Costs matter for a
+   * different and more important reason. When net approaches zero the operator's reason to
+   * keep the machine running disappears, and nothing in the arrangement compels them to.
+   * So this is a risk input, not an accounting line.
+   */
+  operating_cost_monthly: number | null;
+  net_monthly: number | null;
+  /** How hard the machine is worked. Low utilisation on a compute node means idle capacity. */
+  utilisation_percent: number | null;
+  /** Age in months. Hardware does not get faster, and the term runs into its future. */
+  hardware_age_months: number | null;
+
   /** 0-100. Thin history is the single biggest reason a valuation should not be trusted. */
   data_quality: number;
   missing_critical_fields: string[];
@@ -198,6 +214,9 @@ export function buildProfile(
     term_months: number;
     shares_total: number;
     operator_claims: string | null;
+    operating_cost_monthly?: number | null;
+    utilisation_percent?: number | null;
+    hardware_age_months?: number | null;
   },
 ): NodeProfile {
   const {payments} = history;
@@ -279,6 +298,14 @@ export function buildProfile(
     term_months: meta.term_months,
     shares_total: meta.shares_total,
     operator_claims: meta.operator_claims,
+
+    operating_cost_monthly: meta.operating_cost_monthly ?? null,
+    net_monthly:
+      meta.operating_cost_monthly == null
+        ? null
+        : round(meanMonthly - meta.operating_cost_monthly),
+    utilisation_percent: meta.utilisation_percent ?? null,
+    hardware_age_months: meta.hardware_age_months ?? null,
 
     data_quality: dataQuality(observedDays, payments.length, history.provenance.kind),
     missing_critical_fields: missing,

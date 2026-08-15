@@ -26,7 +26,15 @@ if (!response.ok) {
   process.exit(1);
 }
 
-const served = await response.json();
+interface Served {
+  canonical_json: string;
+  verdict_hash: string;
+  source_hash: string | null;
+  valued_at: string | null;
+  reasoning: unknown;
+}
+
+const served = (await response.json()) as Served;
 
 const servedBytes: string = served.canonical_json;
 const servedHash: string = served.verdict_hash;

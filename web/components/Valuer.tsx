@@ -153,6 +153,12 @@ function NodeCard({
         <Stat k="longest gap" v={`${p.longest_gap_days} days`} />
         <Stat k="trend" v={`${p.trend_percent > 0 ? "+" : ""}${p.trend_percent}%`} />
         <Stat k="quality" v={`${p.data_quality}/100`} />
+        {p.net_monthly !== null && (
+          <Stat k="net / month" v={`${p.net_monthly} ${p.currency}`} />
+        )}
+        {p.utilisation_percent !== null && (
+          <Stat k="utilisation" v={`${p.utilisation_percent}%`} />
+        )}
         <Stat k="source" v={p.verifiable ? "read from chain" : "attested by operator"} />
       </dl>
     </button>
@@ -236,14 +242,15 @@ function Verdict({result}: {result: Result}) {
             gap: 24,
           }}
         >
-          <Figure label="Price rate" value={`${arbiter.price_rate}%`} accent />
+          <Figure label="Node score" value={`${arbiter.node_score}`} accent />
+          <Figure label="Price rate" value={`${arbiter.price_rate}%`} />
           <Figure
             label={`Per share (${profile.currency})`}
             value={result.pricePerShare.toFixed(4)}
           />
           <Figure
-            label="Projected term"
-            value={result.projectedTermRevenue.toFixed(2)}
+            label={`Next month (${profile.currency})`}
+            value={`${arbiter.expected_monthly_low}–${arbiter.expected_monthly_high}`}
             projected
           />
           <Figure label="Confidence" value={String(arbiter.confidence)} />

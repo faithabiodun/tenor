@@ -133,6 +133,11 @@ const steady = buildProfile(
     term_months: 6,
     shares_total: 100,
     operator_claims: "Uninterrupted since April. Fibre line with a UPS on the router.",
+    // Comfortable margin: roughly a third of revenue goes on power and line share, so the
+    // operator has a clear reason to keep it running.
+    operating_cost_monthly: 4.4,
+    utilisation_percent: 78,
+    hardware_age_months: 14,
   },
 );
 
@@ -165,6 +170,12 @@ const decaying = buildProfile(
     term_months: 6,
     shares_total: 100,
     operator_claims: "Consistently one of the stronger earners in my region.",
+    // Costs sit above what the node now earns per month after the emissions cut. The margin
+    // is gone, which is the real reason to doubt this one: the operator is currently paying
+    // to run a machine whose future income they would have already sold.
+    operating_cost_monthly: 5.2,
+    utilisation_percent: 41,
+    hardware_age_months: 38,
   },
 );
 
