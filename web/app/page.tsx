@@ -65,35 +65,66 @@ function Hero() {
  *
  * One solid module, then three wireframes receding. The sequence is the product: the solid
  * form is revenue the chain has already recorded, and each ghost is further into a
- * projection, drawn fainter because less is known about it. Nothing here is styling for its
- * own sake, and the colours must keep meaning what they mean.
+ * projection, drawn fainter because less is known about it. The colours must keep meaning
+ * what they mean, and only the measured module gets depth, detail and a shadow.
+ *
+ * Ghosts are single-fan segments rather than full modules. Three full modules at this pitch
+ * overlapped so heavily that their fans interleaved and the whole thing read as a tangle of
+ * circles instead of one object receding.
  */
 function ProjectionStudy() {
   return (
     <figure style={{margin: "54px 0 0"}}>
       <svg
-        viewBox="0 0 1200 430"
+        viewBox="0 0 1200 470"
         role="img"
-        aria-label="One solid module representing observed earnings, followed by three wireframe modules representing projected months, each fainter than the last."
+        aria-label="One solid compute module representing observed earnings, followed by three wireframe segments representing projected months, each fainter than the last."
         style={{width: "100%", height: "auto", display: "block", overflow: "visible"}}
       >
-        {/* Ground line the modules sit on, as on a drawing sheet. */}
-        <line x1="20" y1="330" x2="1140" y2="330" stroke="var(--line)" strokeWidth="1" />
+        <defs>
+          <linearGradient id="shroud" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stopColor="#43434a" />
+            <stop offset="0.18" stopColor="#2b2b30" />
+            <stop offset="0.62" stopColor="#1b1b1f" />
+            <stop offset="1" stopColor="#101012" />
+          </linearGradient>
+          {/* Light falling across the face from the upper left, so the panel reads as a
+              surface rather than a silhouette. */}
+          <linearGradient id="sheen" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stopColor="#ffffff" stopOpacity="0.10" />
+            <stop offset="0.35" stopColor="#ffffff" stopOpacity="0.02" />
+            <stop offset="1" stopColor="#ffffff" stopOpacity="0" />
+          </linearGradient>
+          <radialGradient id="well" cx="42%" cy="36%" r="72%">
+            <stop offset="0" stopColor="#34353a" />
+            <stop offset="0.45" stopColor="#161719" />
+            <stop offset="1" stopColor="#050506" />
+          </radialGradient>
+          <linearGradient id="pins" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stopColor="#cba63f" />
+            <stop offset="1" stopColor="#7a5f16" />
+          </linearGradient>
+          <filter id="cast" x="-15%" y="-25%" width="130%" height="170%">
+            <feDropShadow dx="0" dy="10" stdDeviation="7" floodColor="#1c1c1e" floodOpacity="0.30" />
+          </filter>
+        </defs>
+
+        <line x1="20" y1="378" x2="1150" y2="378" stroke="var(--line)" strokeWidth="1" />
 
         {/* Far ghost first, so nearer forms overlap it. */}
-        <Module x={790} stroke="var(--ghost-far)" opacity={0.62} />
-        <Module x={580} stroke="var(--ghost-mid)" opacity={0.72} />
-        <Module x={372} stroke="var(--ghost-near)" opacity={0.78} />
-        <Module x={44} solid />
+        <Ghost x={864} stroke="var(--ghost-far)" opacity={0.6} />
+        <Ghost x={700} stroke="var(--ghost-mid)" opacity={0.62} />
+        <Ghost x={536} stroke="var(--ghost-near)" opacity={0.7} />
+        <Module />
 
-        {/* Shadow under the solid module only. Only real things cast one. */}
-        <ellipse cx="230" cy="335" rx="150" ry="4" fill="var(--ink)" opacity="0.14" />
+        {/* Contact shadow. Only real things cast one. */}
+        <ellipse cx="290" cy="380" rx="245" ry="7" fill="#1c1c1e" opacity="0.17" />
+        <ellipse cx="290" cy="380" rx="140" ry="4" fill="#1c1c1e" opacity="0.16" />
 
-        {/* Annotation, top right, with a leader running back toward the far ghost. */}
         <g>
           <text
             x="1140"
-            y="106"
+            y="74"
             textAnchor="end"
             className="mono"
             fontSize="11"
@@ -103,7 +134,7 @@ function ProjectionStudy() {
             OBSERVED BEFORE PROJECTED
           </text>
           <path
-            d="M1136 118 L1136 150 L1010 150 L1010 196"
+            d="M1136 86 L1136 118 L1000 118 L1000 152"
             fill="none"
             stroke="var(--ink-30)"
             strokeWidth="1"
@@ -111,120 +142,168 @@ function ProjectionStudy() {
           />
         </g>
 
-        {/* Registration mark, far right margin. */}
         <g stroke="var(--ink-30)" strokeWidth="1" opacity="0.6" fill="none">
-          <line x1="1168" y1="238" x2="1188" y2="238" />
-          <line x1="1178" y1="228" x2="1178" y2="248" />
-          <circle cx="1178" cy="238" r="6" />
+          <line x1="1140" y1="240" x2="1164" y2="240" />
+          <line x1="1152" y1="228" x2="1152" y2="252" />
+          <circle cx="1152" cy="240" r="7" />
         </g>
 
-        <Caption x={44} label="OBSERVED" sub="READ FROM CHAIN" tone="var(--ink-70)" />
-        <Caption x={372} label="MONTH 1–2" sub="PROJECTED" tone="var(--ghost-near)" />
-        <Caption x={580} label="MONTH 3–4" sub="PROJECTED" tone="var(--ghost-mid)" />
-        <Caption x={790} label="MONTH 5–6" sub="PROJECTED" tone="var(--ghost-far)" />
+        <Caption x={40} label="OBSERVED" sub="READ FROM CHAIN" tone="var(--ink-70)" />
+        <Caption x={536} label="MONTH 1–2" sub="PROJECTED" tone="var(--ghost-near)" />
+        <Caption x={700} label="MONTH 3–4" sub="PROJECTED" tone="var(--ghost-mid)" />
+        <Caption x={864} label="MONTH 5–6" sub="PROJECTED" tone="var(--ghost-far)" />
       </svg>
     </figure>
   );
 }
 
-/** A compute module: body, three fans, mounting tab. Solid when measured, wireframe when not. */
-function Module({
-  x,
-  solid = false,
-  stroke = "var(--ink)",
-  opacity = 1,
-}: {
-  x: number;
-  solid?: boolean;
-  stroke?: string;
-  opacity?: number;
-}) {
-  const y = 160;
-  const w = 360;
-  const h = 150;
-  const body =
-    `M${x},${y + 20} L${x + 16},${y} L${x + w - 34},${y} L${x + w},${y + 26} ` +
-    `L${x + w},${y + h - 20} L${x + w - 18},${y + h} L${x + 18},${y + h} L${x},${y + h - 22} Z`;
-  const fans = [0.24, 0.5, 0.76].map((t) => x + w * t);
-  const cy = y + h / 2;
+const MX = 40;
+const MY = 140;
+const MW = 470;
+const MH = 200;
+const FAN_CY = MY + MH / 2;
+const FAN_R = 58;
+
+/** The chamfered card silhouette, shared by the measured module and its projections. */
+function silhouette(x: number, y: number, w: number, h: number): string {
+  return (
+    `M${x},${y + 22} L${x + 26},${y} L${x + w - 38},${y} L${x + w},${y + 28} ` +
+    `L${x + w},${y + h - 24} L${x + w - 30},${y + h} L${x + 22},${y + h} L${x},${y + h - 26} Z`
+  );
+}
+
+/**
+ * One fan blade, swept between two radii.
+ *
+ * Built from arcs rather than beziers so the outer edge sits exactly on the fan circle. A
+ * bezier approximation drifts off the rim and the blades stop looking like they belong to
+ * the same housing.
+ */
+function blade(cx: number, cy: number, a: number, r: number): string {
+  const ri = r * 0.33;
+  const ro = r * 0.96;
+  const p = (angle: number, radius: number) =>
+    `${(cx + Math.cos(angle) * radius).toFixed(2)},${(cy + Math.sin(angle) * radius).toFixed(2)}`;
+  return (
+    `M${p(a, ri)} L${p(a - 0.3, ro)} A${ro},${ro} 0 0 1 ${p(a + 0.28, ro)} ` +
+    `L${p(a + 0.55, ri)} A${ri},${ri} 0 0 0 ${p(a, ri)} Z`
+  );
+}
+
+const BLADES = 11;
+
+/** The measured module: bracket, shroud, three fans, accent rail, contact fingers. */
+function Module() {
+  const fans = [MX + 118, MX + 235, MX + 352];
 
   return (
-    <g opacity={opacity}>
+    <g filter="url(#cast)">
+      {/* PCI bracket with vent slots. */}
       <path
-        d={body}
-        fill={solid ? "var(--carbon)" : "none"}
-        stroke={solid ? "var(--ink)" : stroke}
-        strokeWidth={solid ? 1.5 : 1.1}
+        d={`M${MX - 26},${MY - 6} L${MX - 6},${MY - 6} L${MX - 6},${MY + MH + 18} L${MX - 26},${MY + MH + 18} Z`}
+        fill="#26262a"
+        stroke="#0a0a0b"
+        strokeWidth="1.6"
+      />
+      {Array.from({length: 5}, (_, i) => (
+        <rect key={i} x={MX - 22} y={MY + 10 + i * 34} width="12" height="18" rx="1.5" fill="#0d0d0f" />
+      ))}
+
+      {/* PCB tail and gold contact fingers. */}
+      <path
+        d={`M${MX - 6},${MY + MH - 4} L${MX + 300},${MY + MH - 4} L${MX + 300},${MY + MH + 24} L${MX + 34},${MY + MH + 24} Z`}
+        fill="#18271d"
+        stroke="#0d160f"
+        strokeWidth="1"
+      />
+      {Array.from({length: 18}, (_, i) => (
+        <rect key={i} x={MX + 48 + i * 13} y={MY + MH + 8} width="8" height="16" fill="url(#pins)" />
+      ))}
+
+      {/* Shroud, then the light across it. */}
+      <path d={silhouette(MX, MY, MW, MH)} fill="url(#shroud)" stroke="#08080a" strokeWidth="2" />
+      <path d={silhouette(MX, MY, MW, MH)} fill="url(#sheen)" />
+
+      {/* Top rail highlight, then the one flash of colour on the real hardware. */}
+      <path d={`M${MX + 30},${MY + 9} L${MX + MW - 46},${MY + 9}`} stroke="#6d6d76" strokeWidth="2.4" />
+      <path
+        d={`M${MX + 36},${MY + 18} L${MX + MW - 116},${MY + 18}`}
+        stroke="var(--vermilion)"
+        strokeWidth="3.2"
+      />
+      <path
+        d={`M${MX + MW - 100},${MY + 18} L${MX + MW - 58},${MY + 18}`}
+        stroke="var(--vermilion)"
+        strokeWidth="3.2"
+        opacity="0.5"
       />
 
-      {/* Accent stripe along the top edge, the one flash of colour on the real hardware. */}
-      {solid && (
-        <path
-          d={`M${x + 24},${y + 9} L${x + w - 40},${y + 9}`}
-          stroke="var(--vermilion)"
-          strokeWidth="2.5"
-        />
-      )}
-
       {fans.map((cx, i) => (
-        <g key={i}>
-          <circle
-            cx={cx}
-            cy={cy}
-            r="44"
-            fill="none"
-            stroke={solid ? "var(--ink-50)" : stroke}
-            strokeWidth={solid ? 1.4 : 1}
-          />
-          <circle
-            cx={cx}
-            cy={cy}
-            r="15"
-            fill={solid ? "var(--ink)" : "none"}
-            stroke={solid ? "var(--ink-50)" : stroke}
-            strokeWidth="1"
-          />
-          {/* Blades are drawn only on the measured module. A projection has no detail to show. */}
-          {solid &&
-            Array.from({length: 9}, (_, b) => {
-              const a = (b / 9) * Math.PI * 2;
-              return (
-                <line
-                  key={b}
-                  x1={cx + Math.cos(a) * 16}
-                  y1={cy + Math.sin(a) * 16}
-                  x2={cx + Math.cos(a + 0.5) * 43}
-                  y2={cy + Math.sin(a + 0.5) * 43}
-                  stroke="var(--ink-50)"
-                  strokeWidth="1"
-                  opacity="0.75"
-                />
-              );
-            })}
+        <g key={cx}>
+          {/* Housing rim and recessed well. */}
+          <circle cx={cx} cy={FAN_CY} r={FAN_R + 6} fill="#0b0b0d" stroke="#4c4d51" strokeWidth="2" />
+          <circle cx={cx} cy={FAN_CY} r={FAN_R} fill="url(#well)" stroke="#212226" strokeWidth="1.2" />
+
+          {Array.from({length: BLADES}, (_, b) => (
+            <path
+              key={b}
+              d={blade(cx, FAN_CY, (b / BLADES) * Math.PI * 2, FAN_R)}
+              fill="#1a1b1e"
+              stroke="#3b3d41"
+              strokeWidth="0.7"
+            />
+          ))}
+
+          {/* Hub. */}
+          <circle cx={cx} cy={FAN_CY} r={FAN_R * 0.33} fill="#202126" stroke="#5a5b60" strokeWidth="1.4" />
+          <circle cx={cx} cy={FAN_CY} r={FAN_R * 0.33} fill="url(#sheen)" />
+          <text
+            x={cx}
+            y={FAN_CY + 3}
+            textAnchor="middle"
+            className="mono"
+            fontSize={i === 1 ? 11 : 6.5}
+            fontWeight="800"
+            letterSpacing={i === 1 ? 0.6 : 0.5}
+            fill="#cfcac2"
+          >
+            {["UPTIME", "01", "RELENTLESS"][i]}
+          </text>
         </g>
       ))}
 
-      {/* Mounting tab and serial plate, on the measured module only. */}
-      {solid && (
-        <>
-          <path
-            d={`M${x - 14},${y + 6} L${x},${y + 20} L${x},${y + h - 22} L${x - 14},${y + h - 6} Z`}
-            fill="var(--carbon)"
-            stroke="var(--ink)"
-            strokeWidth="1.2"
-          />
-          <text
-            x={x + 26}
-            y={y + h - 16}
-            className="mono"
-            fontSize="10"
-            letterSpacing="1.8"
-            fill="var(--ghost-mid)"
-          >
-            UP·01
-          </text>
-        </>
-      )}
+      {/* Serial plate. */}
+      <text x={MX + 20} y={MY + MH - 30} className="mono" fontSize="15" fontWeight="800" fill="#d6dee2">
+        UP·01
+      </text>
+      <text x={MX + 20} y={MY + MH - 16} className="mono" fontSize="7.5" letterSpacing="1.4" fill="var(--vermilion)">
+        UPTIME SERIES
+      </text>
+    </g>
+  );
+}
+
+/** A projection: one segment of the same object, wireframe, no fill, no shadow. */
+function Ghost({x, stroke, opacity}: {x: number; stroke: string; opacity: number}) {
+  const w = 200;
+  const cx = x + w / 2;
+
+  return (
+    <g opacity={opacity} fill="none" stroke={stroke} strokeWidth="1.15">
+      <path d={silhouette(x, MY, w, MH)} />
+      <circle cx={cx} cy={FAN_CY} r={FAN_R + 6} />
+      <circle cx={cx} cy={FAN_CY} r={FAN_R} />
+      {/* Blade outlines only. A projection can show the shape of the thing but none of its
+          substance, which is the whole point of the drawing. */}
+      {Array.from({length: BLADES}, (_, b) => (
+        <path
+          key={b}
+          d={blade(cx, FAN_CY, (b / BLADES) * Math.PI * 2, FAN_R)}
+          strokeWidth="0.75"
+        />
+      ))}
+      <circle cx={cx} cy={FAN_CY} r={FAN_R * 0.33} />
+      <path d={`M${x + 28},${MY + 9} L${x + w - 40},${MY + 9}`} strokeWidth="1" />
     </g>
   );
 }
@@ -232,11 +311,11 @@ function Module({
 function Caption({x, label, sub, tone}: {x: number; label: string; sub: string; tone: string}) {
   return (
     <g>
-      <line x1={x} y1="352" x2={x} y2="364" stroke="var(--line)" strokeWidth="1" />
-      <text x={x} y="382" className="mono" fontSize="11" letterSpacing="2" fill={tone}>
+      <line x1={x} y1="396" x2={x} y2="408" stroke="var(--line)" strokeWidth="1" />
+      <text x={x} y="426" className="mono" fontSize="11" letterSpacing="2" fill={tone}>
         {label}
       </text>
-      <text x={x} y="399" className="mono" fontSize="9.5" letterSpacing="1.6" fill="var(--ink-30)">
+      <text x={x} y="443" className="mono" fontSize="9.5" letterSpacing="1.6" fill="var(--ink-30)">
         {sub}
       </text>
     </g>
