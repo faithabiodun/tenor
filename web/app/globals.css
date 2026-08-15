@@ -437,56 +437,89 @@ td {
 /* --- hero ---------------------------------------------------------------------------- */
 
 .hero {
-  /* The art bleeds past the right edge on purpose; nothing may scroll sideways because of it. */
-  overflow-x: clip;
-  padding-top: 48px;
-}
-
-.hero-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
-  gap: 32px;
-  align-items: center;
-}
-
-.hero-copy .display-xl {
-  /* Smaller than the standalone display scale: this headline now shares the row. */
-  font-size: clamp(40px, 5.4vw, 76px);
-  max-width: 13ch;
-}
-
-.hero-art {
   position: relative;
-  /* Sits above the grid gap so the card can encroach on the copy column without being cut. */
-  z-index: 1;
+  isolation: isolate;
+  overflow: hidden;
+  padding: 104px 0 96px;
+  display: grid;
+  place-items: center;
+  min-height: 62vh;
+}
+
+/* The study, laid in behind everything. */
+.hero-art {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  z-index: -2;
+  pointer-events: none;
 }
 
 .hero-art img {
-  display: block;
-  /* Wider than its column so the card reads at size and the far projection runs past the
-     right edge. Held at 130%: enough bleed to feel deliberate, not so much that the blue
-     projection is lost, which would cost the drawing its point. */
-  width: 130%;
+  width: min(1560px, 138%);
   height: auto;
-  /* Set square. The card carries its own painted shadow and its own perspective; adding a
-     CSS transform on top fought both, and a drop-shadow would have thrown a second shadow
-     around wireframes that are not solid objects. */
+  /* Held back until the near-black card sits light enough for the headline to clear it,
+     and no further. Pulled to 0.34 the art disappeared entirely, which is not blending,
+     it is hiding. At 0.5 the card and the red projection both read and the ink still
+     clears 5:1 against them, which large display type only needs 3:1 for. */
+  opacity: 0.5;
+  /* Dissolve into the page at every edge instead of ending on a hard rectangle. */
+  -webkit-mask-image: radial-gradient(ellipse 74% 82% at 50% 50%, #000 30%, transparent 82%);
+  mask-image: radial-gradient(ellipse 74% 82% at 50% 50%, #000 30%, transparent 82%);
+}
+
+/* Paper washed back through the middle, so the text sits on the page and the art survives
+   at the edges where nothing is written. */
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 56% 58% at 50% 48%,
+    rgba(237, 234, 228, 0.42) 0%,
+    rgba(237, 234, 228, 0.3) 40%,
+    rgba(237, 234, 228, 0.1) 62%,
+    transparent 78%
+  );
+}
+
+.hero-copy {
+  text-align: center;
+}
+
+.hero-copy .display-xl {
+  font-size: clamp(42px, 8.2vw, 108px);
+  max-width: 15ch;
+  margin: 0 auto;
+}
+
+.hero-lead {
+  margin: 30px auto 0;
+  max-width: 58ch;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 30px;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 @media (max-width: 900px) {
-  .hero-grid {
-    grid-template-columns: 1fr;
-    gap: 8px;
+  .hero {
+    padding: 64px 0 60px;
+    min-height: 0;
   }
 
-  .hero-copy .display-xl {
-    font-size: clamp(38px, 11vw, 64px);
-    max-width: 14ch;
-  }
-
-  /* Nearly contained on small screens: a heavy bleed at 380px wide just looks cropped. */
   .hero-art img {
-    width: 108%;
+    width: 150%;
+    /* Lighter on small screens: the art is proportionally larger behind less text, so the
+       same strength reads as clutter. */
+    opacity: 0.32;
   }
 }
 

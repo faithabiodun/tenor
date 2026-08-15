@@ -23,41 +23,39 @@ export default function Home() {
 function Hero() {
   return (
     <section className="hero">
-      <div className="wrap hero-grid">
-        <div className="hero-copy">
-          <h1 className="display display-xl rise">Sell the earnings your machine has not made yet</h1>
+      {/*
+        The study sits behind the headline rather than beside it. Held well back: the card
+        is nearly black and the headline is dark ink, so at full strength the two fight and
+        the words lose. Faded, masked at the edges and washed through the centre, it reads
+        as the paper the page is printed on rather than as a picture with text on top.
+      */}
+      <div className="hero-art" aria-hidden>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/study/study.png"
+          alt=""
+          width={1877}
+          height={431}
+          fetchPriority="high"
+        />
+      </div>
 
-          <p className="lead" style={{marginTop: 28}}>
-            A node that earns twelve dollars a month is invisible to every lender alive.
-            Uptime reads what it has actually paid out, has two AI agents argue over what the
-            next six months are worth, and turns the answer into shares anyone can buy.
-          </p>
+      <div className="wrap hero-copy">
+        <h1 className="display display-xl rise">Sell the earnings your machine has not made yet</h1>
 
-          <div style={{display: "flex", gap: 12, marginTop: 28, flexWrap: "wrap"}}>
-            <Link href="/node" className="btn">
-              List a node
-            </Link>
-            <Link href="/#how" className="btn btn-ghost">
-              See the method
-            </Link>
-          </div>
-        </div>
+        <p className="lead hero-lead">
+          A node that earns twelve dollars a month is invisible to every lender alive. Uptime
+          reads what it has actually paid out, has two AI agents argue over what the next six
+          months are worth, and turns the answer into shares anyone can buy.
+        </p>
 
-        {/*
-          The reference art, keyed off its paper and set on the page's own.
-          Deliberately oversized and bled off the right edge: the card is the subject, and
-          the projections trailing out of frame say more about a future nobody can see the
-          end of than a politely contained image would.
-        */}
-        <div className="hero-art" aria-hidden>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/study/study.png"
-            alt=""
-            width={1961}
-            height={873}
-            fetchPriority="high"
-          />
+        <div className="hero-actions">
+          <Link href="/node" className="btn">
+            List a node
+          </Link>
+          <Link href="/#how" className="btn btn-ghost">
+            See the method
+          </Link>
         </div>
       </div>
 
