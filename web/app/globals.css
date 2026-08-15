@@ -396,3 +396,40 @@ td {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* --- the performance study -------------------------------------------------------- */
+
+/*
+ * A fixed-ratio stage holding crops of the reference painting at the sheet's own
+ * proportions. Locking everything to one aspect ratio is what stops the composition
+ * scattering: the pieces cannot reflow independently because none of them reflow at all.
+ */
+.study {
+  position: relative;
+  margin: 54px 0 0;
+  aspect-ratio: 1080 / 601;
+  overflow: hidden;
+  /* Matched to the paper baked into the crops: lighter at the upper centre, sinking
+     toward the edges the way the sheet vignettes. */
+  background: radial-gradient(120% 140% at 45% 30%, #f0ebe3 0%, #e6e0d6 55%, #d9d2c5 100%);
+}
+
+.study-el {
+  position: absolute;
+  height: auto;
+  display: block;
+}
+
+/* Fade the outer 12px of each crop so its baked-in paper blends into the stage instead
+   of reading as a pasted rectangle. */
+.feather {
+  --f: 12px;
+  -webkit-mask-image:
+    linear-gradient(90deg, transparent, #000 var(--f), #000 calc(100% - var(--f)), transparent),
+    linear-gradient(180deg, transparent, #000 var(--f), #000 calc(100% - var(--f)), transparent);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(90deg, transparent, #000 var(--f), #000 calc(100% - var(--f)), transparent),
+    linear-gradient(180deg, transparent, #000 var(--f), #000 calc(100% - var(--f)), transparent);
+  mask-composite: intersect;
+}
