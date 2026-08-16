@@ -115,10 +115,14 @@ cd contracts && forge test                         # 27 tests
 
 ## Deployment
 
-| | |
-| --- | --- |
-| X Layer testnet | chain 1952 |
-| X Layer mainnet | chain 196 |
+| | | |
+| --- | --- | --- |
+| X Layer testnet | chain 1952 | [`0x164cbf80…20feb52`](https://www.oklink.com/x-layer-testnet/address/0x164cbf8067229a3b699840630b9b3cb6020feb52) |
+| X Layer mainnet | chain 196 | not yet deployed |
+
+The owner of the deployed vault is the account that runs the panel. `recordValuation` is
+restricted to it, because an operator pricing their own node is the failure the whole design
+exists to prevent.
 
 Chain ids were confirmed by calling `eth_chainId` directly. Published chain lists disagree
 with each other about X Layer testnet, and most of them are wrong.
