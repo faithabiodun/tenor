@@ -41,16 +41,16 @@ structural rather than instructed.
 
 Two sample nodes, same code, same day:
 
-| Node | Operator | Investor | Verdict | Confidence |
+| Node | Score | Operator | Investor | Verdict |
 | --- | --- | --- | --- | --- |
-| Steady, 124 days on chain | 88% | 45% | **78%** | 62 |
-| Decaying rewards, hidden 10-day outage | 57.5% | 8% | **30%** | 45 |
+| Steady, 124 days on chain | 84 | 92% | 50% | **62%** |
+| Decaying rewards, hidden outage, thin margin | 55 | 74% | 10% | **30%** |
 
 The investor led with the hole nobody scripted for it:
 
-> Nothing in the arrangement compels the operator to keep the node running once the shares
-> are sold. The revenue depends on the continued goodwill of someone who has already been
-> paid.
+> Net margin is thin and shrinking: net_monthly of 8.46 against operating_cost_monthly of
+> 5.20; another ~38% drop in gross revenue makes the node unprofitable, and the operator has
+> no obligation to keep it running once paid.
 
 That is the real weakness in this entire idea, and the system says it out loud, in the
 product, to the person about to hand over money.
