@@ -24,51 +24,79 @@ export default function Home() {
 
 function Hero() {
   return (
-    <section className="hero">
-      {/*
-        The study sits behind the headline rather than beside it. Held well back: the card
-        is nearly black and the headline is dark ink, so at full strength the two fight and
-        the words lose. Faded, masked at the edges and washed through the centre, it reads
-        as the paper the page is printed on rather than as a picture with text on top.
-      */}
-      <div className="hero-art" aria-hidden>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          // The png is the fallback for anything that cannot read srcset or webp. Every
-          // current browser takes a webp from the srcset instead and never fetches it.
-          src="/study/study.png"
-          srcSet="/study/study-760.webp 760w, /study/study-1200.webp 1200w, /study/study-1877.webp 1877w"
-          // The art is drawn wider than the viewport on purpose, so the browser must be told
-          // that; left to its own devices it assumes 100vw and pulls a file too small for the
-          // width it is actually painted at.
-          sizes="(max-width: 900px) 150vw, 138vw"
-          alt=""
-          width={1877}
-          height={431}
-          fetchPriority="high"
-          decoding="async"
-        />
-      </div>
+    <section className="showcase">
+      {/* The product sheet, dark: the machine is the subject and everything else is
+          arranged around it, the way a product page arranges itself around the thing
+          being sold. What is being sold here is the machine's next six months. */}
+      <nav className="showcase-nav" aria-label="Sections">
+        <Link href="/node" className="is-on">
+          Value a node
+        </Link>
+        <Link href="/#how">Method</Link>
+        <Link href="/#chain">On chain</Link>
+      </nav>
 
-      <div className="wrap hero-copy">
-        <h1 className="display display-xl rise">Sell the earnings your machine has not made yet</h1>
-
-        <p className="lead hero-lead">
-          A node that earns twelve dollars a month is invisible to every lender alive. Uptime
-          reads what it has actually paid out, has two AI agents argue over what the next six
-          months are worth, and turns the answer into shares anyone can buy.
-        </p>
-
-        <div className="hero-actions">
-          <Link href="/node" className="btn">
-            Value a node
+      <div className="showcase-grid">
+        <div className="showcase-copy">
+          <h1 className="display showcase-title">
+            Sell the earnings
+            <br />
+            your machine
+            <br />
+            has not made yet
+          </h1>
+          <p>
+            A node that earns twelve dollars a month is invisible to every lender alive.
+            Uptime reads what it has actually paid out, has two AI agents argue over what the
+            next six months are worth, and turns the answer into shares anyone can buy.
+          </p>
+          <Link href="/node" className="showcase-cta">
+            Value a node <span aria-hidden>→</span>
           </Link>
         </div>
+
+        {/* Floating rather than sitting: the machine is the hero of the page. */}
+        <div className="showcase-art" aria-hidden>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/study/study.png"
+            srcSet="/study/study-760.webp 760w, /study/study-1200.webp 1200w, /study/study-1877.webp 1877w"
+            sizes="(max-width: 900px) 96vw, 52vw"
+            alt=""
+            width={1877}
+            height={431}
+            fetchPriority="high"
+          />
+        </div>
+
+        {/* The figures a buyer actually decides on, in the slot a product page gives price. */}
+        <aside className="showcase-spec">
+          <p className="showcase-score">
+            84<span>/100</span>
+          </p>
+          <p className="showcase-label">Node score, priced live</p>
+
+          <p className="showcase-price">62%</p>
+          <p className="showcase-label">of projected term earnings</p>
+
+          <p className="showcase-label" style={{marginTop: 22}}>Term</p>
+          <div className="showcase-chips">
+            <span className="is-on">6 mo</span>
+            <span>12 mo</span>
+            <span>24 mo</span>
+          </div>
+        </aside>
       </div>
+
+      <p className="showcase-foot">
+        Evidence first,
+        <br />
+        opinion second
+      </p>
 
       <p className="sr-only">
         Uptime performance study: a triple-fan compute card followed by three wireframe fan
-        studies in red, grey and blue, receding to the right.
+        studies receding to the right.
       </p>
     </section>
   );
